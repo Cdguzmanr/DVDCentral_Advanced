@@ -19,7 +19,7 @@ public partial class tblMovie
 
     public double Cost { get; set; }
 
-    public int Quantity { get; set; }
+    public int InStkQty { get; set; }
 
     public string ImagePath { get; set; } = null!;
 }

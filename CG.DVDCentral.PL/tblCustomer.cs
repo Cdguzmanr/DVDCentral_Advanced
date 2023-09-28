@@ -22,4 +22,6 @@ public partial class tblCustomer
     public string Phone { get; set; } = null!;
 
     public string ImagePath { get; set; } = null!;
+
+    public string State { get; set; } = null!;
 }

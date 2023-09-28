@@ -12,4 +12,6 @@ public partial class tblOrder
     public DateTime OrderDate { get; set; }
 
     public int UserId { get; set; }
+
+    public DateTime ShipDate { get; set; }
 }
