@@ -3,9 +3,17 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.7.34018.315
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CG.DVDCentral.BL.Models", "CG.DVDCentral.BL.Models\CG.DVDCentral.BL.Models.csproj", "{0C63F271-49FB-49D2-96AA-D62AD4316673}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CG.DVDCentral.BL.Models", "CG.DVDCentral.BL.Models\CG.DVDCentral.BL.Models.csproj", "{0C63F271-49FB-49D2-96AA-D62AD4316673}"
 EndProject
 Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "CG.DVDCentral.DB", "CG.DVDCentral.DB\CG.DVDCentral.DB.sqlproj", "{BCD6D625-2E04-455A-8FAA-97E684CEF52D}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CG.DVDCentral.PL", "CG.DVDCentral.PL\CG.DVDCentral.PL.csproj", "{ABBC017A-453C-4484-9A5F-D2172220E11E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CG.DVDCentral.PL.Test", "CG.DVDCentral.PL.Test\CG.DVDCentral.PL.Test.csproj", "{3E2C0274-673A-49D2-9A89-9CC5BD5E9025}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CG.DVDCentral.BL", "CG.DVDCentral.BL\CG.DVDCentral.BL.csproj", "{D9FE743C-8C1F-4539-8DDB-FCADCCCC60A1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CG.DVDCentral.BL.Test", "CG.DVDCentral.BL.Test\CG.DVDCentral.BL.Test.csproj", "{3369C587-CB04-4C0C-AE6C-10673285E89B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -23,6 +31,22 @@ Global
 		{BCD6D625-2E04-455A-8FAA-97E684CEF52D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BCD6D625-2E04-455A-8FAA-97E684CEF52D}.Release|Any CPU.Build.0 = Release|Any CPU
 		{BCD6D625-2E04-455A-8FAA-97E684CEF52D}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{ABBC017A-453C-4484-9A5F-D2172220E11E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ABBC017A-453C-4484-9A5F-D2172220E11E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ABBC017A-453C-4484-9A5F-D2172220E11E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ABBC017A-453C-4484-9A5F-D2172220E11E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3E2C0274-673A-49D2-9A89-9CC5BD5E9025}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3E2C0274-673A-49D2-9A89-9CC5BD5E9025}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3E2C0274-673A-49D2-9A89-9CC5BD5E9025}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3E2C0274-673A-49D2-9A89-9CC5BD5E9025}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D9FE743C-8C1F-4539-8DDB-FCADCCCC60A1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D9FE743C-8C1F-4539-8DDB-FCADCCCC60A1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D9FE743C-8C1F-4539-8DDB-FCADCCCC60A1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D9FE743C-8C1F-4539-8DDB-FCADCCCC60A1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3369C587-CB04-4C0C-AE6C-10673285E89B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3369C587-CB04-4C0C-AE6C-10673285E89B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3369C587-CB04-4C0C-AE6C-10673285E89B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3369C587-CB04-4C0C-AE6C-10673285E89B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
