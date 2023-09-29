@@ -7,5 +7,5 @@ public partial class tblGenre
 {
     public int Id { get; set; }
 
-    public string Description { get; set; } = null!;
+    public string? Description { get; set; }
 }

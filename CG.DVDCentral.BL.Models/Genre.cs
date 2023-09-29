@@ -6,7 +6,9 @@ using System.Threading.Tasks;
 
 namespace CG.DVDCentral.BL.Models
 {
-    internal class Genre
+    public class Genre
     {
+        public int Id { get; set; }
+        public string? Description { get; set; }
     }
 }

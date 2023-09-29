@@ -6,7 +6,9 @@ using System.Threading.Tasks;
 
 namespace CG.DVDCentral.BL.Models
 {
-    internal class Rating
+    public class Rating
     {
+        public int Id { get; set; }
+        public string? Description { get; set; }
     }
 }

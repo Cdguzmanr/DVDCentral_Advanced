@@ -6,7 +6,12 @@ using System.Threading.Tasks;
 
 namespace CG.DVDCentral.BL.Models
 {
-    internal class OrderItem
+    public class OrderItem
     {
+        public int Id { get; set; }
+        public int OrderId { get; set; }
+        public int Quantity { get; set; }
+        public int MovieId { get; set; }
+        public double Cost { get; set; }
     }
 }
