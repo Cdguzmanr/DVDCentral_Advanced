@@ -3,24 +3,24 @@ using CG.DVDCentral.BL.Models;
 namespace CG.DVDCentral.BL.Test
 {
     [TestClass]
-    public class utGenre
+    public class utFormat
     {
         [TestMethod]
         public void LoadTest()
         { 
-            Assert.AreEqual(4, GenreManager.Load().Count);
+            Assert.AreEqual(3, FormatManager.Load().Count);
         }
 
         [TestMethod]
         public void InsertTest()
         {
             int id = 0;
-            Genre genre = new Genre()
+            Format format = new Format()
             {
                 Description = "Test"
             };
 
-            int results = GenreManager.Insert(genre, true);
+            int results = FormatManager.Insert(format, true);
             Assert.AreEqual(1, results);
         }
 
@@ -28,16 +28,16 @@ namespace CG.DVDCentral.BL.Test
         public void UpdateTest()
         {
             int id = 0;
-            Genre genre = GenreManager.LoadById(3);
-            genre.Description = "UpdateTest";
-            int results = GenreManager.Update(genre, true);
+            Format format = FormatManager.LoadById(3);
+            format.Description = "UpdateTest";
+            int results = FormatManager.Update(format, true);
             Assert.AreEqual(1, results);
         }
 
         [TestMethod]
         public void DeleteTest()
         {
-            int results = GenreManager.Delete(3, true);
+            int results = FormatManager.Delete(3, true);
             Assert.AreEqual(1, results);
         }
     }

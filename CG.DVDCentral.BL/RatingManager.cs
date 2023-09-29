@@ -5,7 +5,7 @@ using CG.DVDCentral.PL;
 
 namespace CG.DVDCentral.BL
 {
-    internal class RatingManager
+    public class RatingManager
     {
         public static int Insert(Rating rating, bool rollback = false) // Id by reference
         {

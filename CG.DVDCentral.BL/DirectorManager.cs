@@ -5,7 +5,7 @@ using CG.DVDCentral.PL;
 
 namespace CG.DVDCentral.BL
 {
-    internal class DirectorManager
+    public class DirectorManager
     {
         public static int Insert(Director director, bool rollback = false) // Id by reference
         {

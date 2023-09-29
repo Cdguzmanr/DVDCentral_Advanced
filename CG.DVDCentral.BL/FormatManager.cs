@@ -5,7 +5,7 @@ using CG.DVDCentral.PL;
 
 namespace CG.DVDCentral.BL
 {
-    internal class FormatManager
+    public class FormatManager
     {
         public static int Insert(Format format, bool rollback = false) // Id by reference
         {
