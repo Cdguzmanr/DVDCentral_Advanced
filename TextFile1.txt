@@ -1,0 +1,12 @@
+Microsoft.EntityFrameworkCore.SqlServer
+Microsoft.EntityFrameworkCore.Tools
+Microsoft.VisualStudio.Web.CodeGeneration.Design
+
+/* DVDCentral Scaffold Command */
+
+Scaffold-DbContext "Server=(localdb)\MSSQLLocalDB;Database=CG.DVDCentral.DB;Integrated Security=True" Microsoft.EntityFrameworkCore.SqlServer -Context DVDCentralEntities -UseDatabaseNames -force
+
+NOTE: When doing Scaffold of the DB, its important to:
+1- Select CG.ProgDec.PL as Startup Project
+2- Go to Package Manager Console 
+3- Copy and paste the line 7 above into the Console and press enter

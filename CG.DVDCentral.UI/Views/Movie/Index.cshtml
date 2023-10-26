@@ -1,0 +1,79 @@
+﻿@model IEnumerable<CG.DVDCentral.BL.Models.Movie>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Title)
+            </th>
+            <th>
+                <!-- Changed DisplayName to "Movie Name" -->
+                @Html.DisplayNameFor(model => model.Description) 
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FormatId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DirectorId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.RatingId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Cost)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.InStkQty)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ImagePath)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Title)
+            </td>
+            <td>
+                <!-- Changed DisplayName to "Movie Name" -->
+                @Html.DisplayFor(modelItem => item.Description)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.FormatId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DirectorId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.RatingId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Cost)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.InStkQty)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ImagePath)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
+                @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
+                @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

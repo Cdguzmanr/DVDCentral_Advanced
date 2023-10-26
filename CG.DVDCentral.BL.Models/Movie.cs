@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -10,6 +11,8 @@ namespace CG.DVDCentral.BL.Models
     {
         public int Id { get; set; }
         public string? Title { get; set; }
+        
+        //[DisplayName("Movie Name")]
         public string? Description { get; set; }
         public int FormatId { get; set; }
         public int DirectorId { get; set; }
