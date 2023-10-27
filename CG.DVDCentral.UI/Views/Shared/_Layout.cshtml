@@ -47,10 +47,28 @@
             </div>
         </nav>
     </header>
-    <div class="container">
-        <main role="main" class="pb-3">
-            @RenderBody()
-        </main>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-2 sidebar rounded-top">
+                <div class="header rounded-top p-2">
+                    <h4>Genres</h4>
+                </div>
+                <div>
+                    @await Component.InvokeAsync("Sidebar")
+                </div>
+            </div>
+
+
+            <div class="col-md-9 main body-content rounded-top">
+                <div class="header rounded-top p-2">
+                    <h4>@ViewBag.Title</h4>
+                </div>
+                <main role="main" class="pb-3">
+                    <div class="text-danger ms-2">@ViewBag.Error</div>
+                    @RenderBody()
+                </main>
+            </div>
+        </div>
     </div>
 
     <footer class="border-top footer text-muted">

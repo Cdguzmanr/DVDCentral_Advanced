@@ -1,0 +1,13 @@
+﻿@model IEnumerable<CG.DVDCentral.BL.Models.Genre>
+<ul>
+    @foreach (var genre in Model)
+    {
+        <li>
+            <a asp-controller="Movie"
+               asp-action="Browse"
+               asp-route-id="@genre.Id">@genre.Description</a>
+
+        </li>
+    }
+</ul>
+

@@ -20,3 +20,65 @@ html {
 body {
   margin-bottom: 60px;
 }
+
+
+/* Custom Design */
+
+.bg-dark {
+    background: linear-gradient(90deg, rgba(2, 0, 36, 1) 0%, rgba(102, 51, 153, 1) 35%);
+}
+
+.card-img {
+    height: 200px;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.header {
+    margin: 0px;
+    padding: 0px;
+    background-color: rebeccapurple;
+}
+
+.header h1, .header h2, .header h3, .header h4, .header h5 {
+    margin: 0px;
+    padding: 0px;
+    color: white;
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif''
+}
+
+.main {
+    margin: 0px;
+    padding: 0px;
+    border-width: 1px;
+    border-style: solid;
+}
+
+.sidebar {
+    border-width: 1px;
+    border-style: solid;
+    margin: 0px 10px 0px 10px;
+    min-height: 500px;
+    padding-left: 0px;
+    padding-right: 0px;
+}
+
+    .sidebar ul {
+        list-style-type: none;
+        padding-left: 5px;
+        padding-right: 0px;
+    }
+
+
+.table th {
+    background-color: rgba(102, 51, 153, 1);
+    color: white;
+}
+
+.table tr:nth-child(even) {
+    /* rgba -> rgb defines the amount of color in a range of 1-255 | a defines the saturation of the color in a range of 0-1   */
+    background-color: rgba(102, 51, 153, 0.25);
+}
+
+

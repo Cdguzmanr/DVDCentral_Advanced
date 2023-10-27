@@ -20,5 +20,14 @@ namespace CG.DVDCentral.BL.Models
         public double Cost { get; set; }
         public int InStkQty { get; set; }
         public string? ImagePath { get; set; }
+
+        [DisplayName("Rating")]
+        public string? RatingDescription { get; set; }
+        
+        [DisplayName("Format")]
+        public string? FormatDescription { get; set; }
+
+        [DisplayName("Director Name")]
+        public string? DirectorName { get; set;}
     }
 }

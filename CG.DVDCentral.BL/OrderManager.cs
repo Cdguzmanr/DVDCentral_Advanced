@@ -2,6 +2,7 @@
 
 using CG.DVDCentral.BL.Models;
 using CG.DVDCentral.PL;
+using Microsoft.VisualStudio.Web.CodeGeneration.Design;
 
 namespace CG.DVDCentral.BL
 {
@@ -23,13 +24,22 @@ namespace CG.DVDCentral.BL
                     entity.OrderDate = order.OrderDate; 
                     entity.UserId = order.UserId;
                     entity.ShipDate = order.ShipDate;
+
+                    // Inserts OrderItems objects into the list at Order
+                    foreach (OrderItem orderItem in order.OrderItems)
+                    {
+                        // set the orderId on tblOrderItem
+                                //orderItem.OrderId = order.Id;
+                        results += OrderItemManager.Insert(orderItem, rollback);
+                    }
+
                     //entity.OrderItems = order.OrderItems;   
 
                     // IMPORTANT - BACK FILL THE ID 
                     order.Id = entity.Id;
 
                     dc.tblOrders.Add(entity);
-                    results = dc.SaveChanges();
+                    results += dc.SaveChanges(); // Make sure to add the += and not only = 
 
                     if (rollback) transaction.Rollback();
                 }
@@ -78,17 +88,32 @@ namespace CG.DVDCentral.BL
             {
                 using (DVDCentralEntities dc = new DVDCentralEntities())
                 {
-                    tblOrder entity = dc.tblOrders.FirstOrDefault(s => s.Id == id);
-                    if (entity != null)
-                    {
-                        return new Order
+                    //tblOrder entity = dc.tblOrders.FirstOrDefault(s => s.Id == id);
+                    var entity = (from s in dc.tblOrders
+                                  join oi in dc.tblOrderItems on s.Id equals oi.OrderId
+                                  where oi.OrderId == id
+                                  select new
+                                  {
+                                      s.Id,
+                                      s.CustomerId,
+                                      s.OrderDate,
+                                      s.UserId,
+                                      s.ShipDate,
+                                      
+                                  })
+                                  .FirstOrDefault();
+
+                        if (entity != null)
                         {
-                            Id = entity.Id,
-                            CustomerId = entity.CustomerId,
-                            OrderDate = entity.OrderDate,
-                            UserId = entity.UserId,
-                            ShipDate = entity.ShipDate,
-                    };
+                            return new Order
+                            {
+                                Id = entity.Id,
+                                CustomerId = entity.CustomerId,
+                                OrderDate = entity.OrderDate,
+                                UserId = entity.UserId,
+                                ShipDate = entity.ShipDate,
+                                OrderItems = OrderItemManager.LoadByOrderId(id) // Checkpoint 4 - Instruction 3.c       
+                        };
                     }
                     else { throw new Exception(); }
                 }
@@ -96,7 +121,7 @@ namespace CG.DVDCentral.BL
             catch (Exception) { throw; }
         }
 
-        public static List<Order> Load()
+        public static List<Order> Load(int? CustomerId = null)
         {
             try
             {
@@ -104,13 +129,19 @@ namespace CG.DVDCentral.BL
                 using (DVDCentralEntities dc = new DVDCentralEntities())
                 {
                     (from s in dc.tblOrders
+                     join oi in dc.tblOrderItems on s.Id equals oi.OrderId
+                     join c in dc.tblCustomers on s.CustomerId equals c.Id
+                     where s.CustomerId == CustomerId || CustomerId == null 
                      select new
                      {
+                         // what info should display for this join? 
+
                          s.Id,
                          s.CustomerId,
                          s.OrderDate,
                          s.UserId,
-                         s.ShipDate
+                         s.ShipDate,
+
                      })
                     .ToList()
                     .ForEach(order => list.Add(new Order

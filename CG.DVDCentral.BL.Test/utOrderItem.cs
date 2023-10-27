@@ -43,5 +43,13 @@ namespace CG.DVDCentral.BL.Test
             int results = OrderItemManager.Delete(3, true);
             Assert.AreEqual(1, results);
         }
+
+        // Checkpoint 4
+        [TestMethod]
+        public void LoadByOrderIdTest()
+        {
+            int orderId = OrderItemManager.Load().FirstOrDefault().OrderId; 
+            Assert.IsTrue(OrderItemManager.LoadByOrderId(orderId).Count > 0);
+        }
     }
 }

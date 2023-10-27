@@ -8,12 +8,21 @@ namespace CG.DVDCentral.UI.Controllers
     {
         public IActionResult Index()
         {
+            ViewBag.Title = "List of Movies";
             return View(MovieManager.Load());
+        }
+
+        // Filter the Movie by ProgramId
+        public IActionResult Browse(int id)
+        {
+            return View(nameof(Index), MovieManager.Load(id));
         }
 
         public IActionResult Details(int id)
         {
-            return View(MovieManager.LoadById(id));
+            var item = MovieManager.LoadById(id);
+            ViewBag.Title = "Details";
+            return View(item);
         }
 
         public IActionResult Create()

@@ -4,7 +4,6 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
 
 <p>
     <a asp-action="Create">Create New</a>
@@ -16,26 +15,19 @@
                 @Html.DisplayNameFor(model => model.Title)
             </th>
             <th>
-                <!-- Changed DisplayName to "Movie Name" -->
-                @Html.DisplayNameFor(model => model.Description) 
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.FormatId)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.DirectorId)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.RatingId)
-            </th>
-            <th>
                 @Html.DisplayNameFor(model => model.Cost)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.InStkQty)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.ImagePath)
+                @Html.DisplayNameFor(model => model.RatingDescription)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FormatDescription)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DirectorName)
             </th>
             <th></th>
         </tr>
@@ -47,31 +39,24 @@
                 @Html.DisplayFor(modelItem => item.Title)
             </td>
             <td>
-                <!-- Changed DisplayName to "Movie Name" -->
-                @Html.DisplayFor(modelItem => item.Description)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.FormatId)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.DirectorId)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.RatingId)
-            </td>
-            <td>
                 @Html.DisplayFor(modelItem => item.Cost)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.InStkQty)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.ImagePath)
+                @Html.DisplayFor(modelItem => item.RatingDescription)
             </td>
             <td>
-                @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+                @Html.DisplayFor(modelItem => item.FormatDescription)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DirectorName)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
+                @Html.ActionLink("Details", "Details", new { id=item.Id }) |
+                @Html.ActionLink("Delete", "Delete", new { id=item.Id })
             </td>
         </tr>
 }
