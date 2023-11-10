@@ -1,9 +1,12 @@
-﻿<!DOCTYPE html>
+﻿@using Microsoft.AspNetCore.Http;
+@inject IHttpContextAccessor HttpContextAccessor
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - CG.DVDCentral.UI</title>
+    <title>@ViewData["Title"] - DVDCentral</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/CG.DVDCentral.UI.styles.css" asp-append-version="true" />
@@ -25,8 +28,6 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
                         </li>
-
-
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Rating" asp-action="Index">Rating</a>
                         </li>
@@ -41,6 +42,19 @@
                         </li>
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Movie" asp-action="Index">Movie</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Order" asp-action="Index">Order</a>
+                        </li>
+                    </ul>
+                    <ul class="navbar-nav">
+                        <li class="nav-item">
+                            @{
+                                CG.DVDCentral.BL.UserManager.Seed();
+                                var fullname = HttpContextAccessor.HttpContext?.Session.GetString("fullname");
+                                if (fullname != null) fullname = fullname.Replace("\"", "");
+                            }
+                            <a class="nav-link text-light">@fullname</a>
                         </li>
                     </ul>
                 </div>

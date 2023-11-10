@@ -173,6 +173,7 @@ namespace CG.DVDCentral.BL
                         {
                             Id = entity.Id,
                             OrderId = entity.OrderId,
+                            MovieId = entity.MovieId,
                             Quantity = entity.Quantity,
                             Cost = entity.Cost,
                         });

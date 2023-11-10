@@ -15,12 +15,14 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CG.DVDCentral.BL", "CG.DVDC
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CG.DVDCentral.BL.Test", "CG.DVDCentral.BL.Test\CG.DVDCentral.BL.Test.csproj", "{3369C587-CB04-4C0C-AE6C-10673285E89B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CG.DVDCentral.UI", "CG.DVDCentral.UI\CG.DVDCentral.UI.csproj", "{C97801A3-5A68-4143-9EBA-97A3F5A71C75}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CG.DVDCentral.UI", "CG.DVDCentral.UI\CG.DVDCentral.UI.csproj", "{C97801A3-5A68-4143-9EBA-97A3F5A71C75}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{041E0E1E-5540-44ED-BB19-04CE7C12F3F5}"
 	ProjectSection(SolutionItems) = preProject
 		TextFile1.txt = TextFile1.txt
 	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CG.DVDCentral.UI.Test", "CG.DVDCentral.UI.Test\CG.DVDCentral.UI.Test.csproj", "{591FB95B-BAF3-4988-882B-D182DA9801F6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -58,6 +60,10 @@ Global
 		{C97801A3-5A68-4143-9EBA-97A3F5A71C75}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C97801A3-5A68-4143-9EBA-97A3F5A71C75}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C97801A3-5A68-4143-9EBA-97A3F5A71C75}.Release|Any CPU.Build.0 = Release|Any CPU
+		{591FB95B-BAF3-4988-882B-D182DA9801F6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{591FB95B-BAF3-4988-882B-D182DA9801F6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{591FB95B-BAF3-4988-882B-D182DA9801F6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{591FB95B-BAF3-4988-882B-D182DA9801F6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

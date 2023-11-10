@@ -1,5 +1,7 @@
 ﻿using CG.DVDCentral.BL;
 using CG.DVDCentral.BL.Models;
+using CG.DVDCentral.UI.Models;
+using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CG.DVDCentral.UI.Controllers
@@ -18,7 +20,13 @@ namespace CG.DVDCentral.UI.Controllers
 
         public IActionResult Create()
         {
-            return View();
+            ViewBag.Title = "Create a Director";
+
+            if (Authenticate.IsAuthenticated(HttpContext))
+                return View();
+            else
+                return RedirectToAction("Login", "User", new { returnUrl = UriHelper.GetDisplayUrl(HttpContext.Request) }); // Still need to add "Login" 
+
         }
 
         [HttpPost]
@@ -37,7 +45,14 @@ namespace CG.DVDCentral.UI.Controllers
 
         public IActionResult Edit(int id)
         {
-            return View(DirectorManager.LoadById(id));
+            var item = DirectorManager.LoadById(id);
+            ViewBag.Title = "Edit";
+
+            if (Authenticate.IsAuthenticated(HttpContext))
+                return View(item);
+            else
+                return RedirectToAction("Login", "User", new { returnUrl = UriHelper.GetDisplayUrl(HttpContext.Request) }); // Still need to add "Login" 
+
         }
 
         [HttpPost]

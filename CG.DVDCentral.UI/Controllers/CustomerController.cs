@@ -6,95 +6,98 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace CG.DVDCentral.UI.Controllers
 {
-    public class GenreController : Controller
+    public class CustomerController : Controller
     {
         public IActionResult Index()
         {
-            ViewBag.Title = "List of Genres";
-            return View(GenreManager.Load());
+            ViewBag.Title = "List of Customers";
+            return View(CustomerManager.Load());
         }
 
         public IActionResult Details(int id)
         {
-            var item = GenreManager.LoadById(id);
-            ViewBag.Title = "Details for " + item.Description;
+            var item = CustomerManager.LoadById(id);
+            ViewBag.Title = "Details";
             return View(item);
         }
 
         public IActionResult Create()
         {
-            ViewBag.Title = "Create Genre";
+            ViewBag.Title = "Create a Customer";
+
             if (Authenticate.IsAuthenticated(HttpContext))
                 return View();
             else
                 return RedirectToAction("Login", "User", new { returnUrl = UriHelper.GetDisplayUrl(HttpContext.Request) }); // Still need to add "Login" 
 
+            
         }
 
         [HttpPost]
-        public IActionResult Create(Genre genre)
+        public IActionResult Create(Customer customer)
         {
             try
             {
-                int result = GenreManager.Insert(genre);
+                int result = CustomerManager.Insert(customer);
                 return RedirectToAction(nameof(Index));
             }
             catch (Exception ex)
             {
-                ViewBag.Title = "Create Genre";
+                ViewBag.Title = "Create a Customer";
                 ViewBag.Error = ex.Message;
-                return View(genre);
+                return View(customer);
             }
         }
 
         public IActionResult Edit(int id)
         {
-            var item = GenreManager.LoadById(id);
-            ViewBag.Title = "Edit " + item.Description;
+            var item = CustomerManager.LoadById(id);
+            ViewBag.Title = "Edit";
 
             if (Authenticate.IsAuthenticated(HttpContext))
                 return View(item);
             else
                 return RedirectToAction("Login", "User", new { returnUrl = UriHelper.GetDisplayUrl(HttpContext.Request) }); // Still need to add "Login" 
 
+           
         }
 
         [HttpPost]
-        public IActionResult Edit(int id, Genre genre, bool rollback = false)
+        public IActionResult Edit(int id, Customer customer, bool rollback = false)
         {
             try
             {
-                int result = GenreManager.Update(genre, rollback);
+                int result = CustomerManager.Update(customer, rollback);
                 return RedirectToAction(nameof(Index));
             }
             catch (Exception ex)
             {
-                ViewBag.Title = "Edit " + genre.Description;
+                ViewBag.Title = "Edit";
                 ViewBag.Error = ex.Message;
-                return View(genre);
+                return View(customer);
             }
         }
 
         public IActionResult Delete(int id)
         {
-            var item = GenreManager.LoadById(id);
-            ViewBag.Title = "Delete " + item.Description;
+            var item = CustomerManager.LoadById(id);
+            ViewBag.Title = "Delete";
             return View(item);
         }
 
         [HttpPost]
-        public IActionResult Delete(int id, Genre genre, bool rollback = false)
+        public IActionResult Delete(int id, Customer customer, bool rollback = false)
         {
             try
             {
-                int result = GenreManager.Delete(id, rollback);
+                int result = CustomerManager.Delete(id, rollback);
                 return RedirectToAction(nameof(Index));
             }
             catch (Exception ex)
             {
-                ViewBag.Title = "Delete " + genre.Description;
+                ViewBag.Title = "Delete";
                 ViewBag.Error = ex.Message;
-                return View(genre);
+                return View(customer);
             }
         }
 
