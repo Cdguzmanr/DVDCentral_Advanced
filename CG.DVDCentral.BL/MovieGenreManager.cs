@@ -18,7 +18,7 @@ namespace CG.DVDCentral.BL
                 int results = 0;
                 using (DVDCentralEntities dc = new DVDCentralEntities())
                 {
-                    IDbContextTransaction transaction = null;
+                    IDbContextTransaction? transaction = null;
                     if (rollback) transaction = dc.Database.BeginTransaction();
 
                     tblMovieGenre entity = new tblMovieGenre();
@@ -33,7 +33,7 @@ namespace CG.DVDCentral.BL
                     dc.tblMovieGenres.Add(entity);
                     results = dc.SaveChanges();
 
-                    if (rollback) transaction.Rollback();
+                    if (rollback) transaction?.Rollback();
                 }
                 //return results;
                 /**/

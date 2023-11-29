@@ -4,7 +4,7 @@ namespace CG.DVDCentral.UI.ViewModels
 {
     public class MovieVM
     {
-        public Movie Movie { get; set; }
+        public Movie Movie { get; set; } = new Movie();
         public List<Genre> Genres { get; set; } = new List<Genre>();
         public List<Director> Directors { get; set; } = new List<Director>(); 
         public List<Rating> Ratings { get; set; } = new List<Rating>(); 
@@ -18,6 +18,9 @@ namespace CG.DVDCentral.UI.ViewModels
         public MovieVM()
         {
             Genres = GenreManager.Load();
+            Directors = DirectorManager.Load();
+            Ratings = RatingManager.Load();
+            Formats = FormatManager.Load();
         }
 
         public MovieVM(int id)

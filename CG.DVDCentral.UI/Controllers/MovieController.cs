@@ -44,11 +44,32 @@ namespace CG.DVDCentral.UI.Controllers
         }
 
         [HttpPost]
-        public IActionResult Create(Movie movie)
+        public IActionResult Create(MovieVM movieVM)
         {
             try
             {
-                int result = MovieManager.Insert(movie);
+                // Process the image
+                if (movieVM.File != null) // Error doing populate of image. Its always null
+                {
+                    movieVM.Movie.ImagePath = movieVM.File.FileName;
+                    string path = _host.WebRootPath + "\\images\\";
+                    using (var stream = System.IO.File.Create(path + movieVM.File.FileName)) // You are going to process the characters enconded in the image
+                    {
+                        movieVM.File.CopyTo(stream);
+                        ViewBag.Message = "File Uploaded Successfully...";
+                    }
+                }
+
+                // Adds the new Genres
+                IEnumerable<int> newGenreIds = new List<int>();
+                if (movieVM.GenreIds != null)
+                    newGenreIds = movieVM.GenreIds;
+
+                newGenreIds.ToList().ForEach(a => MovieGenreManager.Insert(movieVM.Movie.Id, a));
+
+
+                // Adds the movie
+                int result = MovieManager.Insert(movieVM.Movie);
                 return RedirectToAction(nameof(Index));
             }
             catch (Exception)
@@ -82,13 +103,10 @@ namespace CG.DVDCentral.UI.Controllers
                 if (movieVM.File != null) // Error doing populate of image. Its always null
                 {
                     movieVM.Movie.ImagePath = movieVM.File.FileName;
-
                     string path = _host.WebRootPath + "\\images\\";
-
                     using (var stream = System.IO.File.Create(path + movieVM.File.FileName)) // You are going to process the characters enconded in the image
                     {
                         movieVM.File.CopyTo(stream);
-
                         ViewBag.Message = "File Uploaded Successfully...";
                     }
                 }
@@ -102,6 +120,7 @@ namespace CG.DVDCentral.UI.Controllers
                 IEnumerable<int> oldGenreIds = new List<int>();
                 oldGenreIds = GetObject();
 
+                // Getting null? 
                 IEnumerable<int> deletes = oldGenreIds.Except(newGenreIds);
                 IEnumerable<int> adds = newGenreIds.Except(oldGenreIds);
 

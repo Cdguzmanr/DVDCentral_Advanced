@@ -140,38 +140,56 @@ namespace CG.DVDCentral.BL
                 List<Movie> list = new List<Movie>();
                 using (DVDCentralEntities dc = new DVDCentralEntities()) // Blocked Scope
                 {
-                    (from m in dc.tblMovies
-                     join mg in dc.tblMovieGenres on m.Id equals mg.MovieId
-                     join r in dc.tblRatings on m.RatingId equals r.Id
-                     join f in dc.tblFormats on m.FormatId equals f.Id
-                     join d in dc.tblDirectors on m.DirectorId equals d.Id
-                     where mg.GenreId == genreId || genreId == null
-                     select new
-                     {
-                         m.Id,
-                         m.Title, 
-                         m.Description,
-                         m.Cost,
-                         m.InStkQty,
-                         Rating = r.Description,
-                         Format = f.Description,
-                         DirectorFullName = d.FirstName + " " + d.LastName,
-                         m.ImagePath,
+                    var test = (from m in dc.tblMovies
+                                 join mg in dc.tblMovieGenres on m.Id equals mg.MovieId
+                                 join r in dc.tblRatings on m.RatingId equals r.Id
+                                 join f in dc.tblFormats on m.FormatId equals f.Id
+                                 join d in dc.tblDirectors on m.DirectorId equals d.Id
+                                 where mg.GenreId == genreId || genreId == null
+                                 select new
+                                 {
+                                     m.Id,
+                                     m.Title,
+                                     m.Description,
+                                     m.Cost,
+                                     m.InStkQty,
+                                     Rating = r.Description,
+                                     Format = f.Description,
+                                     DirectorFullName = d.FirstName + " " + d.LastName,
+                                     m.ImagePath,
 
-                     })
-                    .ToList()
-                    .ForEach(movie => list.Add(new Movie
-                    {
-                        Id = movie.Id,
-                        Title = movie.Title,
-                        Description = movie.Description,
-                        Cost = movie.Cost,
-                        InStkQty = movie.InStkQty,
-                        RatingDescription = movie.Rating,
-                        FormatDescription = movie.Format,
-                        DirectorName = movie.DirectorFullName,
-                        ImagePath = movie.ImagePath,
-                    }));
+                                 });
+                    // Divided this in two so I could debug it. 
+                    test.ToList()
+                    .ForEach(movie => {
+
+                        Movie? existing = list.Find(x => x.Id == movie.Id);
+                        if (existing == null)
+                        {
+                            existing = new Movie()
+                            {
+                                Id = movie.Id,
+                                Title = movie.Title,
+                                Description = movie.Description,
+                                Cost = movie.Cost,
+                                InStkQty = movie.InStkQty,
+                                RatingDescription = movie.Rating,
+                                FormatDescription = movie.Format,
+                                DirectorName = movie.DirectorFullName,
+                                ImagePath = movie.ImagePath
+                            };
+
+                            list.Add(existing);
+                        }
+
+                        //Genre genre = new Genre()
+                        //{
+                        //    Id = movie.
+                        //};
+
+                        //existing.Genres.Add(genre);
+
+                    });
                 }
                 return list;
             }

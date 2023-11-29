@@ -69,8 +69,14 @@
                 <img class="imagepropmedium m-2"
                      alt="New Movie"
                      id="movieimage"
-                     onclick="on('/images/noImage.jpg')" <!-- I added this image because otherwise would not work -->
-                     src="~/images/noImage.jpg" />
+
+
+                     onclick="on('/images/@Model.Movie.ImagePath')"
+                     src="~/images/@Model.Movie.ImagePath" />
+
+                      <!--   "~/images/noImage.jpg"    I added this image because otherwise would not work -->
+
+               
                 <input asp-for="Movie.ImagePath" class="form-control" />
                 <input type="file" name="File" id="File" accept="image/" onchange="loadFile(event)" />
                 <span asp-validation-for="Movie.ImagePath" class="text-danger"></span>
@@ -91,3 +97,11 @@
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }
+
+<!-- Dinamic display of the image -->
+<script>
+    var loadFile = function (event) {
+        var output = document.getElementById('movieimage');
+        output.src = URL.createObjectURL(event.target.files[0]);
+    }
+</script>
