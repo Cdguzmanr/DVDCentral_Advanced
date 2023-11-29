@@ -7,10 +7,14 @@ namespace CG.DVDCentral.BL
 {
     public class MovieGenreManager
     {
-        public static int Insert(int movieId, int genreId, bool rollback = false) // Id by reference
+
+        // Changed type from int to void
+        public static void Insert(int movieId, int genreId, bool rollback = false) // Id by reference
         {
             try
             {
+
+                /**/ // Dont know if this is right. Trying new method (this one is different to ProgDec MovieGenreManager)
                 int results = 0;
                 using (DVDCentralEntities dc = new DVDCentralEntities())
                 {
@@ -31,29 +35,101 @@ namespace CG.DVDCentral.BL
 
                     if (rollback) transaction.Rollback();
                 }
-                return results;
+                //return results;
+                /**/
+
+
+                // Method to insert like ProgDec MovieGenreManager
+                /*
+                using (DVDCentralEntities dc = new DVDCentralEntities())
+                {
+                    tblMovieGenre tblMovieGenre = new tblMovieGenre();
+                    tblMovieGenre.MovieId = movieId;
+                    tblMovieGenre.GenreId = genreId;
+                    tblMovieGenre.Id = dc.tblMovieGenres.Any() ? dc.tblMovieGenres.Max(sa => sa.Id) + 1 : 1;
+
+                    dc.tblMovieGenres.Add(tblMovieGenre);
+                    dc.SaveChanges();
+                }
+                */
+
             }
             catch (Exception) { throw; }
         }
 
-        public static int Update(int movieId, int genreId, bool rollback = false)
+
+        public static void Delete(int movieId, int genreId, bool rollback = false)
         {
             try
             {
-                int results = 0;
+                //int results = 0;
                 using (DVDCentralEntities dc = new DVDCentralEntities())
                 {
                     IDbContextTransaction transaction = null;
                     if (rollback) transaction = dc.Database.BeginTransaction();
 
                     // Get the row that we are trying to update
-                    tblMovieGenre entity = dc.tblMovieGenres.FirstOrDefault(s => s.MovieId == movieId && s.GenreId == genreId);
-                    if (entity != null)
-                    {
-                        entity.MovieId = movieId;
-                        entity.GenreId = genreId;
+                    tblMovieGenre? tblMovieGenre = dc.tblMovieGenres.FirstOrDefault(sa => sa.MovieId == movieId && sa.GenreId == genreId);
 
-                        results = dc.SaveChanges();
+                    if (tblMovieGenre != null)
+                    {
+                        dc.tblMovieGenres.Remove(tblMovieGenre);
+
+                        //results = dc.SaveChanges();
+
+                        dc.SaveChanges();
+                    }
+                    else
+                    {
+                        throw new Exception("Row does not exist");
+                    }
+                    if (rollback) transaction.Rollback();
+                }
+
+                //return results;
+
+
+                // ------------------------------------------------- //
+                /*
+                using (DVDCentralEntities dc = new DVDCentralEntities())
+                {
+                    tblMovieGenre? tblMovieGenre = dc.tblMovieGenres
+                                                            .FirstOrDefault(sa => sa.MovieId == movieId
+                                                            && sa.GenreId == genreId);
+                    if (tblMovieGenre != null)
+                    {
+                        dc.tblMovieGenres.Remove(tblMovieGenre);
+                        dc.SaveChanges();
+                    }
+
+                }
+                */
+
+
+            }
+            catch (Exception) { throw; }
+        }
+
+        // Not sure if update was needed here
+        public static void Update(int movieId, int genreId, bool rollback = false)
+        {
+            try
+            {
+                //int results = 0;
+                using (DVDCentralEntities dc = new DVDCentralEntities())
+                {
+                    IDbContextTransaction transaction = null;
+                    if (rollback) transaction = dc.Database.BeginTransaction();
+
+                    // Get the row that we are trying to update
+                    tblMovieGenre? tblMovieGenre = dc.tblMovieGenres.FirstOrDefault(sa => sa.MovieId == movieId && sa.GenreId == genreId);
+                    if (tblMovieGenre != null)
+                    {
+                        tblMovieGenre.MovieId = movieId;
+                        tblMovieGenre.GenreId = genreId;
+
+                        //results = dc.SaveChanges();
+                        dc.SaveChanges();
                     }
                     else
                     {
@@ -63,36 +139,7 @@ namespace CG.DVDCentral.BL
                     if (rollback) transaction.Rollback();
                 }
 
-                return results;
-            }
-            catch (Exception) { throw; }
-        }
-
-        public static int Delete(int id, bool rollback = false)
-        {
-            try
-            {
-                int results = 0;
-                using (DVDCentralEntities dc = new())
-                {
-                    IDbContextTransaction transaction = null;
-                    if (rollback) transaction = dc.Database.BeginTransaction();
-
-                    // Get the row that we are trying to update
-                    tblMovieGenre entity = dc.tblMovieGenres.FirstOrDefault(s => s.Id == id);
-                    if (entity != null)
-                    {
-                        dc.tblMovieGenres.Remove(entity);
-
-                        results = dc.SaveChanges();
-                    }
-                    else
-                    {
-                        throw new Exception("Row does not exist");
-                    }
-                    if (rollback) transaction.Rollback();
-                } 
-                return results;
+                //return results;
             }
             catch (Exception) { throw; }
         }

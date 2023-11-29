@@ -1,64 +1,55 @@
 ﻿@model IEnumerable<CG.DVDCentral.BL.Models.Movie>
 
 @{
-    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-
-<p>
+<p class="row m-2">
     <a asp-action="Create">Create New</a>
 </p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Title)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Cost)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.InStkQty)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.RatingDescription)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.FormatDescription)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.DirectorName)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Title)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Cost)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.InStkQty)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.RatingDescription)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.FormatDescription)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.DirectorName)
-            </td>
-            <td>
-                @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
-                @Html.ActionLink("Details", "Details", new { id=item.Id }) |
-                @Html.ActionLink("Delete", "Delete", new { id=item.Id })
-            </td>
-        </tr>
+
+<div class="row">
+    @foreach (var item in Model)
+    {
+        <div class="col-md-4 mb-4">
+            <div class="card">
+                <img src="~/images/@item.ImagePath" class="card-img" alt="@item.Description" onclick="on('/images/@item.ImagePath')" />
+                <div class="card-body">
+                    <h5 class="card-title">@item.Title</h5>
+                    <p class="card-text">
+                        Cost: @item.Cost<br />
+                        In Stock: @item.InStkQty<br />
+                        Rating: @item.RatingDescription<br />
+                        Format: @item.FormatDescription<br />
+                        Director: @item.DirectorName
+                    </p>
+                    <div class="btn-group" role="group" aria-label="Movie Actions">
+                        <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-primary">Edit</a>
+                        <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-info">Details</a>
+                        <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger">Delete</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+
+@section scripts {
+    <script type="text/javascript" class="init">
+        $.noConflict();
+        jQuery(document).ready(function ($) {
+            // DataTable initialization code
+            $('.card').DataTable({
+                "lengthMenu": [[5, 10, 25, 30, -1], [5, 10, 25, 30, "All"]],
+                "dom": '<"row"<"col-sm-12 col-md-6"l><"col-sm-12 col-md-6"f>>' + // Try to make this work but nope
+                    '<"row"<"col-sm-12"tr>>' +
+                    '<"row"<"col-sm-12 col-md-5"i><"col-sm-12 col-md-7"p>>',
+                "order": [],
+                "columnDefs": [
+                    { "orderable": false, "targets": -1 } // Disable sorting for the last column with action buttons
+                ]
+            });
+        });
+    </script>
 }
-    </tbody>
-</table>

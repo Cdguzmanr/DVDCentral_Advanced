@@ -21,13 +21,16 @@ namespace CG.DVDCentral.UI.Controllers
             var item = OrderManager.LoadById(id);
 
             // Load the Order View Model data
+
+            /*  // Use Order View Model
             OrderVM orderVM = new OrderVM();
             orderVM.Order = item;
             orderVM.OrderItems = OrderItemManager.LoadByOrderId(id);
+            */
 
 
-            ViewBag.Title = "Details for order " + orderVM.Order.Id;
-            return View(orderVM);
+            ViewBag.Title = "Details for order " + item.Id;
+            return View(item);
         }
 
         public IActionResult Create()
@@ -63,15 +66,16 @@ namespace CG.DVDCentral.UI.Controllers
             var item = OrderManager.LoadById(id);
 
             // Load the Order View Model data
+            /* // Use Order View Model
             OrderVM orderVM = new OrderVM();
             orderVM.Order = item;
             orderVM.OrderItems = OrderItemManager.LoadByOrderId(id);
+            */
 
-
-            ViewBag.Title = "Edit " + orderVM.Order.Id;
+            ViewBag.Title = "Edit order " + item.Id;
 
             if (Authenticate.IsAuthenticated(HttpContext))
-                return View(orderVM);
+                return View(item);
             else
                 return RedirectToAction("Login", "User", new { returnUrl = UriHelper.GetDisplayUrl(HttpContext.Request) }); // Still need to add "Login" 
 
@@ -99,13 +103,14 @@ namespace CG.DVDCentral.UI.Controllers
             var item = OrderManager.LoadById(id);
 
             // Load the Order View Model data
+            /* // Use Order View Model
             OrderVM orderVM = new OrderVM();
             orderVM.Order = item;
             orderVM.OrderItems = OrderItemManager.LoadByOrderId(id);
+            */
 
-
-            ViewBag.Title = "Delete order " + orderVM.Order.Id;
-            return View(orderVM);
+            ViewBag.Title = "Delete order " + item.Id;
+            return View(item);
         }
 
         [HttpPost]

@@ -15,11 +15,29 @@ namespace CG.DVDCentral.UI.Controllers
         }
 
 
-        // Add Bryan's Code - 11/2/23
-
         public IActionResult Seed()
         {
             UserManager.Seed();
+            return View();
+        }
+
+        private void SetUser(User user)
+        {
+
+            HttpContext.Session.SetObject("user", user);
+            if (user != null)
+            {
+                HttpContext.Session.SetObject("fullname", "Welcome " + user.FullName);
+            }
+            else
+            {
+                HttpContext.Session.SetObject("fullname", string.Empty);
+            }
+        }
+        public IActionResult Logout()
+        {
+            ViewBag.Title = "Logout";
+            SetUser(null);
             return View();
         }
 
@@ -54,25 +72,7 @@ namespace CG.DVDCentral.UI.Controllers
             }
         }
 
-        private void SetUser(User user)
-        {
-
-            HttpContext.Session.SetObject("user", user);
-            if (user != null)
-            {
-                HttpContext.Session.SetObject("fullname", "Welcome " + user.FullName);
-            }
-            else
-            {
-                HttpContext.Session.SetObject("fullname", string.Empty);
-            }
-        }
-        public IActionResult Logout()
-        {
-            ViewBag.Title = "Logout";
-            SetUser(null);
-            return View();
-        }
+        
 
         // --- Checkpoint 5 ----- //
 
@@ -105,9 +105,6 @@ namespace CG.DVDCentral.UI.Controllers
                 return View(user);
             }
         }
-
-
-
 
         public IActionResult Edit(int id)
         {

@@ -1,0 +1,43 @@
+﻿@model IEnumerable<CG.DVDCentral.BL.Models.OrderItem>
+
+<div>
+    <h4>Order Items</h4>
+    <table id="orders" class="table data-table">
+        <thead>
+            <tr>
+                <th>Order Id</th>
+                <th>Movie Id</th>
+                <th>Cost</th>
+                <th>Quantity</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td> 
+                        @Html.DisplayFor(modelItem => item.Id) 
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.MovieId)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Cost)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Quantity)
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<script type="text/javascript" class="init">
+    $.noConflict();
+    jQuery(document).ready(function ($) {
+        $('#myData').DataTable({
+            "lengthMenu": [[5, 10, 25, 30, -1], [5, 10, 25, 30, "All"]]
+        });
+    });
+</script>

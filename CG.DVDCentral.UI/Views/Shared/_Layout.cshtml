@@ -10,12 +10,18 @@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/CG.DVDCentral.UI.styles.css" asp-append-version="true" />
+    <!-- JavaScript links -->
+    <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+    <script src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.24/css/jquery.dataTables.min.css" asp-append-version="true" />
+
+
 </head>
 <body>
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-dark text-light border-bottom box-shadow mb-3">
             <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">CG.DVDCentral.UI</a>
+                <a class="navbar-brand text-light" asp-area="" asp-controller="Home" asp-action="Index">DVDCentral</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
@@ -23,40 +29,59 @@
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                            <a class="nav-link text-light" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+                            <a class="nav-link text-light" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Rating" asp-action="Index">Rating</a>
+                            <a class="nav-link text-light" asp-area="" asp-controller="Rating" asp-action="Index">Rating</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Genre" asp-action="Index">Genre</a>
+                            <a class="nav-link text-light" asp-area="" asp-controller="Genre" asp-action="Index">Genre</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Director" asp-action="Index">Director</a>
+                            <a class="nav-link text-light" asp-area="" asp-controller="Director" asp-action="Index">Director</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Format" asp-action="Index">Format</a>
+                            <a class="nav-link text-light" asp-area="" asp-controller="Format" asp-action="Index">Format</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Movie" asp-action="Index">Movie</a>
+                            <a class="nav-link text-light" asp-area="" asp-controller="Movie" asp-action="Index">Movie</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Order" asp-action="Index">Order</a>
+                            <a class="nav-link text-light" asp-area="" asp-controller="Order" asp-action="Index">Order</a>
                         </li>
                     </ul>
+
+                    <!-- Login  Display -->
+
                     <ul class="navbar-nav">
+                        @{
+                            CG.DVDCentral.BL.UserManager.Seed();
+
+                            var fullname = HttpContextAccessor.HttpContext?.Session.GetString("fullname");
+
+                            if (fullname != null) fullname = fullname.Replace("\"", "");
+                        }
+
                         <li class="nav-item">
-                            @{
-                                CG.DVDCentral.BL.UserManager.Seed();
-                                var fullname = HttpContextAccessor.HttpContext?.Session.GetString("fullname");
-                                if (fullname != null) fullname = fullname.Replace("\"", "");
+                            @if (fullname == null || fullname == "")
+                            {
+                                <a asp-controller="User" asp-action="Login" class="nav-link text-light">Login</a>
                             }
+                            else
+                            {
+                                <a asp-controller="User" asp-action="Logout" class="nav-link text-light">Logout |</a>
+                            }
+                        </li>
+
+                        <li class="nav-item">
                             <a class="nav-link text-light">@fullname</a>
                         </li>
                     </ul>
+
+
                 </div>
             </div>
         </nav>
@@ -72,6 +97,11 @@
                 </div>
             </div>
 
+            <div id="overlay" onclick="off()">
+                <div id="imageproplarge">
+                    <img class="imageproplarge" id="output" />
+                </div>
+            </div>
 
             <div class="col-md-9 main body-content rounded-top">
                 <div class="header rounded-top p-2">
@@ -96,3 +126,15 @@
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>
+
+<script type="text/javascript">
+    function off() {
+        console.log('Off');
+        document.getElementById("overlay").style.display = "none";
+    }
+    function on(picture) {
+        console.log('On');
+        document.getElementById("overlay").style.display = "block";
+        document.getElementById("output").src = picture;
+    }
+</script>

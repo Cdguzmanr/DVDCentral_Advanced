@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore.Storage;
 using CG.DVDCentral.BL.Models;
 using CG.DVDCentral.PL;
+using Microsoft.VisualStudio.Web.CodeGeneration.Design;
 
 namespace CG.DVDCentral.BL
 {
@@ -25,7 +26,9 @@ namespace CG.DVDCentral.BL
                     entity.RatingId = movie.RatingId;
                     entity.Cost = movie.Cost;
                     entity.InStkQty = movie.InStkQty;
-                    entity.ImagePath = movie.ImagePath; 
+                    entity.ImagePath = movie.ImagePath;
+
+                    
 
                     // IMPORTANT - BACK FILL THE ID 
                     movie.Id = entity.Id;
@@ -84,7 +87,30 @@ namespace CG.DVDCentral.BL
             {
                 using (DVDCentralEntities dc = new DVDCentralEntities())
                 {
-                    tblMovie entity = dc.tblMovies.FirstOrDefault(s => s.Id == id);
+                    //tblMovie entity = dc.tblMovies.FirstOrDefault(s => s.Id == id);
+
+                    var entity = (from m in dc.tblMovies
+                                  join mg in dc.tblMovieGenres on m.Id equals mg.MovieId
+                                  join r in dc.tblRatings on m.RatingId equals r.Id
+                                  join f in dc.tblFormats on m.FormatId equals f.Id
+                                  join d in dc.tblDirectors on m.DirectorId equals d.Id
+                                  where m.Id == id
+                                  select new
+                                  {
+                                      m.Id,
+                                      m.Title,
+                                      m.Description,
+                                      m.Cost,
+                                      m.InStkQty,
+                                      Rating = r.Description,
+                                      Format = f.Description,
+                                      DirectorFullName = d.FirstName + " " + d.LastName,
+                                      m.ImagePath,
+                                      Genres = GenreManager.Load(id)
+                                  })
+                                .FirstOrDefault();
+
+
                     if (entity != null)
                     {
                         return new Movie
@@ -92,12 +118,13 @@ namespace CG.DVDCentral.BL
                             Id = entity.Id,
                             Title = entity.Title,
                             Description = entity.Description,
-                            FormatId = entity.FormatId,
-                            DirectorId = entity.DirectorId,
-                            RatingId = entity.RatingId,
                             Cost = entity.Cost,
                             InStkQty = entity.InStkQty,
+                            RatingDescription = entity.Rating,
+                            FormatDescription = entity.Format,
+                            DirectorName = entity.DirectorFullName,
                             ImagePath = entity.ImagePath,
+                            Genres = entity.Genres
                         };
                     }
                     else { throw new Exception(); }
@@ -121,24 +148,29 @@ namespace CG.DVDCentral.BL
                      where mg.GenreId == genreId || genreId == null
                      select new
                      {
-
-                         m.Title,
+                         m.Id,
+                         m.Title, 
+                         m.Description,
                          m.Cost,
                          m.InStkQty,
                          Rating = r.Description,
                          Format = f.Description,
                          DirectorFullName = d.FirstName + " " + d.LastName,
+                         m.ImagePath,
 
                      })
                     .ToList()
                     .ForEach(movie => list.Add(new Movie
                     {
+                        Id = movie.Id,
                         Title = movie.Title,
+                        Description = movie.Description,
                         Cost = movie.Cost,
                         InStkQty = movie.InStkQty,
                         RatingDescription = movie.Rating,
                         FormatDescription = movie.Format,
-                        DirectorName = movie.DirectorFullName
+                        DirectorName = movie.DirectorFullName,
+                        ImagePath = movie.ImagePath,
                     }));
                 }
                 return list;

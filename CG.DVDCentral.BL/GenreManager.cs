@@ -20,7 +20,14 @@ namespace CG.DVDCentral.BL
                     tblGenre entity = new tblGenre();
                     entity.Id = dc.tblGenres.Any() ? dc.tblGenres.Max(s => s.Id) + 1 : 1;
                     entity.Description = genre.Description;
-
+                    
+                    /*
+                    foreach (Movie movie in genre.Movies) // idk to be honest
+                    {
+                        // set the genreId on tblMovieGenre
+                        results += GenreManager.Insert(genre, rollback);
+                    }
+                    */
                     // IMPORTANT - BACK FILL THE ID 
                     genre.Id = entity.Id;
 
@@ -86,6 +93,33 @@ namespace CG.DVDCentral.BL
             catch (Exception) { throw; }
         }
 
+        public static List<Genre> Load(int movieId)
+        {
+            try
+            {
+                List<Genre> list = new List<Genre>();
+                using (DVDCentralEntities dc = new DVDCentralEntities())
+                {
+                    (from s in dc.tblGenres
+                     join mg in dc.tblMovieGenres on s.Id equals mg.GenreId
+                     where mg.MovieId == movieId
+                     select new
+                     { 
+                         s.Id,
+                         s.Description
+                     })
+                    .ToList()
+                    .ForEach(genre => list.Add(new Genre
+                    {
+                        Id = genre.Id,
+                        Description = genre.Description
+                    }));
+                }
+                return list;
+            }
+            catch (Exception) { throw; }
+        }
+
         public static List<Genre> Load()
         {
             try
@@ -97,7 +131,7 @@ namespace CG.DVDCentral.BL
                      select new
                      {
                          s.Id,
-                         s.Description
+                         s.Description 
                      })
                     .ToList()
                     .ForEach(genre => list.Add(new Genre

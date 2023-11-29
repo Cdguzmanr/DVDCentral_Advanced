@@ -1,7 +1,7 @@
-﻿@model CG.DVDCentral.UI.ViewModels.OrderVM
+﻿@model CG.DVDCentral.BL.Models.Order
 
 @{
-    ViewData["Title"] = "Edit";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 <div class="row m-2">
@@ -11,54 +11,35 @@
 
             <!-- Display Order properties -->
             <div class="form-group">
-                <label asp-for="Order.Id" class="control-label"></label>
-                <input asp-for="Order.Id" class="form-control" />
-                <span asp-validation-for="Order.Id" class="text-danger"></span>
+                <label asp-for="Id" class="control-label"></label>
+                <input asp-for="Id" class="form-control" />
+                <span asp-validation-for="Id" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Order.CustomerId" class="control-label"></label>
-                <input asp-for="Order.CustomerId" class="form-control" />
-                <span asp-validation-for="Order.CustomerId" class="text-danger"></span>
+                <label asp-for="CustomerId" class="control-label"></label>
+                <input asp-for="CustomerId" class="form-control" />
+                <span asp-validation-for="CustomerId" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Order.OrderDate" class="control-label"></label>
-                <input asp-for="Order.OrderDate" class="form-control" />
-                <span asp-validation-for="Order.OrderDate" class="text-danger"></span>
+                <label asp-for="OrderDate" class="control-label"></label>
+                <input asp-for="OrderDate" class="form-control" />
+                <span asp-validation-for="OrderDate" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Order.UserId" class="control-label"></label>
-                <input asp-for="Order.UserId" class="form-control" />
-                <span asp-validation-for="Order.UserId" class="text-danger"></span>
+                <label asp-for="UserId" class="control-label"></label>
+                <input asp-for="UserId" class="form-control" />
+                <span asp-validation-for="UserId" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Order.ShipDate" class="control-label"></label>
-                <input asp-for="Order.ShipDate" class="form-control" />
-                <span asp-validation-for="Order.ShipDate" class="text-danger"></span>
+                <label asp-for="ShipDate" class="control-label"></label>
+                <input asp-for="ShipDate" class="form-control" />
+                <span asp-validation-for="ShipDate" class="text-danger"></span>
             </div>
 
             <!-- Order Item Table -->
-            <h4>Order Items</h4>
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th>Order Id</th>
-                        <th>Movie Id</th>
-                        <th>Cost</th>
-                        <th>Quantity</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (var orderItem in Model.OrderItems)
-                    {
-                        <tr>
-                            <td>@orderItem.OrderId</td>
-                            <td>@orderItem.MovieId</td>
-                            <td>@orderItem.Cost</td>
-                            <td>@orderItem.Quantity</td>
-                        </tr>
-                    }
-                </tbody>
-            </table>
+            <div>
+                <partial name="_OrderItemsPartial" model="Model.OrderItems" />
+            </div>
 
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />

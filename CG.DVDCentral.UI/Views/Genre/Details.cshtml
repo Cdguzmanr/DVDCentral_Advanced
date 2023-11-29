@@ -1,15 +1,11 @@
 ﻿@model CG.DVDCentral.BL.Models.Genre
 
 @{
-    ViewData["Title"] = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
-
-<h1>Details</h1>
-
-<div>
-    <h4>Genre</h4>
-    <hr />
-    <dl class="row">
+ 
+<div> 
+    <dl class="row m-2">
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.Id)
         </dt>
