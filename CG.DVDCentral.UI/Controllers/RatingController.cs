@@ -1,5 +1,7 @@
 ﻿using CG.DVDCentral.BL;
 using CG.DVDCentral.BL.Models;
+using CG.DVDCentral.UI.Models;
+using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CG.DVDCentral.UI.Controllers
@@ -8,17 +10,27 @@ namespace CG.DVDCentral.UI.Controllers
     {
         public IActionResult Index()
         {
+            ViewBag.Title = "List of Ratings";
             return View(RatingManager.Load());
         }
 
         public IActionResult Details(int id)
         {
-            return View(RatingManager.LoadById(id));
+            var item = RatingManager.LoadById(id);
+            ViewBag.Title = "Details for Rating " + item.Id;
+
+            return View(item);
         }
 
         public IActionResult Create()
         {
-            return View();
+            ViewBag.Title = "Create a Rating";
+
+            if (Authenticate.IsAuthenticated(HttpContext))
+                return View();
+            else
+                return RedirectToAction("Login", "User", new { returnUrl = UriHelper.GetDisplayUrl(HttpContext.Request) }); // Still need to add "Login" 
+
         }
 
         [HttpPost]
@@ -29,15 +41,24 @@ namespace CG.DVDCentral.UI.Controllers
                 int result = RatingManager.Insert(rating);
                 return RedirectToAction(nameof(Index));
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                throw;
+                ViewBag.Title = "Create a Rating";
+                ViewBag.Error = ex.Message;
+                return View(rating);
             }
         }
 
         public IActionResult Edit(int id)
         {
-            return View(RatingManager.LoadById(id));
+            var item = RatingManager.LoadById(id);
+            ViewBag.Title = "Edit rating " + item.Id;
+
+            if (Authenticate.IsAuthenticated(HttpContext))
+                return View(item);
+            else
+                return RedirectToAction("Login", "User", new { returnUrl = UriHelper.GetDisplayUrl(HttpContext.Request) }); 
+
         }
 
         [HttpPost]
@@ -50,6 +71,7 @@ namespace CG.DVDCentral.UI.Controllers
             }
             catch (Exception ex)
             {
+                ViewBag.Title = "Edit rating " + rating.Id;
                 ViewBag.Error = ex.Message;
                 return View(rating);
             }
@@ -57,7 +79,9 @@ namespace CG.DVDCentral.UI.Controllers
 
         public IActionResult Delete(int id)
         {
-            return View(RatingManager.LoadById(id));
+            var item = RatingManager.LoadById(id);
+            ViewBag.Title = "Delete rating " + item.Id;
+            return View(item);
         }
 
         [HttpPost]
@@ -70,6 +94,7 @@ namespace CG.DVDCentral.UI.Controllers
             }
             catch (Exception ex)
             {
+                ViewBag.Title = "Delete  rating " + rating.Id;
                 ViewBag.Error = ex.Message;
                 return View(rating);
             }

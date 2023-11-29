@@ -12,7 +12,7 @@ namespace CG.DVDCentral.UI.Controllers
     {
         public IActionResult Index()
         {
-            ViewBag.Title = "List of Degree Types";
+            ViewBag.Title = "List of Orders";
             return View(OrderManager.Load());
         }
 
@@ -29,7 +29,7 @@ namespace CG.DVDCentral.UI.Controllers
             */
 
 
-            ViewBag.Title = "Details for order " + item.Id;
+            ViewBag.Title = "Details for Order " + item.Id;
             return View(item);
         }
 
@@ -63,7 +63,7 @@ namespace CG.DVDCentral.UI.Controllers
 
         public IActionResult Edit(int id)
         {
-            var item = OrderManager.LoadById(id);
+            
 
             // Load the Order View Model data
             /* // Use Order View Model
@@ -72,7 +72,9 @@ namespace CG.DVDCentral.UI.Controllers
             orderVM.OrderItems = OrderItemManager.LoadByOrderId(id);
             */
 
-            ViewBag.Title = "Edit order " + item.Id;
+
+            var item = OrderManager.LoadById(id);
+            ViewBag.Title = "Edit Order " + item.Id;
 
             if (Authenticate.IsAuthenticated(HttpContext))
                 return View(item);
@@ -92,7 +94,7 @@ namespace CG.DVDCentral.UI.Controllers
             }
             catch (Exception ex)
             {
-                ViewBag.Title = "Edit order " + order.Id;
+                ViewBag.Title = "Edit Order " + order.Id;
                 ViewBag.Error = ex.Message;
                 return View(order);
             }
@@ -100,7 +102,7 @@ namespace CG.DVDCentral.UI.Controllers
 
         public IActionResult Delete(int id)
         {
-            var item = OrderManager.LoadById(id);
+            
 
             // Load the Order View Model data
             /* // Use Order View Model
@@ -108,8 +110,8 @@ namespace CG.DVDCentral.UI.Controllers
             orderVM.Order = item;
             orderVM.OrderItems = OrderItemManager.LoadByOrderId(id);
             */
-
-            ViewBag.Title = "Delete order " + item.Id;
+            var item = OrderManager.LoadById(id);
+            ViewBag.Title = "Delete Order " + item.Id;
             return View(item);
         }
 
@@ -123,7 +125,7 @@ namespace CG.DVDCentral.UI.Controllers
             }
             catch (Exception ex)
             {
-                ViewBag.Title = "Delete  order " + order.Id;
+                ViewBag.Title = "Delete  Order " + order.Id;
                 ViewBag.Error = ex.Message;
                 return View(order);
             }

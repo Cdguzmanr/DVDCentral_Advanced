@@ -10,12 +10,18 @@ namespace CG.DVDCentral.UI.Controllers
     {
         public IActionResult Index()
         {
+
+            ViewBag.Title = "List of Directors";
             return View(DirectorManager.Load());
         }
 
         public IActionResult Details(int id)
         {
-            return View(DirectorManager.LoadById(id));
+
+            var item = DirectorManager.LoadById(id);
+            ViewBag.Title = "Details for Director " + item.Id;
+
+            return View(item);
         }
 
         public IActionResult Create()
