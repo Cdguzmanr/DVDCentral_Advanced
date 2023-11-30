@@ -67,23 +67,16 @@
             <div class="form-group">
                 <label asp-for="Movie.ImagePath" class="control-label"></label>
                 <img class="imagepropmedium m-2"
-                     alt="New Movie"
+                     alt="@Model.Movie.Description"
                      id="movieimage"
-
-
                      onclick="on('/images/@Model.Movie.ImagePath')"
                      src="~/images/@Model.Movie.ImagePath" />
-
-                      <!--   "~/images/noImage.jpg"    I added this image because otherwise would not work -->
-
-               
                 <input asp-for="Movie.ImagePath" class="form-control" />
                 <input type="file" name="File" id="File" accept="image/" onchange="loadFile(event)" />
                 <span asp-validation-for="Movie.ImagePath" class="text-danger"></span>
             </div>
 
-
-            <div class="form-group">
+            <div class="form-group m-2">
                 <input type="submit" value="Create" class="btn btn-primary" />
             </div>
         </form>

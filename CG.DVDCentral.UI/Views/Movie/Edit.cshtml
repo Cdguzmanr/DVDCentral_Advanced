@@ -73,13 +73,13 @@
                      id="movieimage"
                      onclick="on('/images/@Model.Movie.ImagePath')"
                      src="~/images/@Model.Movie.ImagePath" />
-                <input asp-for="Movie.ImagePath" class="form-control" />
+                <input asp-for="Movie.ImagePath" class="form-control" /> 
                 <input type="file" name="File" id="File" accept="image/" onchange="loadFile(event)" />
                 <span asp-validation-for="Movie.ImagePath" class="text-danger"></span>
             </div>
 
 
-            <div class="form-group">
+            <div class="form-group m-2">
                 <input type="submit" value="Save" class="btn btn-primary" />
             </div>
         </form>

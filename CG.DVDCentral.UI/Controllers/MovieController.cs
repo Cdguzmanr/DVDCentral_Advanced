@@ -60,7 +60,10 @@ namespace CG.DVDCentral.UI.Controllers
                     }
                 }
 
-                // Adds the new Genres
+                // Adds the movie
+                int result = MovieManager.Insert(movieVM.Movie);
+
+                // Adds the new Genres to the movie
                 IEnumerable<int> newGenreIds = new List<int>();
                 if (movieVM.GenreIds != null)
                     newGenreIds = movieVM.GenreIds;
@@ -68,8 +71,7 @@ namespace CG.DVDCentral.UI.Controllers
                 newGenreIds.ToList().ForEach(a => MovieGenreManager.Insert(movieVM.Movie.Id, a));
 
 
-                // Adds the movie
-                int result = MovieManager.Insert(movieVM.Movie);
+                
                 return RedirectToAction(nameof(Index));
             }
             catch (Exception)
