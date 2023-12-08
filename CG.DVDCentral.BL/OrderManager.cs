@@ -24,6 +24,7 @@ namespace CG.DVDCentral.BL
                     entity.OrderDate = order.OrderDate; 
                     entity.UserId = order.UserId;
                     entity.ShipDate = order.ShipDate;
+                    
 
                     // Inserts OrderItems objects into the list at Order
                     foreach (OrderItem orderItem in order.OrderItems)
@@ -91,6 +92,8 @@ namespace CG.DVDCentral.BL
                     //tblOrder entity = dc.tblOrders.FirstOrDefault(s => s.Id == id);
                     var entity = (from s in dc.tblOrders
                                   join oi in dc.tblOrderItems on s.Id equals oi.OrderId
+                                  join c in dc.tblCustomers on s.CustomerId equals c.Id
+                                  join u in dc.tblUsers on s.UserId equals u.Id
                                   where oi.OrderId == id
                                   select new
                                   {
@@ -99,11 +102,17 @@ namespace CG.DVDCentral.BL
                                       s.OrderDate,
                                       s.UserId,
                                       s.ShipDate,
-                                      
-                                  })
-                                  .FirstOrDefault();
 
-                        if (entity != null)
+                                      // Add Customer and User properties
+                                      c.FirstName,
+                                      c.LastName,
+                                      u.UserName,
+                                      UserFirstName = u.FirstName,
+                                      UserLastName = u.LastName
+                                  })
+                           .FirstOrDefault();
+
+                    if (entity != null)
                         {
                             return new Order
                             {
@@ -112,7 +121,15 @@ namespace CG.DVDCentral.BL
                                 OrderDate = entity.OrderDate,
                                 UserId = entity.UserId,
                                 ShipDate = entity.ShipDate,
-                                OrderItems = OrderItemManager.LoadByOrderId(id) // Checkpoint 4 - Instruction 3.c       
+                                OrderItems = OrderItemManager.LoadByOrderId(id), // Checkpoint 4 - Instruction 3.c
+
+                                // Add Customer and User properties
+                                CustomerFirstName = entity.FirstName,
+                                CustomerLastName = entity.LastName,
+
+                                UserName = entity.UserName,
+                                UserFirstName = entity.UserFirstName,
+                                UserLastName = entity.UserLastName,
                         };
                     }
                     else { throw new Exception(); }
@@ -142,7 +159,12 @@ namespace CG.DVDCentral.BL
                          s.UserId,
                          s.ShipDate,
 
+                         // Add Customer properties
+                         c.FirstName,
+                         c.LastName,
+
                      })
+                    .Distinct( )
                     .ToList()
                     .ForEach(order => list.Add(new Order
                     {
@@ -151,12 +173,20 @@ namespace CG.DVDCentral.BL
                         OrderDate = order.OrderDate,
                         UserId = order.UserId,
                         ShipDate = order.ShipDate,
+                        OrderItems = OrderItemManager.LoadByOrderId(order.Id),
+                        // OrderTotal = order.Sum(item => item.Cost) // Calculate the OrderTotal by summing the costs
+
+                        // Add Customer properties
+                        CustomerFirstName = order.FirstName,
+                        CustomerLastName = order.LastName,
+
                     }));
                 }
                 return list;
             }
             catch (Exception) { throw; }
         }
+
 
         public static int Delete(int id, bool rollback = false)
         {
@@ -172,7 +202,16 @@ namespace CG.DVDCentral.BL
                     tblOrder entity = dc.tblOrders.FirstOrDefault(s => s.Id == id);
                     if (entity != null)
                     {
+                        // Delete the OrderItems first
+                        foreach (OrderItem orderItem in OrderItemManager.LoadByOrderId(id))
+                        {
+                            OrderItemManager.Delete(orderItem.Id);
+                        }
+
+                        // Then, delete the Order 
                         dc.tblOrders.Remove(entity);
+                        
+                        
 
                         results = dc.SaveChanges();
                     }

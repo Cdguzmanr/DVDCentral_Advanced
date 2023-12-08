@@ -28,12 +28,6 @@ body {
     background: linear-gradient(90deg, rgba(2, 0, 36, 1) 0%, rgba(102, 51, 153, 1) 35%);
 }
 
-.card-img {
-    height: 200px;
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: cover;
-}
 
 .header {
     margin: 0px;
@@ -123,7 +117,7 @@ body {
 
 /* Card Design */
 .card-img {
-    height: 200px;
+    height: 300px;
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;

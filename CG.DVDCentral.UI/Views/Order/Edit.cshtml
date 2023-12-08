@@ -11,7 +11,7 @@
 
             <!-- Display Order properties -->
 
-            <input asp-for="Id" class="form-control" />
+            <input hidden asp-for="Id" class="form-control" />
 
             <div class="form-group">
                 <label asp-for="CustomerId" class="control-label"></label>
@@ -34,16 +34,16 @@
                 <span asp-validation-for="ShipDate" class="text-danger"></span>
             </div>
 
-            <!-- Order Item Table -->
-            <div>
-                <partial name="_OrderItemsPartial" model="Model.OrderItems" />
-            </div>
-
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />
             </div>
         </form>
     </div>
+</div>
+
+<!-- Order Item Table -->
+<div>
+    <partial name="_OrderItemsPartial" model="Model.OrderItems" />
 </div>
 
 <div class="m-2">

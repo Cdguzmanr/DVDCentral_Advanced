@@ -114,7 +114,6 @@ namespace CG.DVDCentral.UI.Controllers
                 }
 
                 // Insert MovieGenre
-
                 IEnumerable<int> newGenreIds = new List<int>();
                 if (movieVM.GenreIds != null)
                     newGenreIds = movieVM.GenreIds;
@@ -122,20 +121,12 @@ namespace CG.DVDCentral.UI.Controllers
                 IEnumerable<int> oldGenreIds = new List<int>();
                 oldGenreIds = GetObject();
 
-                // Getting null? 
+                // First delete old Genres and then Insert the new ones
                 IEnumerable<int> deletes = oldGenreIds.Except(newGenreIds);
                 IEnumerable<int> adds = newGenreIds.Except(oldGenreIds);
 
                 deletes.ToList().ForEach(d => MovieGenreManager.Delete(id, d));
                 adds.ToList().ForEach(a => MovieGenreManager.Insert(id, a));
-
-                /*
-                foreach (var genreId in newGenreIds)
-                {
-                    MovieGenreManager.Update(id, genreId, rollback);
-                }
-                */
-
 
                 // Insert Movie Object
                 int result = MovieManager.Update(movieVM.Movie, rollback);

@@ -25,11 +25,12 @@ namespace CG.DVDCentral.UI.ViewModels
 
         public MovieVM(int id)
         {
-            Movie = MovieManager.LoadById(id);
             Genres = GenreManager.Load();
-            Ratings = RatingManager.Load();
-            Formats = FormatManager.Load(); 
             Directors = DirectorManager.Load();
+            Ratings = RatingManager.Load();
+            Formats = FormatManager.Load();
+
+            Movie = MovieManager.LoadById(id);
             GenreIds = Movie.Genres.Select(a => a.Id);
         }
         

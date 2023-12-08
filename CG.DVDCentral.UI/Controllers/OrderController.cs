@@ -63,13 +63,13 @@ namespace CG.DVDCentral.UI.Controllers
 
         public IActionResult Edit(int id)
         {
-            
+
 
             // Load the Order View Model data
             /* // Use Order View Model
-            OrderVM orderVM = new OrderVM();
-            orderVM.Order = item;
-            orderVM.OrderItems = OrderItemManager.LoadByOrderId(id);
+            OrderVM orderVM = new OrderVM(id);
+
+            ViewBag.Title = "Edit Order " + orderVM.Order.Id;
             */
 
 

@@ -81,6 +81,36 @@ namespace CG.DVDCentral.BL
             catch (Exception) { throw; }
         }
 
+        public static int UpdateStock(int id, int newStock, bool rollback = false)
+        {
+            try
+            {
+                int results = 0;
+                using (DVDCentralEntities dc = new DVDCentralEntities())
+                {
+                    IDbContextTransaction transaction = null;
+                    if (rollback) transaction = dc.Database.BeginTransaction();
+
+                    // Get the row that we are trying to update
+                    tblMovie entity = dc.tblMovies.FirstOrDefault(s => s.Id == id);
+                    if (entity != null)
+                    {
+                        entity.InStkQty = newStock;
+                        results = dc.SaveChanges();
+                    }
+                    else
+                    {
+                        throw new Exception("Row does not exist");
+                    }
+
+                    if (rollback) transaction.Rollback();
+                }
+
+                return results;
+            }
+            catch (Exception) { throw; }
+        }
+
         public static Movie LoadById(int id)
         {
             try

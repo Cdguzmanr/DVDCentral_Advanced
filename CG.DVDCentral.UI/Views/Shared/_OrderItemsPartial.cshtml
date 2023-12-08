@@ -2,30 +2,30 @@
 
 <div>
     <h4>Order Items</h4>
-    <table id="orders" class="table data-table">
+    <table id="myData" class="table data-table">
         <thead>
-            <tr>
-                <th>Order Id</th>
+            <tr> 
                 <th>Movie Id</th>
-                <th>Cost</th>
                 <th>Quantity</th>
+                <th>Cost</th>
+                <th></th>
             </tr>
         </thead>
         <tbody>
             @foreach (var item in Model)
             {
                 <tr>
-                    <td> 
-                        @Html.DisplayFor(modelItem => item.Id) 
-                    </td>
                     <td>
                         @Html.DisplayFor(modelItem => item.MovieId)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Quantity)
                     </td>
                     <td>
                         @Html.DisplayFor(modelItem => item.Cost)
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.Quantity)
+                        <a asp-controller="OrderItem" asp-action="Remove" asp-route-id="@item.Id" class="btn btn-danger">Delete</a>                     
                     </td>
                 </tr>
             }

@@ -19,6 +19,9 @@ namespace CG.DVDCentral.BL.Models
         public int RatingId { get; set; }
         public double Cost { get; set; }
         public int InStkQty { get; set; }
+        public int Quantity { get; set; } = 1; // Amount of movies in the cart
+
+        [DisplayName("Image")]
         public string ImagePath { get; set; } = "noImage.jpg";
         public List<Genre> Genres { get; set; } = new List<Genre>();
 
