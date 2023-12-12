@@ -2,6 +2,7 @@
 
 using CG.DVDCentral.BL.Models;
 using CG.DVDCentral.PL;
+using System.Collections.Generic;
 
 namespace CG.DVDCentral.BL
 {
@@ -57,7 +58,7 @@ namespace CG.DVDCentral.BL
                         entity.Quantity = orderItem.Quantity;
                         entity.MovieId = orderItem.MovieId;
                         entity.Cost = orderItem.Cost;
-
+                        
                         results = dc.SaveChanges();
                     }
                     else
@@ -105,13 +106,17 @@ namespace CG.DVDCentral.BL
                 using (DVDCentralEntities dc = new DVDCentralEntities())
                 {
                     (from s in dc.tblOrderItems
+                     join m in dc.tblMovies on s.MovieId equals m.Id
                      select new
                      {
                          s.Id,
                          s.OrderId,
                          s.Quantity,
                          s.MovieId,
-                         s.Cost
+                         s.Cost,
+                         m.Title,
+                         m.ImagePath
+                         
                      })
                     .ToList()
                     .ForEach(orderItem => list.Add(new OrderItem
@@ -121,6 +126,8 @@ namespace CG.DVDCentral.BL
                         MovieId = orderItem.MovieId,
                         Quantity = orderItem.Quantity,
                         Cost = orderItem.Cost,
+                        MovieTitle = orderItem.Title,
+                        ImagePath = orderItem.ImagePath
                     }));
                 }
                 return list;
@@ -165,8 +172,27 @@ namespace CG.DVDCentral.BL
                 using (DVDCentralEntities dc = new DVDCentralEntities())
                 {
                     List<OrderItem> orderItems = new List<OrderItem>();
-                    var entities = dc.tblOrderItems.Where(item => item.OrderId == orderId).ToList();
-                
+
+                    //var entities = dc.tblOrderItems.Where(item => item.OrderId == orderId).ToList();
+
+
+                    var entities = (from oi in dc.tblOrderItems
+                                    join m in dc.tblMovies on oi.MovieId equals m.Id
+                                    where oi.OrderId == orderId
+                                    select new
+                                    {
+                                        oi.Id,
+                                        oi.OrderId,
+                                        oi.MovieId,
+                                        oi.Quantity,
+                                        oi.Cost,
+                                        m.Title,
+                                        m.ImagePath
+
+                                    }).ToList();
+
+
+
                     foreach ( var entity in entities )
                     {
                         orderItems.Add(new OrderItem
@@ -176,6 +202,8 @@ namespace CG.DVDCentral.BL
                             MovieId = entity.MovieId,
                             Quantity = entity.Quantity,
                             Cost = entity.Cost,
+                            MovieTitle = entity.Title,
+                            ImagePath = entity.ImagePath,
                         });
                     }
 
@@ -190,3 +218,37 @@ namespace CG.DVDCentral.BL
 
     }
 }
+
+
+
+/*
+ 
+List<OrderItem> list = new List<OrderItem>();
+(from s in dc.tblOrderItems
+ join m in dc.tblMovies on s.MovieId equals m.Id
+ where s.Id == orderId
+ select new
+ {
+     s.Id,
+     s.OrderId,
+     s.Quantity,
+     s.MovieId,
+     s.Cost,
+     m.Title,
+     m.ImagePath
+
+ })
+.ToList()
+.ForEach(orderItem => list.Add(new OrderItem
+{
+    Id = orderItem.Id,
+    OrderId = orderItem.Quantity,
+    MovieId = orderItem.MovieId,
+    Quantity = orderItem.Quantity,
+    Cost = orderItem.Cost,
+    MovieTitle = orderItem.Title,
+    ImagePath = orderItem.ImagePath
+}));
+return list; 
+
+ */

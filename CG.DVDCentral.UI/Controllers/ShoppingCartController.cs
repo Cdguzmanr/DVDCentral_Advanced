@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using CG.DVDCentral.UI.ViewModels;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CG.DVDCentral.UI.Controllers
@@ -53,6 +54,40 @@ namespace CG.DVDCentral.UI.Controllers
             HttpContext.Session.SetObject("cart", null);
             return View();
         }
+
+
+
+        // Checkpoint 8
+        [HttpPost]
+        public ActionResult AssignToCustomer(CustomerViewModel cartCustomers)
+        {
+
+
+            try
+            {
+                // Todo: 
+                cartCustomers.ShoppingCart = GetShoppingCart();
+
+                Order order = new Order();
+                order.CustomerId = cartCustomers.Customer.Id;
+                order.UserId = cartCustomers.Customer.UserId;
+                cartCustomers.ShoppingCart.Items.ForEach(x => order.OrderItems.Add(new OrderItem {  OrderId = order.Id,
+                                                                                                    MovieId = x.Id,
+                                                                                                    Cost = x.Cost,
+                                                                                                    Quantity = x.Quantity }));  
+                OrderManager.Insert(order);
+                HttpContext.Session.SetObject("cart", cart);
+                return View();
+
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+            
+        }
+
 
     }
 }

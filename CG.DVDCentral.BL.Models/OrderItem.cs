@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -20,7 +21,15 @@ namespace CG.DVDCentral.BL.Models
         public int Quantity { get; set; }
         
         [DisplayName("Total Cost")]
-        public double Cost { get; set; }
+        [DisplayFormat(DataFormatString = "{0:C}")]
+        public double Cost { get; set; } 
+
+        [DisplayName("Movie Title")]
+        public string? MovieTitle { get; set; } // Movie Title
+
+        [DisplayName("Image")]
+        public string ImagePath { get; set; } = "noImage.jpg";
+
 
     }
 }

@@ -113,23 +113,23 @@ namespace CG.DVDCentral.BL
                            .FirstOrDefault();
 
                     if (entity != null)
+                    {
+                        return new Order
                         {
-                            return new Order
-                            {
-                                Id = entity.Id,
-                                CustomerId = entity.CustomerId,
-                                OrderDate = entity.OrderDate,
-                                UserId = entity.UserId,
-                                ShipDate = entity.ShipDate,
-                                OrderItems = OrderItemManager.LoadByOrderId(id), // Checkpoint 4 - Instruction 3.c
+                            Id = entity.Id,
+                            CustomerId = entity.CustomerId,
+                            OrderDate = entity.OrderDate,
+                            UserId = entity.UserId,
+                            ShipDate = entity.ShipDate,
+                            OrderItems = OrderItemManager.LoadByOrderId(id), // Checkpoint 4 - Instruction 3.c
 
-                                // Add Customer and User properties
-                                CustomerFirstName = entity.FirstName,
-                                CustomerLastName = entity.LastName,
+                            // Add Customer and User properties
+                            CustomerFirstName = entity.FirstName,
+                            CustomerLastName = entity.LastName,
 
-                                UserName = entity.UserName,
-                                UserFirstName = entity.UserFirstName,
-                                UserLastName = entity.UserLastName,
+                            UserName = entity.UserName,
+                            UserFirstName = entity.UserFirstName,
+                            UserLastName = entity.UserLastName,
                         };
                     }
                     else { throw new Exception(); }
@@ -164,7 +164,7 @@ namespace CG.DVDCentral.BL
                          c.LastName,
 
                      })
-                    .Distinct( )
+                    .Distinct()
                     .ToList()
                     .ForEach(order => list.Add(new Order
                     {
