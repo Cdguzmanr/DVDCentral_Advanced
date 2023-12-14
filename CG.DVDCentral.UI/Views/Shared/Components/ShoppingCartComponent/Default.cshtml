@@ -10,7 +10,7 @@
                 int count = Model.NumberOfItems;
                 <input hidden id="cartcount" value="@count" />
                 <a asp-controller="ShoppingCart" asp-action="Index" id="cartcountdisp">@count.ToString() items</a> <br />
-                <a asp-controller="ShoppingCart" asp-action="Checkout">Checkout</a>
+                <a asp-controller="ShoppingCart" asp-action="AssignToCustomer">Checkout</a>
             }
         </dd>
     </dl>
