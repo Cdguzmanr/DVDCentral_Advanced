@@ -111,6 +111,51 @@ namespace CG.DVDCentral.BL
             catch (Exception) { throw; }
         }
 
+        public static List<Customer> LoadByUserId(int id)
+        {
+            try
+            {
+                List<Customer> list = new List<Customer>();
+                using (DVDCentralEntities dc = new DVDCentralEntities())
+                {
+                    (from s in dc.tblCustomers
+                     join u in dc.tblUsers on s.UserId equals u.Id
+                     where s.UserId == u.Id
+
+                     select new
+                     {
+                         s.Id,
+                         s.FirstName,
+                         s.LastName,
+                         s.UserId,
+                         s.Address,
+                         s.City,
+                         s.ZIP,
+                         s.Phone,
+                         s.ImagePath,
+                         s.State,
+                     })
+                    .ToList()
+                    .ForEach(customer => list.Add(new Customer
+                    {
+                        Id = customer.Id,
+                        FirstName = customer.FirstName,
+                        LastName = customer.LastName,
+                        UserId = customer.UserId,
+                        Address = customer.Address,
+                        City = customer.City,
+                        ZIP = customer.ZIP,
+                        Phone = customer.Phone,
+                        ImagePath = customer.ImagePath,
+                        State = customer.State,
+                    }));
+                }
+                return list;
+            }
+            catch (Exception) { throw; }
+        } 
+
+
         public static List<Customer> Load()
         {
             try

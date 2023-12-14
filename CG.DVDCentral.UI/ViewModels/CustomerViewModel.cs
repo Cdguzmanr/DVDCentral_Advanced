@@ -2,8 +2,19 @@
 {
     public class CustomerViewModel
     {
-        public Customer Customer { get; set; }
-        public List<User> Users { get; set; } = new List<User>();
-        public ShoppingCart ShoppingCart { get; set; } = new ShoppingCart();
+
+        public int CustomerId { get; set; }
+        public List<Customer> Customers { get; set; } = new List<Customer>();
+
+        public int UserId { get; set; }
+
+        public ShoppingCart Cart { get; set; } = new ShoppingCart();
+
+        public CustomerViewModel()
+        {
+            Customers = CustomerManager.Load();
+        }
+
+
     }
 }

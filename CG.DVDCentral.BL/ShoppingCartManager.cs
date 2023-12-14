@@ -35,7 +35,7 @@ namespace CG.DVDCentral.BL
             if (cart != null) { cart.Items.Remove(movie); }
         }
 
-        public static void Checkout(ShoppingCart cart)
+        public static void Checkout(ShoppingCart cart, int customerId = 1, int userId = 1)
         {
             try
             {
@@ -43,8 +43,8 @@ namespace CG.DVDCentral.BL
                 Order order = new Order()
                 {
                     //  Set the Order fields as needed.
-                    CustomerId = 1, // TODO: Get the logged in user's customer id
-                    UserId = 1, // TODO: Get the logged in user's id
+                    CustomerId = customerId, // TODO: Get the logged in user's customer id
+                    UserId = userId, // TODO: Get the logged in user's id
                     OrderDate = DateTime.Now,
                     ShipDate = DateTime.Now.AddDays(3), // Ship in 3 days             
                 };

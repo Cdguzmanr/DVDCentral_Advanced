@@ -174,8 +174,6 @@ namespace CG.DVDCentral.BL
                     List<OrderItem> orderItems = new List<OrderItem>();
 
                     //var entities = dc.tblOrderItems.Where(item => item.OrderId == orderId).ToList();
-
-
                     var entities = (from oi in dc.tblOrderItems
                                     join m in dc.tblMovies on oi.MovieId equals m.Id
                                     where oi.OrderId == orderId

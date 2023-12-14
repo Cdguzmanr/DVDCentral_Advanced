@@ -83,13 +83,13 @@
                         @Html.DisplayFor(model => model.SubTotal)
                     </td>
                     <td>
-                        @Html.DisplayFor(model => model.Tax)
+                        @Html.DisplayFor(model => model.Tax)]
                     </td>
                     <td>
                         @Html.DisplayFor(model => model.Total)
                     </td>
                     <td>
-                        <a asp-controller="ShoppingCart" asp-action="Checkout" class="btn btn-primary">Checkout</a>
+                        <a asp-controller="ShoppingCart" asp-action="AssignToCustomer" class="btn btn-primary">Checkout</a>
                     </td>
                 </tr>
             </tbody>

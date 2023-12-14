@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -18,5 +19,12 @@ namespace CG.DVDCentral.BL.Models
         public string? Phone { get; set; }
         public string? ImagePath { get; set; }
         public string? State { get; set; }
+
+        // Read-Only field
+        [DisplayName("Full Name")]
+        public string? FullName { get { return $"{FirstName} {LastName}"; } }
+
+
+
     }
 }
