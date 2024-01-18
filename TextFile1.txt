@@ -10,3 +10,13 @@ NOTE: When doing Scaffold of the DB, its important to:
 1- Select CG.ProgDec.PL as Startup Project
 2- Go to Package Manager Console 
 3- Copy and paste the line 7 above into the Console a nd press enter
+
+
+
+
+
+
+// ---- Advance Software Development Class ---- //
+
+Add-Migration CreateDatabase
+Update-Database
