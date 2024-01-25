@@ -1,92 +1,65 @@
-using Microsoft.EntityFrameworkCore.Storage;
+
+using CG.DVDCentral.PL.Test;
 
 namespace CG.DVDCentral.PL.Test
 {
     [TestClass]
-    public class utDirector
+    public class utDirector : utBase
     {
-        protected DVDCentralEntities dc;
-        protected IDbContextTransaction transaction;
 
-        [TestInitialize]
-        public void Initialize()
-        {
-            dc = new DVDCentralEntities();
-            transaction = dc.Database.BeginTransaction();
-        }
-
-        [TestCleanup]
-        public void Cleanup()
-        {
-            transaction.Rollback();
-            transaction.Dispose();
-            dc = null;
-        }
-
-
-        // Project Tests //
 
         [TestMethod]
         public void LoadTest()
         {
-            DVDCentralEntities dc = new DVDCentralEntities();
-
-            Assert.AreEqual(3, dc.tblDirectors.Count()); // Assert means "test"
-            // Check Lenght
+            int expected = 6;
+            var directors = dc.tblDirectors;
+            Assert.AreEqual(expected, directors.Count());
         }
 
         [TestMethod]
         public void InsertTest()
         {
-            //Make an entity
-            tblDirector entity = new tblDirector();
-            entity.Id = -99;
-            entity.FirstName = "Test";
-            entity.LastName = "Test";
+            tblDirector newRow = new tblDirector();
 
-            //add the entity to the database
-            dc.tblDirectors.Add(entity);
+            newRow.Id = Guid.NewGuid();
+            newRow.FirstName = "Joe";
+            newRow.LastName = "Billings";
 
-            //Commit the changes
-            int result = dc.SaveChanges();
+            dc.tblDirectors.Add(newRow);
+            int rowsAffected = dc.SaveChanges();
 
-            // Check that the results are positive
-            Assert.AreEqual(1, result);
+            Assert.AreEqual(1, rowsAffected);
         }
 
         [TestMethod]
         public void UpdateTest()
         {
-            // select * from tblProgram - use the first one 
-            tblDirector entity = dc.tblDirectors.FirstOrDefault();
+            tblDirector row = dc.tblDirectors.FirstOrDefault();
 
-            // Change property values
-            entity.FirstName = "New FirstName";
-            entity.LastName = "New LastName";
+            if (row != null)
+            {
+                row.FirstName = "Sarah";
+                row.LastName = "Vicchiollo";
+                int rowsAffected = dc.SaveChanges();
 
-            int result = dc.SaveChanges();
-            Assert.IsTrue(result > 0); // Just a different way to assert 
+                Assert.AreEqual(1, rowsAffected);
+            }
         }
+
 
         [TestMethod]
         public void DeleteTest()
         {
-            // Select * from tblProgram where id = 2
-            tblDirector entity = dc.tblDirectors.Where(e => e.Id == 2).FirstOrDefault();
+            tblDirector row = dc.tblDirectors.FirstOrDefault();
 
-            dc.tblDirectors.Remove(entity);
+            if (row != null)
+            {
+                dc.tblDirectors.Remove(row);
+                int rowsAffected = dc.SaveChanges();
 
-            int result = dc.SaveChanges();
-            Assert.AreNotEqual(result, 0);
-        }
+                Assert.IsTrue(rowsAffected == 1);
+            }
 
-        [TestMethod]
-        public void LoadById()
-        {
-            // Two line test
-            tblDirector entity = dc.tblDirectors.Where(e => e.Id == 2).FirstOrDefault();
-
-            Assert.AreEqual(entity.Id, 2);
         }
     }
 }

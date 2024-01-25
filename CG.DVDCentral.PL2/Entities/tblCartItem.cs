@@ -13,8 +13,8 @@ namespace CG.DVDCentral.PL2.Entities
         public Guid MovieId { get; set; }
         public int Qty { get; set; }
 
-        public virtual tblCart Cart { get; set; } = new tblCart();
-        public virtual tblMovie Movie { get; set; } = new tblMovie();
+        public virtual tblCart Cart { get; set; }
+        public virtual tblMovie Movie { get; set; } 
 
     }
 }

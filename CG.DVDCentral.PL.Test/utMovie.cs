@@ -1,4 +1,3 @@
-using Microsoft.EntityFrameworkCore.Storage;
 
 namespace CG.DVDCentral.PL.Test
 {
@@ -40,12 +39,12 @@ namespace CG.DVDCentral.PL.Test
         {
             //Make an entity
             tblMovie entity = new tblMovie();
-            entity.Id = -99;
+            entity.Id = Guid.NewGuid();
             entity.Title = "Test";
             entity.Description = "Test";
-            entity.FormatId = 1;
-            entity.DirectorId = 1;
-            entity.RatingId = 1;
+            entity.RatingId = dc.tblRatings.FirstOrDefault().Id;
+            entity.FormatId = dc.tblFormats.FirstOrDefault().Id;
+            entity.DirectorId = dc.tblDirectors.FirstOrDefault().Id;
             entity.Cost = 1;
             entity.InStkQty = 1;
             entity.ImagePath = "Test";
@@ -77,7 +76,7 @@ namespace CG.DVDCentral.PL.Test
         public void DeleteTest()
         {
             // Select * from tblProgram where id = 2
-            tblMovie entity = dc.tblMovies.Where(e => e.Id == 2).FirstOrDefault();
+            tblMovie entity = dc.tblMovies.FirstOrDefault();
 
             dc.tblMovies.Remove(entity);
 
@@ -89,7 +88,7 @@ namespace CG.DVDCentral.PL.Test
         public void LoadById()
         {
             // Two line test
-            tblMovie entity = dc.tblMovies.Where(e => e.Id == 2).FirstOrDefault();
+            tblMovie entity = dc.tblMovies.FirstOrDefault();
 
             Assert.AreEqual(entity.Id, 2);
         }

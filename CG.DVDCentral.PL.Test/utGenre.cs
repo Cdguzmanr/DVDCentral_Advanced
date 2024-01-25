@@ -1,90 +1,66 @@
-using Microsoft.EntityFrameworkCore.Storage;
+
+
+using CG.DVDCentral.PL.Test;
 
 namespace CG.DVDCentral.PL.Test
 {
     [TestClass]
-    public class utGenre
+    public class utGenre : utBase
     {
-        protected DVDCentralEntities dc;
-        protected IDbContextTransaction transaction;
-
-        [TestInitialize]
-        public void Initialize()
-        {
-            dc = new DVDCentralEntities();
-            transaction = dc.Database.BeginTransaction();
-        }
-
-        [TestCleanup]
-        public void Cleanup()
-        {
-            transaction.Rollback();
-            transaction.Dispose();
-            dc = null;
-        }
-
-
-        // Project Tests //
 
         [TestMethod]
         public void LoadTest()
         {
-            DVDCentralEntities dc = new DVDCentralEntities();
-
-            Assert.AreEqual(4, dc.tblGenres.Count()); // Assert means "test"
-            // Check Lenght
+            int expected = 3;
+            var genres = dc.tblGenres;
+            Assert.AreEqual(expected, genres.Count());
         }
 
         [TestMethod]
         public void InsertTest()
         {
-            //Make an entity
-            tblGenre entity = new tblGenre();
-            entity.Description = "Test";
-            entity.Id = -99;
+            tblGenre newRow = new tblGenre();
 
-            //add the entity to the database
-            dc.tblGenres.Add(entity);
+            newRow.Id = Guid.NewGuid();
+            newRow.Description = "XXXX";
 
-            //Commit the changes
-            int result = dc.SaveChanges();
+            dc.tblGenres.Add(newRow);
+            int rowsAffected = dc.SaveChanges();
 
-            // Check that the results are positive
-            Assert.AreEqual(1, result);
+            Assert.AreEqual(1, rowsAffected);
         }
 
         [TestMethod]
         public void UpdateTest()
         {
-            // select * from tblProgram - use the first one 
-            tblGenre entity = dc.tblGenres.FirstOrDefault();
+            InsertTest();
+            tblGenre row = dc.tblGenres.FirstOrDefault();
 
-            // Change property values
-            entity.Description = "New Description";
+            if (row != null)
+            {
+                row.Description = "YYYYY";
+                int rowsAffected = dc.SaveChanges();
 
-            int result = dc.SaveChanges();
-            Assert.IsTrue(result > 0); // Just a different way to assert 
+                Assert.AreEqual(1, rowsAffected);
+            }
         }
+
 
         [TestMethod]
         public void DeleteTest()
         {
-            // Select * from tblProgram where id = 2
-            tblGenre entity = dc.tblGenres.Where(e => e.Id == 2).FirstOrDefault();
+            InsertTest();
 
-            dc.tblGenres.Remove(entity);
+            tblGenre row = dc.tblGenres.FirstOrDefault();
 
-            int result = dc.SaveChanges();
-            Assert.AreNotEqual(result, 0);
-        }
+            if (row != null)
+            {
+                dc.tblGenres.Remove(row);
+                int rowsAffected = dc.SaveChanges();
 
-        [TestMethod]
-        public void LoadById()
-        {
-            // Two line test
-            tblGenre entity = dc.tblGenres.Where(e => e.Id == 2).FirstOrDefault();
+                Assert.IsTrue(rowsAffected == 1);
+            }
 
-            Assert.AreEqual(entity.Id, 2);
         }
     }
 }

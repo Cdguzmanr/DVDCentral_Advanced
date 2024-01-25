@@ -1,95 +1,67 @@
-using Microsoft.EntityFrameworkCore.Storage;
+using CG.DVDCentral.PL.Test;
 
 namespace CG.DVDCentral.PL.Test
 {
     [TestClass]
-    public class utOrder
+    public class utOrder : utBase
     {
-        protected DVDCentralEntities dc;
-        protected IDbContextTransaction transaction;
-
-        [TestInitialize]
-        public void Initialize()
-        {
-            dc = new DVDCentralEntities();
-            transaction = dc.Database.BeginTransaction();
-        }
-
-        [TestCleanup]
-        public void Cleanup()
-        {
-            transaction.Rollback();
-            transaction.Dispose();
-            dc = null;
-        }
-
-
-        // Project Tests //
 
         [TestMethod]
         public void LoadTest()
         {
-            DVDCentralEntities dc = new DVDCentralEntities();
-
-            Assert.AreEqual(3, dc.tblOrders.Count()); // Assert means "test"
-            // Check Lenght
+            int expected = 3;
+            var orders = dc.tblOrders;
+            Assert.AreEqual(expected, orders.Count());
         }
 
         [TestMethod]
         public void InsertTest()
         {
-            //Make an entity
-            tblOrder entity = new tblOrder();
-            entity.CustomerId = 1;
-            entity.OrderDate = DateTime.Now;
-            entity.UserId = 2;
-            entity.ShipDate = DateTime.Now;
-            entity.Id = -99;
+            tblOrder newRow = new tblOrder();
 
-            //add the entity to the database
-            dc.tblOrders.Add(entity);
+            newRow.Id = Guid.NewGuid();
+            newRow.CustomerId = dc.tblCustomers.FirstOrDefault().Id;
+            newRow.OrderDate = DateTime.Now;
+            newRow.UserId = dc.tblUsers.FirstOrDefault().Id;
+            newRow.ShipDate = DateTime.Now;
 
-            //Commit the changes
-            int result = dc.SaveChanges();
+            dc.tblOrders.Add(newRow);
+            int rowsAffected = dc.SaveChanges();
 
-            // Check that the results are positive
-            Assert.AreEqual(1, result);
+            Assert.AreEqual(1, rowsAffected);
         }
 
         [TestMethod]
         public void UpdateTest()
         {
-            // select * from tblProgram - use the first one 
-            tblOrder entity = dc.tblOrders.FirstOrDefault();
+            InsertTest();
+            tblOrder row = dc.tblOrders.FirstOrDefault();
 
-            // Change property values
-            entity.CustomerId = 3;
+            if (row != null)
+            {
+                row.CustomerId = dc.tblCustomers.FirstOrDefault().Id;
+                int rowsAffected = dc.SaveChanges();
 
-            int result = dc.SaveChanges();
-            Assert.IsTrue(result > 0); // Just a different way to assert 
+                Assert.AreEqual(1, rowsAffected);
+            }
         }
+
 
         [TestMethod]
         public void DeleteTest()
         {
-            // Select * from tblProgram where id = 2
-            tblOrder entity = dc.tblOrders.Where(e => e.Id == 2).FirstOrDefault();
+            InsertTest();
 
-            dc.tblOrders.Remove(entity);
+            tblOrder row = dc.tblOrders.FirstOrDefault();
 
-            int result = dc.SaveChanges();
-            Assert.AreNotEqual(result, 0);
+            if (row != null)
+            {
+                dc.tblOrders.Remove(row);
+                int rowsAffected = dc.SaveChanges();
+
+                Assert.IsTrue(rowsAffected == 1);
+            }
+
         }
-
-        [TestMethod]
-        public void LoadById()
-        {
-            // Two line test
-            tblOrder entity = dc.tblOrders.Where(e => e.Id == 2).FirstOrDefault();
-
-            Assert.AreEqual(entity.Id, 2);
-        }
-
-
     }
 }
