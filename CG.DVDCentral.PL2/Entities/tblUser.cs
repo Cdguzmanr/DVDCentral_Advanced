@@ -2,7 +2,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace CG.DVDCentral.PL2;
+namespace CG.DVDCentral.PL2.Entities;
 
 public class tblUser : IEntity
 {
