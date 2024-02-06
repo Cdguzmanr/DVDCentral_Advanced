@@ -26,5 +26,5 @@ public class tblCustomer : IEntity
 
     public string State { get; set; } = null!;
 
-    public virtual ICollection<tblOrder> Orders { get; set; }
+    public virtual ICollection<tblOrder>? Orders { get; set; }
 }

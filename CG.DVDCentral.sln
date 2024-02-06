@@ -28,9 +28,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CG.DVDCentral.PL2", "CG.DVD
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CG.DVDCentral.API", "CG.DVDCentral.API\CG.DVDCentral.API.csproj", "{4DF86C1F-7DF3-46C0-902E-94DF3310ABE4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CG.DVDCentra.MigrationHandler", "CG.DVDCentra.MigrationHandler\CG.DVDCentra.MigrationHandler.csproj", "{DC9B2307-E9D7-40AB-94DC-6D531E5F0A08}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CG.DVDCentra.MigrationHandler", "CG.DVDCentra.MigrationHandler\CG.DVDCentra.MigrationHandler.csproj", "{DC9B2307-E9D7-40AB-94DC-6D531E5F0A08}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CG.DVDCentral.WPFUI", "CG.DVDCentral.WPFUI\CG.DVDCentral.WPFUI.csproj", "{340373D0-FBDB-4AC1-944B-FEC3E92C13EE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CG.DVDCentral.WPFUI", "CG.DVDCentral.WPFUI\CG.DVDCentral.WPFUI.csproj", "{340373D0-FBDB-4AC1-944B-FEC3E92C13EE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CG.DVDCentral.ConsoleApp", "CG.DVDCentral.ConsoleApp\CG.DVDCentral.ConsoleApp.csproj", "{E7215FED-E4D8-4666-9E76-13BB8F044C88}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -88,6 +90,10 @@ Global
 		{340373D0-FBDB-4AC1-944B-FEC3E92C13EE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{340373D0-FBDB-4AC1-944B-FEC3E92C13EE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{340373D0-FBDB-4AC1-944B-FEC3E92C13EE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E7215FED-E4D8-4666-9E76-13BB8F044C88}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E7215FED-E4D8-4666-9E76-13BB8F044C88}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E7215FED-E4D8-4666-9E76-13BB8F044C88}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E7215FED-E4D8-4666-9E76-13BB8F044C88}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
