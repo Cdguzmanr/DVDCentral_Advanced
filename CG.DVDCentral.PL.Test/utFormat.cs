@@ -4,35 +4,32 @@ using CG.DVDCentral.PL.Test;
 namespace CG.DVDCentral.PL.Test
 {
     [TestClass]
-    public class utFormat : utBase
+    public class utFormat : utBase<tblFormat>
     {
         [TestMethod]
         public void LoadTest()
         {
             int expected = 4;
-            var formats = dc.tblFormats;
+            var formats = base.LoadTest();
+            Assert.AreEqual(2, formats[1].tblMovies.Count);
             Assert.AreEqual(expected, formats.Count());
         }
 
         [TestMethod]
         public void InsertTest()
         {
-            tblFormat newRow = new tblFormat();
-
-            newRow.Id = Guid.NewGuid();
-            newRow.Description = "XXX";
-
-            dc.tblFormats.Add(newRow);
-            int rowsAffected = dc.SaveChanges();
-
+            int rowsAffected = base.InsertTest(new tblFormat
+            {
+                Id = Guid.NewGuid(),
+                Description = "XXXXX"
+            });
             Assert.AreEqual(1, rowsAffected);
         }
 
         [TestMethod]
         public void UpdateTest()
         {
-            InsertTest();
-            tblFormat row = dc.tblFormats.FirstOrDefault();
+            tblFormat row = base.LoadTest().FirstOrDefault(x => x.Description == "Other");
 
             if (row != null)
             {
@@ -48,7 +45,7 @@ namespace CG.DVDCentral.PL.Test
         public void DeleteTest()
         {
 
-            tblFormat row = dc.tblFormats.FirstOrDefault();
+            tblFormat row = base.LoadTest().FirstOrDefault(x => x.Description == "Other");
 
             if (row != null)
             {

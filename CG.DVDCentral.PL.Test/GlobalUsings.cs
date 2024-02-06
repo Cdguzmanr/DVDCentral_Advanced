@@ -13,3 +13,4 @@ global using System.Threading.Tasks;
 global using Microsoft.Extensions.Configuration;
 global using CG.DVDCentral.PL2.Data;
 global using CG.DVDCentral.PL2.Entities;
+global using CG.DVDCentral.PL2;

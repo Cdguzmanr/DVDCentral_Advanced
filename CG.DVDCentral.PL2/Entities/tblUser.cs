@@ -1,9 +1,10 @@
-﻿using System;
+﻿using BDF.DVDCentral.PL2.Entities;
+using System;
 using System.Collections.Generic;
 
 namespace CG.DVDCentral.PL2;
 
-public class tblUser
+public class tblUser : IEntity
 {
     public Guid Id { get; set; }
 

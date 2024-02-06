@@ -1,11 +1,12 @@
 
 
+using CG.DVDCentral.PL2.Entities;
 using CG.DVDCentral.PL.Test;
 
 namespace CG.DVDCentral.PL.Test
 {
     [TestClass]
-    public class utMovieGenre : utBase
+    public class utMovieGenre : utBase<tblMovieGenre>
     {
 
 
@@ -13,7 +14,7 @@ namespace CG.DVDCentral.PL.Test
         public void LoadTest()
         {
             int expected = 13;
-            var movieGenres = dc.tblMovieGenres;
+            var movieGenres = base.LoadTest();
             Assert.AreEqual(expected, movieGenres.Count());
         }
 
@@ -23,27 +24,26 @@ namespace CG.DVDCentral.PL.Test
             tblMovieGenre newRow = new tblMovieGenre();
 
             newRow.Id = Guid.NewGuid();
-            newRow.MovieId = dc.tblMovies.FirstOrDefault().Id;
-            newRow.GenreId = dc.tblGenres.FirstOrDefault().Id;
+            newRow.MovieId = base.LoadTest().FirstOrDefault().MovieId;
+            newRow.GenreId = base.LoadTest().FirstOrDefault().GenreId;
 
-            dc.tblMovieGenres.Add(newRow);
-            int rowsAffected = dc.SaveChanges();
+            int rowsAffected = InsertTest(newRow);
 
             Assert.AreEqual(1, rowsAffected);
+
+
         }
 
         [TestMethod]
         public void UpdateTest()
         {
-            InsertTest();
             tblMovieGenre row = dc.tblMovieGenres.FirstOrDefault();
 
             if (row != null)
             {
-                row.MovieId = dc.tblMovies.FirstOrDefault().Id;
-                row.GenreId = dc.tblGenres.FirstOrDefault().Id;
-                int rowsAffected = dc.SaveChanges();
-
+                row.MovieId = base.LoadTest().FirstOrDefault().MovieId;
+                row.GenreId = base.LoadTest().FirstOrDefault().GenreId;
+                int rowsAffected = UpdateTest(row);
                 Assert.AreEqual(1, rowsAffected);
             }
         }
@@ -52,15 +52,10 @@ namespace CG.DVDCentral.PL.Test
         [TestMethod]
         public void DeleteTest()
         {
-            InsertTest();
-
             tblMovieGenre row = dc.tblMovieGenres.FirstOrDefault();
-
             if (row != null)
             {
-                dc.tblMovieGenres.Remove(row);
-                int rowsAffected = dc.SaveChanges();
-
+                int rowsAffected = DeleteTest(row);
                 Assert.IsTrue(rowsAffected == 1);
             }
 

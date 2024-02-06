@@ -1,12 +1,13 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
+using System.Collections.Generic;
 using System.IO;
 
 namespace CG.DVDCentral.PL.Test
 {
     [TestClass]
-    public class utBase
+    public class utBase<T> where T : class
     {
         protected DVDCentralEntities dc;  // declare the DataContext
         protected IDbContextTransaction transaction;
@@ -21,11 +22,12 @@ namespace CG.DVDCentral.PL.Test
 
             _configuration = builder.Build();
             options = new DbContextOptionsBuilder<DVDCentralEntities>()
-                .UseSqlServer(_configuration.GetConnectionString("DVDCentralConnection"))
+                .UseSqlServer(_configuration.GetConnectionString("DatabaseConnection"))
                 .UseLazyLoadingProxies()
                 .Options;
 
             dc = new DVDCentralEntities(options);
+
         }
 
 
@@ -41,6 +43,31 @@ namespace CG.DVDCentral.PL.Test
             transaction.Rollback();
             transaction.Dispose();
             dc = null;
+        }
+
+
+        public List<T> LoadTest()
+        {
+            return dc.Set<T>().ToList();
+        }
+
+        public int InsertTest(T row)
+        {
+            dc.Set<T>().Add(row);
+            return dc.SaveChanges();
+        }
+
+        public int UpdateTest(T row)
+        {
+
+            dc.Entry(row).State = EntityState.Modified;
+            return dc.SaveChanges();
+        }
+
+        public int DeleteTest(T row)
+        {
+            dc.Set<T>().Remove(row);
+            return dc.SaveChanges();
         }
     }
 }

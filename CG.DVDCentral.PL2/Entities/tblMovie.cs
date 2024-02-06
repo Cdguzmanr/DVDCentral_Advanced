@@ -1,11 +1,12 @@
-﻿using System;
+﻿using BDF.DVDCentral.PL2.Entities;
+using System;
 using System.Collections.Generic;
 
 #nullable disable
 
 namespace CG.DVDCentral.PL2.Entities
 {
-    public class tblMovie
+    public class tblMovie : IEntity
     {
         public Guid Id { get; set; }
         public string Title { get; set; }

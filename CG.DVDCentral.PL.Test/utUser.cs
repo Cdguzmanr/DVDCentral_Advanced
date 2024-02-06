@@ -1,32 +1,26 @@
-using CG.DVDCentral.PL.Test;
-
+﻿
 namespace CG.DVDCentral.PL.Test
 {
     [TestClass]
-    public class utCustomer : utBase<tblCustomer>
+    public class utUser : utBase<tblUser>
     {
+
         [TestMethod]
         public void LoadTest()
         {
-            int expected = 3;
-            var customers = base.LoadTest();
-            Assert.AreEqual(expected, customers.Count());
+            Assert.IsTrue(base.LoadTest().Count() > 0);
         }
 
         [TestMethod]
         public void InsertTest()
         {
-            tblCustomer newRow = new tblCustomer();
+            tblUser newRow = new tblUser();
 
             newRow.Id = Guid.NewGuid();
             newRow.FirstName = "Joe";
             newRow.LastName = "Billings";
-            newRow.Address = "XXXXXX";
-            newRow.City = "Greenville";
-            newRow.State = "WI";
-            newRow.ZIP = "54942";
-            newRow.Phone = "xxx-xxx-xxxx";
-            newRow.UserId = dc.tblUsers.FirstOrDefault().Id;
+            newRow.UserName = "XXXXXX";
+            newRow.Password = "YYYYY";
 
             int rowsAffected = InsertTest(newRow);
 
@@ -36,13 +30,14 @@ namespace CG.DVDCentral.PL.Test
         [TestMethod]
         public void UpdateTest()
         {
-            tblCustomer row = base.LoadTest().FirstOrDefault();
+            tblUser row = base.LoadTest().FirstOrDefault();
 
             if (row != null)
             {
                 row.FirstName = "Sarah";
                 row.LastName = "Vicchiollo";
                 int rowsAffected = UpdateTest(row);
+
                 Assert.AreEqual(1, rowsAffected);
             }
         }
@@ -51,12 +46,16 @@ namespace CG.DVDCentral.PL.Test
         [TestMethod]
         public void DeleteTest()
         {
-            tblCustomer row = base.LoadTest().FirstOrDefault(x => x.Orders.Count == 0);
+            tblUser row = base.LoadTest().FirstOrDefault();
+
             if (row != null)
             {
+                dc.tblUsers.Remove(row);
                 int rowsAffected = DeleteTest(row);
+
                 Assert.IsTrue(rowsAffected == 1);
             }
+
         }
     }
 }

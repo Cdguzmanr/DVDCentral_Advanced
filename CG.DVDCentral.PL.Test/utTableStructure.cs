@@ -1,6 +1,4 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Newtonsoft.Json;
-using System;
+﻿using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Net.Http;
@@ -118,7 +116,7 @@ namespace CG.DVDCentral.PL2.Test
                 string[] namespaceNames = myType.Namespace.ToString().Split(".");
                 string namespaceName = namespaceNames[0] + "." + namespaceNames[1] + "." + namespaceNames[2]; // + ".Entities";
 
-                string tableTypeName = structure1.Type.Replace("CG", namespaceNames[0]).Split(",")[0];
+                string tableTypeName = structure1.Type.Replace("BDF", namespaceNames[0]).Split(",")[0];
 
                 Type tableType = Type.GetType(tableTypeName + ", " + namespaceName);
                 if (tableType == null)

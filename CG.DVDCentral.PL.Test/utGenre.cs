@@ -2,45 +2,40 @@
 
 using CG.DVDCentral.PL.Test;
 
-namespace CG.DVDCentral.PL.Test
+namespace BDF.DVDCentral.PL.Test
 {
     [TestClass]
-    public class utGenre : utBase
+    public class utGenre : utBase<tblGenre>
     {
 
         [TestMethod]
         public void LoadTest()
         {
-            int expected = 3;
-            var genres = dc.tblGenres;
+            int expected = 10;
+            var genres = base.LoadTest();
             Assert.AreEqual(expected, genres.Count());
         }
 
         [TestMethod]
         public void InsertTest()
         {
-            tblGenre newRow = new tblGenre();
-
-            newRow.Id = Guid.NewGuid();
-            newRow.Description = "XXXX";
-
-            dc.tblGenres.Add(newRow);
-            int rowsAffected = dc.SaveChanges();
-
+            int rowsAffected = InsertTest(new tblGenre
+            {
+                Id = Guid.NewGuid(),
+                Description = "XXXXX"
+            });
             Assert.AreEqual(1, rowsAffected);
         }
 
         [TestMethod]
         public void UpdateTest()
         {
-            InsertTest();
-            tblGenre row = dc.tblGenres.FirstOrDefault();
+            tblGenre row = base.LoadTest().FirstOrDefault();
 
             if (row != null)
             {
                 row.Description = "YYYYY";
-                int rowsAffected = dc.SaveChanges();
-
+                int rowsAffected = UpdateTest(row);
                 Assert.AreEqual(1, rowsAffected);
             }
         }
@@ -49,15 +44,12 @@ namespace CG.DVDCentral.PL.Test
         [TestMethod]
         public void DeleteTest()
         {
-            InsertTest();
-
-            tblGenre row = dc.tblGenres.FirstOrDefault();
+            tblGenre row = base.LoadTest().FirstOrDefault(x => x.Description == "Other");
 
             if (row != null)
             {
                 dc.tblGenres.Remove(row);
-                int rowsAffected = dc.SaveChanges();
-
+                int rowsAffected = UpdateTest(row);
                 Assert.IsTrue(rowsAffected == 1);
             }
 

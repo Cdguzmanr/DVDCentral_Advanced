@@ -1,9 +1,10 @@
-﻿using System;
+﻿using BDF.DVDCentral.PL2.Entities;
+using System;
 using System.Collections.Generic;
 
 namespace CG.DVDCentral.PL2.Entities;
 
-public class tblCustomer
+public class tblCustomer : IEntity
 {
     public Guid Id { get; set; }
 
@@ -21,7 +22,9 @@ public class tblCustomer
 
     public string Phone { get; set; } = null!;
 
-    public string ImagePath { get; set; } = null!;
+    //public string ImagePath { get; set; } = null!;
 
     public string State { get; set; } = null!;
+
+    public virtual ICollection<tblOrder> Orders { get; set; }
 }

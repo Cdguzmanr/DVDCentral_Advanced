@@ -4,14 +4,14 @@ using CG.DVDCentral.PL.Test;
 namespace CG.DVDCentral.PL.Test
 {
     [TestClass]
-    public class utOrderItem : utBase
+    public class utOrderItem : utBase<tblOrderItem>
     {
 
         [TestMethod]
         public void LoadTest()
         {
             int expected = 3;
-            var orderItems = dc.tblOrderItems;
+            var orderItems = base.LoadTest();
             Assert.AreEqual(expected, orderItems.Count());
         }
 
@@ -22,6 +22,7 @@ namespace CG.DVDCentral.PL.Test
 
             newRow.Id = Guid.NewGuid();
             newRow.MovieId = dc.tblMovies.FirstOrDefault().Id;
+            newRow.OrderId = dc.tblOrders.FirstOrDefault().Id;
             newRow.Quantity = 99;
             newRow.Cost = 9.99;
 
@@ -34,15 +35,14 @@ namespace CG.DVDCentral.PL.Test
         [TestMethod]
         public void UpdateTest()
         {
-            InsertTest();
-            tblOrderItem row = dc.tblOrderItems.FirstOrDefault();
+            tblOrderItem row = base.LoadTest().FirstOrDefault();
 
             if (row != null)
             {
-                row.MovieId = dc.tblMovies.FirstOrDefault().Id; ;
+                row.MovieId = dc.tblMovies.FirstOrDefault().Id;
                 row.Quantity = 100;
                 row.Cost = 10.99;
-                int rowsAffected = dc.SaveChanges();
+                int rowsAffected = UpdateTest(row);
 
                 Assert.AreEqual(1, rowsAffected);
             }
@@ -52,15 +52,12 @@ namespace CG.DVDCentral.PL.Test
         [TestMethod]
         public void DeleteTest()
         {
-            InsertTest();
 
-            tblOrderItem row = dc.tblOrderItems.FirstOrDefault();
+            tblOrderItem row = base.LoadTest().FirstOrDefault();
 
             if (row != null)
             {
-                dc.tblOrderItems.Remove(row);
-                int rowsAffected = dc.SaveChanges();
-
+                int rowsAffected = DeleteTest(row);
                 Assert.IsTrue(rowsAffected == 1);
             }
 

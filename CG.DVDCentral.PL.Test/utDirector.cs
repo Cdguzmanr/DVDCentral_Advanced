@@ -4,44 +4,40 @@ using CG.DVDCentral.PL.Test;
 namespace CG.DVDCentral.PL.Test
 {
     [TestClass]
-    public class utDirector : utBase
+    public class utDirector : utBase<tblDirector>
     {
-
 
         [TestMethod]
         public void LoadTest()
         {
             int expected = 6;
-            var directors = dc.tblDirectors;
+            var directors = base.LoadTest();
             Assert.AreEqual(expected, directors.Count());
         }
 
         [TestMethod]
         public void InsertTest()
         {
-            tblDirector newRow = new tblDirector();
-
-            newRow.Id = Guid.NewGuid();
-            newRow.FirstName = "Joe";
-            newRow.LastName = "Billings";
-
-            dc.tblDirectors.Add(newRow);
-            int rowsAffected = dc.SaveChanges();
-
+            int rowsAffected = InsertTest(new tblDirector
+            {
+                Id = Guid.NewGuid(),
+                FirstName = "Joe",
+                LastName = "Billings"
+            });
             Assert.AreEqual(1, rowsAffected);
+
         }
 
         [TestMethod]
         public void UpdateTest()
         {
-            tblDirector row = dc.tblDirectors.FirstOrDefault();
+            tblDirector row = base.LoadTest().FirstOrDefault();
 
             if (row != null)
             {
                 row.FirstName = "Sarah";
                 row.LastName = "Vicchiollo";
-                int rowsAffected = dc.SaveChanges();
-
+                int rowsAffected = UpdateTest(row);
                 Assert.AreEqual(1, rowsAffected);
             }
         }
@@ -50,15 +46,15 @@ namespace CG.DVDCentral.PL.Test
         [TestMethod]
         public void DeleteTest()
         {
-            tblDirector row = dc.tblDirectors.FirstOrDefault();
+            tblDirector row = dc.tblDirectors.FirstOrDefault(x => x.LastName == "Other");
 
             if (row != null)
             {
-                dc.tblDirectors.Remove(row);
-                int rowsAffected = dc.SaveChanges();
+                int rowsAffected = DeleteTest(row);
 
                 Assert.IsTrue(rowsAffected == 1);
             }
+
 
         }
     }
