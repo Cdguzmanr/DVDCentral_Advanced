@@ -1,229 +1,272 @@
-﻿using Microsoft.EntityFrameworkCore.Storage;
-
+﻿
 using CG.DVDCentral.BL.Models;
-using CG.DVDCentral.PL;
-using Microsoft.VisualStudio.Web.CodeGeneration.Design;
+using CG.DVDCentral.BL;
+using Microsoft.Extensions.Options;
 
 namespace CG.DVDCentral.BL
 {
-    public class OrderManager
+    public class OrderManager : GenericManager<tblOrder>
     {
-        public static int Insert(Order order, bool rollback = false) // Id by reference
+        public OrderManager(DbContextOptions<DVDCentralEntities> options) : base(options)
         {
-            try
-            {
-                int results = 0;
-                using (DVDCentralEntities dc = new DVDCentralEntities())
-                {
-                    IDbContextTransaction transaction = null;
-                    if (rollback) transaction = dc.Database.BeginTransaction();
 
-                    tblOrder entity = new tblOrder();
-                    entity.Id = dc.tblOrders.Any() ? dc.tblOrders.Max(s => s.Id) + 1 : 1;
-                    entity.CustomerId = order.CustomerId;
-                    entity.OrderDate = order.OrderDate; 
-                    entity.UserId = order.UserId;
-                    entity.ShipDate = order.ShipDate;
-                    
-
-                    // Inserts OrderItems objects into the list at Order
-                    foreach (OrderItem orderItem in order.OrderItems)
-                    {
-                        // set the orderId on tblOrderItem
-                                //orderItem.OrderId = order.Id;
-                        results += OrderItemManager.Insert(orderItem, rollback);
-                    }
-
-                    //entity.OrderItems = order.OrderItems;   
-
-                    // IMPORTANT - BACK FILL THE ID 
-                    order.Id = entity.Id;
-
-                    dc.tblOrders.Add(entity);
-                    results += dc.SaveChanges(); // Make sure to add the += and not only = 
-
-                    if (rollback) transaction.Rollback();
-                }
-                return results;
-            }
-            catch (Exception) { throw; }
         }
-
-        public static int Update(Order order, bool rollback = false)
+        public List<Order> Load(Guid? customerId = null)
         {
             try
             {
-                int results = 0;
-                using (DVDCentralEntities dc = new DVDCentralEntities())
+                List<Order> orders = new List<Order>();
+
+                using (DVDCentralEntities dc = new DVDCentralEntities(options))
                 {
-                    IDbContextTransaction transaction = null;
-                    if (rollback) transaction = dc.Database.BeginTransaction();
+                    var results = (from o in dc.tblOrders
+                                   join c in dc.tblCustomers on o.CustomerId equals c.Id
+                                   join u in dc.tblUsers on o.UserId equals u.Id
+                                   where o.CustomerId == customerId || customerId == null
+                                   select new
+                                   {
+                                       Id = o.Id,
+                                       CustomerId = o.CustomerId,
+                                       CustomerFisrtName = c.FirstName,
+                                       CustomerLastName = c.LastName,
+                                       UserName = u.UserName,
+                                       OrderDate = o.OrderDate,
+                                       UserId = o.UserId,
+                                       UserFirstName = u.FirstName,
+                                       UserLastName = u.LastName,
+                                       ShipDate = o.ShipDate
+                                   }
+                                  ).ToList();
 
-                    // Get the row that we are trying to update
-                    tblOrder entity = dc.tblOrders.FirstOrDefault(s => s.Id == order.Id);
-                    if (entity != null)
+                    results.ForEach(o => orders.Add(new Order
                     {
-                        entity.CustomerId = order.CustomerId;
-                        entity.OrderDate = order.OrderDate;
-                        entity.UserId = order.UserId;
-                        entity.ShipDate = order.ShipDate;
-
-                        results = dc.SaveChanges();
-                    }
-                    else
-                    {
-                        throw new Exception("Row does not exist");
-                    }
-
-                    if (rollback) transaction.Rollback();
-                }
-
-                return results;
-            }
-            catch (Exception) { throw; }
-        }
-
-        public static Order LoadById(int id)
-        {
-            try
-            {
-                using (DVDCentralEntities dc = new DVDCentralEntities())
-                {
-                    //tblOrder entity = dc.tblOrders.FirstOrDefault(s => s.Id == id);
-                    var entity = (from s in dc.tblOrders
-                                  join oi in dc.tblOrderItems on s.Id equals oi.OrderId
-                                  join c in dc.tblCustomers on s.CustomerId equals c.Id
-                                  join u in dc.tblUsers on s.UserId equals u.Id
-                                  where oi.OrderId == id
-                                  select new
-                                  {
-                                      s.Id,
-                                      s.CustomerId,
-                                      s.OrderDate,
-                                      s.UserId,
-                                      s.ShipDate,
-
-                                      // Add Customer and User properties
-                                      c.FirstName,
-                                      c.LastName,
-                                      u.UserName,
-                                      UserFirstName = u.FirstName,
-                                      UserLastName = u.LastName
-                                  })
-                           .FirstOrDefault();
-
-                    if (entity != null)
-                    {
-                        return new Order
-                        {
-                            Id = entity.Id,
-                            CustomerId = entity.CustomerId,
-                            OrderDate = entity.OrderDate,
-                            UserId = entity.UserId,
-                            ShipDate = entity.ShipDate,
-                            OrderItems = OrderItemManager.LoadByOrderId(id), // Checkpoint 4 - Instruction 3.c
-
-                            // Add Customer and User properties
-                            CustomerFirstName = entity.FirstName,
-                            CustomerLastName = entity.LastName,
-
-                            UserName = entity.UserName,
-                            UserFirstName = entity.UserFirstName,
-                            UserLastName = entity.UserLastName,
-                        };
-                    }
-                    else { throw new Exception(); }
-                }
-            }
-            catch (Exception) { throw; }
-        }
-
-        public static List<Order> Load(int? CustomerId = null)
-        {
-            try
-            {
-                List<Order> list = new List<Order>();
-                using (DVDCentralEntities dc = new DVDCentralEntities())
-                {
-                    (from s in dc.tblOrders
-                     join oi in dc.tblOrderItems on s.Id equals oi.OrderId
-                     join c in dc.tblCustomers on s.CustomerId equals c.Id
-                     where s.CustomerId == CustomerId || CustomerId == null 
-                     select new
-                     {
-                         // what info should display for this join? 
-
-                         s.Id,
-                         s.CustomerId,
-                         s.OrderDate,
-                         s.UserId,
-                         s.ShipDate,
-
-                         // Add Customer properties
-                         c.FirstName,
-                         c.LastName,
-
-                     })
-                    .Distinct()
-                    .ToList()
-                    .ForEach(order => list.Add(new Order
-                    {
-                        Id = order.Id,
-                        CustomerId = order.CustomerId,
-                        OrderDate = order.OrderDate,
-                        UserId = order.UserId,
-                        ShipDate = order.ShipDate,
-                        OrderItems = OrderItemManager.LoadByOrderId(order.Id),
-                        // OrderTotal = order.Sum(item => item.Cost) // Calculate the OrderTotal by summing the costs
-
-                        // Add Customer properties
-                        CustomerFirstName = order.FirstName,
-                        CustomerLastName = order.LastName,
-
+                        Id = o.Id,
+                        CustomerId = o.CustomerId,
+                        CustomerFullName = o.CustomerLastName + ", " + o.CustomerFisrtName,
+                        OrderDate = o.OrderDate,
+                        UserId = o.UserId,
+                        UserName = o.UserName,
+                        ShipDate = o.ShipDate,
+                        UserFullName = o.UserLastName + ", " + o.UserFirstName,
                     }));
+
                 }
-                return list;
+
+                foreach (Order order in orders)
+                {
+                    order.OrderItems = new OrderItemManager(options).LoadByOrderId(order.Id);
+                }
+
+                return orders;
             }
-            catch (Exception) { throw; }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        public Order LoadById(Guid id)
+        {
+            try
+            {
+                using (DVDCentralEntities dc = new DVDCentralEntities(options))
+                {
+                    var row = (from o in dc.tblOrders
+                               join c in dc.tblCustomers on o.CustomerId equals c.Id
+                               join u in dc.tblUsers on o.UserId equals u.Id
+                               where o.Id == id
+                               select new
+                               {
+                                   Id = o.Id,
+                                   CustomerId = o.CustomerId,
+                                   CustomerFisrtName = c.FirstName,
+                                   CustomerLastName = c.LastName,
+                                   UserName = u.UserName,
+                                   OrderDate = o.OrderDate,
+                                   UserId = o.UserId,
+                                   UserFirstName = u.FirstName,
+                                   UserLastName = u.LastName,
+                                   ShipDate = o.ShipDate
+                               }).FirstOrDefault();
+
+                    if (row != null)
+                    {
+                        Order order = new Order
+                        {
+                            Id = row.Id,
+                            CustomerId = row.CustomerId,
+                            CustomerFullName = row.CustomerLastName + ", " + row.CustomerFisrtName,
+                            UserName = row.UserName,
+                            OrderDate = row.OrderDate,
+                            UserId = row.UserId,
+                            ShipDate = row.ShipDate,
+                            UserFullName = row.UserLastName + ", " + row.UserFirstName,
+                            OrderItems = new OrderItemManager(options).LoadByOrderId(row.Id)
+                        };
+
+                        return order;
+                    }
+                    else
+                    {
+                        throw new Exception("Row not found");
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        public List<Order> LoadByCustomerId(Guid customerId)
+        {
+            try
+            {
+                return Load(customerId);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
 
 
-        public static int Delete(int id, bool rollback = false)
+        public int Insert(Order order, bool rollback = false)
         {
             try
             {
                 int results = 0;
-                using (DVDCentralEntities dc = new())
+
+                using (DVDCentralEntities dc = new DVDCentralEntities(options))
                 {
                     IDbContextTransaction transaction = null;
                     if (rollback) transaction = dc.Database.BeginTransaction();
 
-                    // Get the row that we are trying to update
-                    tblOrder entity = dc.tblOrders.FirstOrDefault(s => s.Id == id);
-                    if (entity != null)
+                    tblOrder newRow = new tblOrder();
+                    // Teranary operator
+                    newRow.Id = Guid.NewGuid();
+                    newRow.CustomerId = order.CustomerId;
+                    newRow.OrderDate = DateTime.Now;
+                    newRow.UserId = order.UserId;
+                    newRow.ShipDate = newRow.OrderDate.AddDays(3);
+
+                    // Insert the row
+                    dc.tblOrders.Add(newRow);
+
+                    // save order items ....
+                    foreach (OrderItem item in order.OrderItems)
                     {
-                        // Delete the OrderItems first
-                        foreach (OrderItem orderItem in OrderItemManager.LoadByOrderId(id))
-                        {
-                            OrderItemManager.Delete(orderItem.Id);
-                        }
+                        item.OrderId = newRow.Id;
+                        //results += new OrderItemManager(options).Insert(item, rollback);
+                        tblOrderItem row = new tblOrderItem();
 
-                        // Then, delete the Order 
-                        dc.tblOrders.Remove(entity);
-                        
-                        
+                        row.Id = Guid.NewGuid();
+                        row.OrderId = item.OrderId;
+                        row.MovieId = item.MovieId;
+                        row.Quantity = item.Quantity;
+                        row.Cost = item.Cost;
 
+                        item.Id = row.Id;
+
+                        dc.tblOrderItems.Add(row);
+                    }
+
+                    // Backfill the id on the input parameter order
+                    order.Id = newRow.Id;
+                    // Commit the changes and get the number of rows affected
+                    results += dc.SaveChanges();
+
+                    if (rollback) transaction.Rollback();
+                }
+                return results;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+
+        public int Update(Order order, bool rollback = false)
+        {
+            try
+            {
+                int results = 0;
+
+                using (DVDCentralEntities dc = new DVDCentralEntities(options))
+                {
+                    IDbContextTransaction transaction = null;
+                    if (rollback) transaction = dc.Database.BeginTransaction();
+
+                    tblOrder upDateRow = dc.tblOrders.FirstOrDefault(r => r.Id == order.Id);
+
+                    if (upDateRow != null)
+                    {
+                        upDateRow.CustomerId = order.CustomerId;
+                        upDateRow.OrderDate = order.OrderDate;
+                        upDateRow.UserId = order.UserId;
+                        upDateRow.ShipDate = order.ShipDate;
+
+                        dc.tblOrders.Update(upDateRow);
+
+                        // Commit the changes and get the number of rows affected
                         results = dc.SaveChanges();
+
+                        if (rollback) transaction.Rollback();
                     }
                     else
                     {
-                        throw new Exception("Row does not exist");
+                        throw new Exception("Row was not found.");
                     }
-                    if (rollback) transaction.Rollback();
-                } 
+                }
                 return results;
             }
-            catch (Exception) { throw; }
+            catch (Exception)
+            {
+                throw;
+            }
         }
+
+
+        public int Delete(Guid id, bool rollback = false)
+        {
+            try
+            {
+                int results = 0;
+
+                using (DVDCentralEntities dc = new DVDCentralEntities(options))
+                {
+                    IDbContextTransaction transaction = null;
+                    if (rollback) transaction = dc.Database.BeginTransaction();
+
+                    tblOrder deleteRow = dc.tblOrders.FirstOrDefault(r => r.Id == id);
+
+                    if (deleteRow != null)
+                    {
+                        dc.tblOrders.Remove(deleteRow);
+
+                        var deleteOrderItems = dc.tblOrderItems.Where(r => r.OrderId == id);
+
+                        dc.tblOrderItems.RemoveRange(deleteOrderItems);
+
+                        // Commit the changes and get the number of rows affected
+                        results = dc.SaveChanges();
+
+                        if (rollback) transaction.Rollback();
+                    }
+                    else
+                    {
+                        throw new Exception("Row was not found.");
+                    }
+                }
+                return results;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+
     }
 }

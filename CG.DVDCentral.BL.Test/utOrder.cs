@@ -1,100 +1,94 @@
-using CG.DVDCentral.BL.Models;
-
 namespace CG.DVDCentral.BL.Test
 {
     [TestClass]
-    public class utOrder
+    public class utOrder : utBase
     {
         [TestMethod]
         public void LoadTest()
-        { 
-            Assert.AreEqual(3, OrderManager.Load().Count);
-        }
-
-        [TestMethod]
-        public void InsertTest()
         {
-            int id = 0;
-            Order order = new Order()
-            {
-                CustomerId = 1,
-                OrderDate = DateTime.Now,
-                UserId  = 1,
-                ShipDate = DateTime.Now
-            };
+            List<Order> orders = new OrderManager(options).Load();
+            int expected = 3;
 
-            int results = OrderManager.Insert(order, true);
-            Assert.AreEqual(1, results);
+            Assert.AreEqual(expected, orders.Count);
         }
-
-        [TestMethod]
-        public void UpdateTest()
-        {
-            int id = 0;
-            Order order = OrderManager.LoadById(3);
-            order.CustomerId = 2;
-            int results = OrderManager.Update(order, true);
-            Assert.AreEqual(1, results);
-        }
-
-        [TestMethod]
-        public void DeleteTest()
-        {
-            int results = OrderManager.Delete(3, true);
-            Assert.AreEqual(1, results);
-        }
-
-        // Checkpoint 4 Tests
-        [TestMethod]
-        public void InsertOrderItemsTest()
-        {
-            Order order = new Order
-            {
-                CustomerId = 99,
-                OrderDate = DateTime.Now,
-                UserId = 99,
-                ShipDate = DateTime.Now,
-                OrderItems = new List<OrderItem>()
-                {
-                    new OrderItem
-                    {
-                        Id = 88,
-                        MovieId = 1,
-                        Cost = 9.99,
-                        Quantity = 9
-                    },
-                    new OrderItem
-                    {
-                        Id = 99,
-                        MovieId = 2,
-                        Cost = 8.88,
-                        Quantity = 2,
-                        OrderId = 4, // Hardcode orderId
-                    }
-                }
-            };
-            int result = OrderManager.Insert(order, true);
-            Assert.AreEqual(order.OrderItems[1].OrderId, order.Id);
-            Assert.AreEqual(3, result);
-        }
-
 
         [TestMethod]
         public void LoadByIdTest()
         {
-            int id = OrderManager.Load().LastOrDefault().Id; 
-            Order order = OrderManager.LoadById(id);
+            Guid id = new OrderManager(options).Load().LastOrDefault().Id;
+            Order order = new OrderManager(options).LoadById(id);
             Assert.AreEqual(order.Id, id);
             Assert.IsTrue(order.OrderItems.Count > 0);
         }
 
         [TestMethod]
-        public void LoadByIdCustomerIdTest()
+        public void LoadByCustomerIdTest()
         {
-            int customerId = OrderManager.Load().FirstOrDefault().CustomerId;
-            Assert.AreEqual(OrderManager.LoadById(customerId).CustomerId, customerId);
+            Guid customerId = new OrderManager(options).Load().FirstOrDefault().CustomerId;
 
+            Assert.AreEqual(new OrderManager(options).LoadByCustomerId(customerId)[0].CustomerId, customerId);
         }
+
+        [TestMethod]
+        public void InsertTest()
+        {
+            Order order = new Order
+            {
+                CustomerId = new CustomerManager(options).Load().FirstOrDefault().Id,
+                OrderDate = DateTime.Now,
+                UserId = new UserManager(options).Load().FirstOrDefault().Id,
+                ShipDate = DateTime.Now,
+                OrderItems = new List<OrderItem>()
+            };
+
+            int result = new OrderManager(options).Insert(order, true);
+            Assert.IsTrue(result > 0);
+        }
+
+        [TestMethod]
+        public void InsertOrderOrderItemsTest()
+        {
+            Order order = new Order
+            {
+                CustomerId = new CustomerManager(options).Load().FirstOrDefault().Id,
+                OrderDate = DateTime.Now,
+                UserId = new UserManager(options).Load().FirstOrDefault().Id,
+                ShipDate = DateTime.Now,
+                OrderItems = new List<OrderItem>
+                {
+                    new OrderItem { Id = Guid.NewGuid(),
+                                    MovieId = new MovieManager(options).Load().FirstOrDefault(x => x.Title.Contains("Jaws")).Id,
+                                    Cost = 9.99,
+                                    Quantity = 9},
+
+                    new OrderItem { Id = Guid.NewGuid(),
+                                    MovieId = new MovieManager(options).Load().FirstOrDefault(x => x.Title.Contains("Star")).Id,
+                                    Cost = 9.99,
+                                    Quantity = 9}
+                }
+            };
+
+            int result = new OrderManager(options).Insert(order, true);
+            Assert.AreEqual(3, result);
+        }
+
+
+        [TestMethod]
+        public void UpdateTest()
+        {
+            Order order = new OrderManager(options).Load().FirstOrDefault();
+            order.OrderDate = DateTime.Now;
+
+            Assert.IsTrue(new OrderManager(options).Update(order, true) > 0);
+        }
+
+        [TestMethod]
+        public void DeleteTest()
+        {
+            Order order = new OrderManager(options).Load().FirstOrDefault();
+            Assert.IsTrue(new OrderManager(options).Delete(order.Id, true) > 0);
+        }
+
 
 
     }

@@ -1,177 +1,215 @@
-﻿using Microsoft.EntityFrameworkCore.Storage;
-
-using CG.DVDCentral.BL.Models;
-using CG.DVDCentral.PL;
+﻿using CG.DVDCentral.BL;
+using Microsoft.Extensions.Options;
 
 namespace CG.DVDCentral.BL
 {
-    public class GenreManager
+    public class GenreManager : GenericManager<tblGenre>
     {
-        public static int Insert(Genre genre, bool rollback = false) // Id by reference
+        public GenreManager(DbContextOptions<DVDCentralEntities> options) : base(options) { }
+
+        public List<Genre> Load(Guid? movieId = null)
         {
             try
             {
-                int results = 0;
-                using (DVDCentralEntities dc = new DVDCentralEntities())
+                using (DVDCentralEntities dc = new DVDCentralEntities(options))
                 {
-                    IDbContextTransaction transaction = null;
-                    if (rollback) transaction = dc.Database.BeginTransaction();
+                    List<Genre> genres = new List<Genre>();
 
-                    tblGenre entity = new tblGenre();
-                    entity.Id = dc.tblGenres.Any() ? dc.tblGenres.Max(s => s.Id) + 1 : 1;
-                    entity.Description = genre.Description;
-                    
-                    /*
-                    foreach (Movie movie in genre.Movies) // idk to be honest
+                    if (movieId != null)
                     {
-                        // set the genreId on tblMovieGenre
-                        results += GenreManager.Insert(genre, rollback);
-                    }
-                    */
-                    // IMPORTANT - BACK FILL THE ID 
-                    genre.Id = entity.Id;
+                        var results = (from g in dc.tblGenres
+                                       join mg in dc.tblMovieGenres on g.Id equals mg.GenreId
+                                       where mg.MovieId == movieId || movieId == null
+                                       select new
+                                       {
+                                           g.Id,
+                                           g.Description
+                                       }).Distinct().ToList();
 
-                    dc.tblGenres.Add(entity);
-                    results = dc.SaveChanges();
-
-                    if (rollback) transaction.Rollback();
-                }
-                return results;
-            }
-            catch (Exception) { throw; }
-        }
-
-        public static int Update(Genre genre, bool rollback = false)
-        {
-            try
-            {
-                int results = 0;
-                using (DVDCentralEntities dc = new DVDCentralEntities())
-                {
-                    IDbContextTransaction transaction = null;
-                    if (rollback) transaction = dc.Database.BeginTransaction();
-
-                    // Get the row that we are trying to update
-                    tblGenre entity = dc.tblGenres.FirstOrDefault(s => s.Id == genre.Id);
-                    if (entity != null)
-                    {
-                        entity.Description = genre.Description;
-
-                        results = dc.SaveChanges();
-                    }
-                    else
-                    {
-                        throw new Exception("Row does not exist");
-                    }
-
-                    if (rollback) transaction.Rollback();
-                }
-
-                return results;
-            }
-            catch (Exception) { throw; }
-        }
-
-        public static Genre LoadById(int id)
-        {
-            try
-            {
-                using (DVDCentralEntities dc = new DVDCentralEntities())
-                {
-                    tblGenre entity = dc.tblGenres.FirstOrDefault(s => s.Id == id);
-                    if (entity != null)
-                    {
-                        return new Genre
+                        results.ForEach(g => genres.Add(new Genre
                         {
-                            Id = entity.Id,
-                            Description = entity.Description,
-                        };
+                            Id = g.Id,
+                            Description = g.Description
+                        }));
+
                     }
-                    else { throw new Exception(); }
+                    else
+                    {
+                        var results = (from g in dc.tblGenres
+                                       select new
+                                       {
+                                           g.Id,
+                                           g.Description
+                                       }).Distinct().ToList();
+
+                        results.ForEach(g => genres.Add(new Genre
+                        {
+                            Id = g.Id,
+                            Description = g.Description
+                        }));
+                    }
+
+                    return genres.OrderBy(g => g.Description).ToList();
                 }
             }
-            catch (Exception) { throw; }
+            catch (Exception)
+            {
+                throw;
+            }
         }
 
-        public static List<Genre> Load(int movieId)
+        public Genre LoadById(Guid id)
         {
             try
             {
-                List<Genre> list = new List<Genre>();
-                using (DVDCentralEntities dc = new DVDCentralEntities())
+                tblGenre row = base.LoadById(id);
+
+                if (row != null)
                 {
-                    (from s in dc.tblGenres
-                     join mg in dc.tblMovieGenres on s.Id equals mg.GenreId
-                     where mg.MovieId == movieId
-                     select new
-                     { 
-                         s.Id,
-                         s.Description
-                     })
-                    .ToList()
-                    .ForEach(genre => list.Add(new Genre
+                    Genre genre = new Genre
                     {
-                        Id = genre.Id,
-                        Description = genre.Description
-                    }));
+                        Id = row.Id,
+                        Description = row.Description,
+                    };
+
+                    return genre;
                 }
-                return list;
+                else
+                {
+                    throw new Exception();
+                }
+
             }
-            catch (Exception) { throw; }
+            catch (Exception)
+            {
+                throw;
+            }
         }
 
-        public static List<Genre> Load()
+        public int Insert(Genre genre, bool rollback = false)
         {
             try
             {
-                List<Genre> list = new List<Genre>();
-                using (DVDCentralEntities dc = new DVDCentralEntities())
-                {
-                    (from s in dc.tblGenres
-                     select new
-                     {
-                         s.Id,
-                         s.Description 
-                     })
-                    .ToList()
-                    .ForEach(genre => list.Add(new Genre
-                    {
-                        Id = genre.Id,
-                        Description = genre.Description
-                    }));
-                }
-                return list;
+                tblGenre row = new tblGenre { Description = genre.Description };
+                genre.Id = row.Id;
+                return base.Insert(row, rollback);
+
             }
-            catch (Exception) { throw; }
+            catch (Exception)
+            {
+                throw;
+            }
+
         }
 
-        public static int Delete(int id, bool rollback = false)
+
+        public int Update(Genre genre, bool rollback = false)
         {
             try
             {
                 int results = 0;
-                using (DVDCentralEntities dc = new())
+
+                using (DVDCentralEntities dc = new DVDCentralEntities(options))
                 {
-                    IDbContextTransaction transaction = null;
-                    if (rollback) transaction = dc.Database.BeginTransaction();
+                    // Check if genre already exists - do not allow ....
+                    tblGenre existingGenre = dc.tblGenres.Where(g => g.Description.Trim().ToUpper() == genre.Description.Trim().ToUpper()).FirstOrDefault();
 
-                    // Get the row that we are trying to update
-                    tblGenre entity = dc.tblGenres.FirstOrDefault(s => s.Id == id);
-                    if (entity != null)
+                    if (existingGenre != null && genre.Id != existingGenre.Id && rollback == false)
                     {
-                        dc.tblGenres.Remove(entity);
-
-                        results = dc.SaveChanges();
+                        throw new Exception("This genre already exists.");
                     }
                     else
                     {
-                        throw new Exception("Row does not exist");
+                        IDbContextTransaction transaction = null;
+                        if (rollback) transaction = dc.Database.BeginTransaction();
+
+                        tblGenre upDateRow = dc.tblGenres.FirstOrDefault(g => g.Id == genre.Id);
+
+                        if (upDateRow != null)
+                        {
+                            upDateRow.Description = genre.Description;
+
+                            dc.tblGenres.Update(upDateRow);
+
+                            // Commit the changes and get the number of rows affected
+                            results = dc.SaveChanges();
+
+                            if (rollback) transaction.Rollback();
+                        }
+                        else
+                        {
+                            throw new Exception("Row was not found.");
+                        }
                     }
-                    if (rollback) transaction.Rollback();
-                } 
+                }
                 return results;
             }
-            catch (Exception) { throw; }
+            catch (Exception)
+            {
+                throw;
+            }
         }
+
+
+        public int Delete(Guid id, bool rollback = false)
+        {
+            try
+            {
+                int results = 0;
+
+                using (DVDCentralEntities dc = new DVDCentralEntities(options))
+                {
+                    // Check if genre is associated with an exisiting movie with only one genre - do not allow delete ....
+                    var moviesWithThisGenre = dc.tblMovieGenres.Where(m => m.GenreId == id);
+                    bool inuse = false;
+
+                    foreach (var movie in moviesWithThisGenre)
+                    {
+                        if (new GenreManager(options).Load(movie.MovieId).Count == 1)
+                        {
+                            inuse = true;
+                            break;
+                        }
+                    }
+
+                    if (inuse && rollback == false)
+                    {
+                        throw new Exception("This genre is associated with an existing movie with only one genre assigned and therefore cannot be deleted.");
+                    }
+                    else
+                    {
+                        IDbContextTransaction transaction = null;
+                        if (rollback) transaction = dc.Database.BeginTransaction();
+
+                        tblGenre genre = dc.tblGenres.FirstOrDefault(g => g.Id == id);
+
+                        if (genre != null)
+                        {
+                            // delete all the associated tblMovieGenre rows. 
+                            dc.tblMovieGenres.RemoveRange(moviesWithThisGenre);
+
+                            // remove the genre
+                            dc.tblGenres.Remove(genre);
+
+                            // Commit the changes and get the number of rows affected
+                            results = dc.SaveChanges();
+
+                            if (rollback) transaction.Rollback();
+                        }
+                        else
+                        {
+                            throw new Exception("Row was not found.");
+                        }
+                    }
+                }
+                return results;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+
     }
 }

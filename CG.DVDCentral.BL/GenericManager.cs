@@ -1,5 +1,4 @@
-﻿/*
-
+﻿using CG.DVDCentral.BL.Models;
 using CG.DVDCentral.PL2.Data;
 using CG.DVDCentral.PL2.Entities;
 using Microsoft.EntityFrameworkCore;
@@ -60,6 +59,14 @@ namespace CG.DVDCentral.BL
                 int results = 0;
                 using (DVDCentralEntities dc = new DVDCentralEntities(options))
                 {
+                    // Check if genre already exists - do not allow ....
+                    //bool inUse = dc.tblGenres.Any(e => e.Description.Trim().ToUpper() == entity.Description.Trim().ToUpper());
+
+                    //if (inUse && !rollback)
+                    //{
+                    //    throw new Exception("This entity already exists.");
+                    //}
+
                     IDbContextTransaction dbTransaction = null;
                     if (rollback) dbTransaction = dc.Database.BeginTransaction();
 
@@ -144,4 +151,3 @@ namespace CG.DVDCentral.BL
     }
 
 }
-*/

@@ -1,4 +1,4 @@
-﻿namespace BDF.DVDCentral.PL2.Entities
+﻿namespace CG.DVDCentral.PL2.Entities
 {
     public interface IEntity
     {

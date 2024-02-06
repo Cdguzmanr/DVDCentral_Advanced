@@ -1,143 +1,108 @@
-﻿using Microsoft.EntityFrameworkCore.Storage;
-
-using CG.DVDCentral.BL.Models;
-using CG.DVDCentral.PL;
+﻿using CG.DVDCentral.BL;
 
 namespace CG.DVDCentral.BL
 {
-    public class FormatManager
+    public class FormatManager : GenericManager<tblFormat>
     {
-        public static int Insert(Format format, bool rollback = false) // Id by reference
+        public FormatManager(DbContextOptions<DVDCentralEntities> options) : base(options) { }
+
+        public int Insert(Format format, bool rollback = false)
         {
             try
             {
-                int results = 0;
-                using (DVDCentralEntities dc = new DVDCentralEntities())
-                {
-                    IDbContextTransaction transaction = null;
-                    if (rollback) transaction = dc.Database.BeginTransaction();
+                tblFormat row = new tblFormat { Description = format.Description };
+                format.Id = row.Id;
+                return base.Insert(row, rollback);
 
-                    tblFormat entity = new tblFormat();
-                    entity.Id = dc.tblFormats.Any() ? dc.tblFormats.Max(s => s.Id) + 1 : 1;
-                    entity.Description = format.Description;
-
-                    // IMPORTANT - BACK FILL THE ID 
-                    format.Id = entity.Id;
-
-                    dc.tblFormats.Add(entity);
-                    results = dc.SaveChanges();
-
-                    if (rollback) transaction.Rollback();
-                }
-                return results;
             }
-            catch (Exception) { throw; }
+            catch (Exception)
+            {
+
+                throw;
+            }
         }
 
-        public static int Update(Format format, bool rollback = false)
+        public List<Format> Load()
         {
+
             try
             {
-                int results = 0;
-                using (DVDCentralEntities dc = new DVDCentralEntities())
-                {
-                    IDbContextTransaction transaction = null;
-                    if (rollback) transaction = dc.Database.BeginTransaction();
-
-                    // Get the row that we are trying to update
-                    tblFormat entity = dc.tblFormats.FirstOrDefault(s => s.Id == format.Id);
-                    if (entity != null)
-                    {
-                        entity.Description = format.Description;
-
-                        results = dc.SaveChanges();
-                    }
-                    else
-                    {
-                        throw new Exception("Row does not exist");
-                    }
-
-                    if (rollback) transaction.Rollback();
-                }
-
-                return results;
-            }
-            catch (Exception) { throw; }
-        }
-
-        public static Format LoadById(int id)
-        {
-            try
-            {
-                using (DVDCentralEntities dc = new DVDCentralEntities())
-                {
-                    tblFormat entity = dc.tblFormats.FirstOrDefault(s => s.Id == id);
-                    if (entity != null)
-                    {
-                        return new Format
+                List<Format> rows = new List<Format>();
+                base.Load()
+                    .ForEach(d => rows.Add(
+                        new Format
                         {
-                            Id = entity.Id,
-                            Description = entity.Description,
-                        };
-                    }
-                    else { throw new Exception(); }
-                }
+                            Id = d.Id,
+                            Description = d.Description,
+                        }));
+
+                return rows;
             }
-            catch (Exception) { throw; }
+            catch (Exception)
+            {
+
+                throw;
+            }
+
         }
 
-        public static List<Format> Load()
+        public Format LoadById(Guid id)
         {
             try
             {
-                List<Format> list = new List<Format>();
-                using (DVDCentralEntities dc = new DVDCentralEntities())
+                tblFormat row = base.LoadById(id);
+
+                if (row != null)
                 {
-                    (from s in dc.tblFormats
-                     select new
-                     {
-                         s.Id,
-                         s.Description
-                     })
-                    .ToList()
-                    .ForEach(format => list.Add(new Format
+                    Format format = new Format
                     {
-                        Id = format.Id,
-                        Description = format.Description
-                    }));
+                        Id = row.Id,
+                        Description = row.Description,
+                    };
+
+                    return format;
                 }
-                return list;
+                else
+                {
+                    throw new Exception();
+                }
+
             }
-            catch (Exception) { throw; }
+            catch (Exception)
+            {
+
+                throw;
+            }
         }
 
-        public static int Delete(int id, bool rollback = false)
+        public int Update(Format format, bool rollback = false)
         {
             try
             {
-                int results = 0;
-                using (DVDCentralEntities dc = new())
+                int results = base.Update(new tblFormat
                 {
-                    IDbContextTransaction transaction = null;
-                    if (rollback) transaction = dc.Database.BeginTransaction();
-
-                    // Get the row that we are trying to update
-                    tblFormat entity = dc.tblFormats.FirstOrDefault(s => s.Id == id);
-                    if (entity != null)
-                    {
-                        dc.tblFormats.Remove(entity);
-
-                        results = dc.SaveChanges();
-                    }
-                    else
-                    {
-                        throw new Exception("Row does not exist");
-                    }
-                    if (rollback) transaction.Rollback();
-                } 
+                    Id = format.Id,
+                    Description = format.Description
+                }, rollback);
                 return results;
             }
-            catch (Exception) { throw; }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        public int Delete(Guid id, bool rollback = false)
+        {
+            try
+            {
+                return base.Delete(id, rollback);
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
         }
     }
 }

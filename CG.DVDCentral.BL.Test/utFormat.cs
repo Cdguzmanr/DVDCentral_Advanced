@@ -1,44 +1,50 @@
-using CG.DVDCentral.BL.Models;
-
 namespace CG.DVDCentral.BL.Test
 {
     [TestClass]
-    public class utFormat
+    public class utFormat : utBase
     {
         [TestMethod]
         public void LoadTest()
-        { 
-            Assert.AreEqual(3, FormatManager.Load().Count);
+        {
+            List<Format> formats = new FormatManager(options).Load();
+            int expected = 4;
+            Assert.AreEqual(expected, formats.Count);
         }
 
         [TestMethod]
         public void InsertTest()
         {
-            int id = 0;
-            Format format = new Format()
+            Format format = new Format
             {
-                Description = "Test"
+                Description = "XXXXX"
             };
 
-            int results = FormatManager.Insert(format, true);
-            Assert.AreEqual(1, results);
+            int result = new FormatManager(options).Insert(format, true);
+            Assert.IsTrue(result > 0);
         }
 
         [TestMethod]
         public void UpdateTest()
         {
-            int id = 0;
-            Format format = FormatManager.LoadById(3);
-            format.Description = "UpdateTest";
-            int results = FormatManager.Update(format, true);
-            Assert.AreEqual(1, results);
+            Format format = new FormatManager(options).Load().FirstOrDefault();
+            format.Description = "Blah blah";
+            Assert.IsTrue(new FormatManager(options).Update(format, true) > 0);
         }
 
         [TestMethod]
         public void DeleteTest()
         {
-            int results = FormatManager.Delete(3, true);
-            Assert.AreEqual(1, results);
+            Format format = new FormatManager(options).Load().FirstOrDefault(x => x.Description == "Other");
+            Assert.IsTrue(new FormatManager(options).Delete(format.Id, true) > 0);
         }
+
+        [TestMethod]
+        public void LoadByIdTest()
+        {
+            Format format = new FormatManager(options).Load().FirstOrDefault();
+            Assert.AreEqual(new FormatManager(options).LoadById(format.Id).Id, format.Id);
+        }
+
+
     }
 }

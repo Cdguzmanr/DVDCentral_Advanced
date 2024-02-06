@@ -2,7 +2,7 @@
 
 using CG.DVDCentral.PL.Test;
 
-namespace BDF.DVDCentral.PL.Test
+namespace CG.DVDCentral.PL.Test
 {
     [TestClass]
     public class utGenre : utBase<tblGenre>

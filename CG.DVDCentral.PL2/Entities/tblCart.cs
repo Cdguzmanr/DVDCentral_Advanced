@@ -1,4 +1,4 @@
-﻿using BDF.DVDCentral.PL2.Entities;
+﻿using CG.DVDCentral.PL2.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;

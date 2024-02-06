@@ -35,7 +35,10 @@ namespace CG.DVDCentral.BL
             if (cart != null) { cart.Items.Remove(movie); }
         }
 
-        public static void Checkout(ShoppingCart cart, int customerId = 1, int userId = 1)
+        
+        // To do: Checkout Not Working
+        /*
+        public static void Checkout(ShoppingCart cart, Guid customerId, Guid userId) // Removed " = 1" from argument id's 
         {
             try
             {
@@ -81,5 +84,6 @@ namespace CG.DVDCentral.BL
                 throw;
             }
         }
+        */
     }
 }
