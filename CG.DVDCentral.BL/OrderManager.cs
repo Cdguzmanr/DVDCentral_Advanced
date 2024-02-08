@@ -133,6 +133,42 @@ namespace CG.DVDCentral.BL
 
         public int Insert(Order order, bool rollback = false)
         {
+
+            try
+            {
+                tblOrder row = new tblOrder();
+                row.Id = Guid.NewGuid();
+                row.CustomerId = order.CustomerId;
+                row.OrderDate = DateTime.Now;
+                row.UserId = order.UserId;
+                row.ShipDate = row.OrderDate.AddDays(3);
+
+                // save order items ....
+                foreach (OrderItem item in order.OrderItems)
+                {
+                    item.OrderId = row.Id;
+                    //results += new OrderItemManager(options).Insert(item, rollback);
+                    tblOrderItem oirow = new tblOrderItem();
+
+                    oirow.Id = Guid.NewGuid();
+                    oirow.OrderId = item.OrderId;
+                    oirow.MovieId = item.MovieId;
+                    oirow.Quantity = item.Quantity;
+                    oirow.Cost = item.Cost;
+
+                    item.Id = row.Id;
+
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+
+
+
+
             try
             {
                 int results = 0;

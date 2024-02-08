@@ -21,6 +21,8 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<ProjectReference Include="..\CG.DVDCentral.BL.Models\CG.DVDCentral.BL.Models.csproj" />
+		<ProjectReference Include="..\CG.DVDCentral.BL\CG.DVDCentral.BL.csproj" />
 		<ProjectReference Include="..\CG.DVDCentral.PL2\CG.DVDCentral.PL2.csproj" />
 	</ItemGroup>
 
