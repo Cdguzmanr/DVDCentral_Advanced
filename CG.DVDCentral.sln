@@ -32,7 +32,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CG.DVDCentra.MigrationHandl
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CG.DVDCentral.WPFUI", "CG.DVDCentral.WPFUI\CG.DVDCentral.WPFUI.csproj", "{340373D0-FBDB-4AC1-944B-FEC3E92C13EE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CG.DVDCentral.ConsoleApp", "CG.DVDCentral.ConsoleApp\CG.DVDCentral.ConsoleApp.csproj", "{E7215FED-E4D8-4666-9E76-13BB8F044C88}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CG.DVDCentral.ConsoleApp", "CG.DVDCentral.ConsoleApp\CG.DVDCentral.ConsoleApp.csproj", "{E7215FED-E4D8-4666-9E76-13BB8F044C88}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -67,11 +67,9 @@ Global
 		{3369C587-CB04-4C0C-AE6C-10673285E89B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3369C587-CB04-4C0C-AE6C-10673285E89B}.Release|Any CPU.Build.0 = Release|Any CPU
 		{C97801A3-5A68-4143-9EBA-97A3F5A71C75}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{C97801A3-5A68-4143-9EBA-97A3F5A71C75}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C97801A3-5A68-4143-9EBA-97A3F5A71C75}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C97801A3-5A68-4143-9EBA-97A3F5A71C75}.Release|Any CPU.Build.0 = Release|Any CPU
 		{591FB95B-BAF3-4988-882B-D182DA9801F6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{591FB95B-BAF3-4988-882B-D182DA9801F6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{591FB95B-BAF3-4988-882B-D182DA9801F6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{591FB95B-BAF3-4988-882B-D182DA9801F6}.Release|Any CPU.Build.0 = Release|Any CPU
 		{7B54E064-39E2-407D-8291-726A624AD109}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -79,7 +77,6 @@ Global
 		{7B54E064-39E2-407D-8291-726A624AD109}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7B54E064-39E2-407D-8291-726A624AD109}.Release|Any CPU.Build.0 = Release|Any CPU
 		{4DF86C1F-7DF3-46C0-902E-94DF3310ABE4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{4DF86C1F-7DF3-46C0-902E-94DF3310ABE4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4DF86C1F-7DF3-46C0-902E-94DF3310ABE4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4DF86C1F-7DF3-46C0-902E-94DF3310ABE4}.Release|Any CPU.Build.0 = Release|Any CPU
 		{DC9B2307-E9D7-40AB-94DC-6D531E5F0A08}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
