@@ -9,12 +9,12 @@ namespace CG.DVDCentral.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class FormatController : ControllerBase
+    public class DirectorController : ControllerBase
     {
-        private readonly ILogger<FormatController> logger;
+        private readonly ILogger<DirectorController> logger;
         private readonly DbContextOptions<DVDCentralEntities> options;
 
-        public FormatController(ILogger<FormatController> logger,
+        public DirectorController(ILogger<DirectorController> logger,
                                 DbContextOptions<DVDCentralEntities> options)
         {
             this.options = options;
@@ -23,23 +23,23 @@ namespace CG.DVDCentral.API.Controllers
         }
 
         [HttpGet]
-        public IEnumerable<Format> Get()
+        public IEnumerable<Director> Get()
         {
-            return new FormatManager(options).Load();
+            return new DirectorManager(options).Load();
         }
 
         [HttpGet("{id}")]
-        public Format Get(Guid id)
+        public Director Get(Guid id)
         {
-            return new FormatManager(options).LoadById(id);
+            return new DirectorManager(options).LoadById(id);
         }
 
         [HttpPost("{rollback?}")]
-        public int Post([FromBody] Format format, bool rollback = false)
+        public int Post([FromBody] Director director, bool rollback = false)
         {
             try
             {
-                return new FormatManager(options).Insert(format, rollback);
+                return new DirectorManager(options).Insert(director, rollback);
             }
             catch (Exception)
             {
@@ -48,11 +48,11 @@ namespace CG.DVDCentral.API.Controllers
         }
 
         [HttpPut("{id}/{rollback?}")]
-        public int Put(Guid id, [FromBody] Format format, bool rollback = false)
+        public int Put(Guid id, [FromBody] Director director, bool rollback = false)
         {
             try
             {
-                return new FormatManager(options).Update(format, rollback);
+                return new DirectorManager(options).Update(director, rollback);
             }
             catch (Exception)
             {
@@ -65,7 +65,7 @@ namespace CG.DVDCentral.API.Controllers
         {
             try
             {
-                return new FormatManager(options).Delete(id, rollback);
+                return new DirectorManager(options).Delete(id, rollback);
             }
             catch (Exception)
             {
@@ -74,4 +74,3 @@ namespace CG.DVDCentral.API.Controllers
         }
     }
 }
-

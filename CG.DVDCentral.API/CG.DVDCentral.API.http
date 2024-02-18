@@ -1,4 +1,4 @@
-@CG.DVDCentral.API_HostAddress = http://localhost:5023
+@CG.DVDCentral.API_HostAddress = http://localhost:5166
 
 GET {{CG.DVDCentral.API_HostAddress}}/weatherforecast/
 Accept: application/json
