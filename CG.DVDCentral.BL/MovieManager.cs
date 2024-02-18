@@ -29,7 +29,7 @@ namespace CG.DVDCentral.BL
                                   RatingId = m.RatingId,
                                   FormatId = m.FormatId,
                                   DirectorId = m.DirectorId,
-                                  Quantity = m.InStkQty, // To do: Check if is needed to change Quantity to InStkQty
+                                  Quantity = m.InStkQty,
                                   ImagePath = m.ImagePath,
                                   RatingDescription = mr.Description,
                                   FormatDescription = mf.Description,
