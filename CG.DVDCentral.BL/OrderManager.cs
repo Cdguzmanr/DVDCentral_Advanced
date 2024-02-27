@@ -158,16 +158,15 @@ namespace CG.DVDCentral.BL
 
                     item.Id = row.Id;
 
+
+                    //row.OrderItems.Add(oirow);  
+
                 }
             }
             catch (Exception ex)
             {
                 throw ex;
             }
-
-
-
-
 
             try
             {

@@ -5,7 +5,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddDbContextPool<DVDCentralEntities>(options =>
-options.UseSqlServer(builder.Configuration.GetConnectionString("DatabaseConnection"), builder => {
+options.UseSqlServer(builder.Configuration.GetConnectionString("DVDCentralConnection"), builder => {
     builder.EnableRetryOnFailure(5, TimeSpan.FromSeconds(10), null);
 }));
 

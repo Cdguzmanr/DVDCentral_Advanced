@@ -16,7 +16,7 @@ internal class Program
 
     private static void Main(string[] args)
     {
-        string user = "Foote";
+        string user = "Carlos";
         string hubAddress = "https://fvtcdp.azurewebsites.net/GameHub";
         string operation = DrawMenu();
 
