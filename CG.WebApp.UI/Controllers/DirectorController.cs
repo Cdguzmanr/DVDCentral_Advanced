@@ -1,95 +1,119 @@
 ﻿using CG.DVDCentral.BL;
 using CG.DVDCentral.BL.Models;
+using CG.DVDCentral.PL2.Data;
+//using CG.DVDCentral.UI.Extensions;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+
 
 namespace CG.WebApp.UI.Controllers
 {
     public class DirectorController : Controller
     {
-        [AllowAnonymous]
-        public IActionResult Index()
-        {
+        private readonly DbContextOptions<DVDCentralEntities> options;
 
-            ViewBag.Title = "List of Directors";
-            return View(new DirectorManager.Load());
+        public DirectorController(ILogger<DirectorController> logger,
+                                DbContextOptions<DVDCentralEntities> options)
+        {
+            this.options = options;
+
         }
 
         [AllowAnonymous]
-        public IActionResult Details(int id)
+        public IActionResult Index()
         {
+            ViewBag.Title = "Directors";
+            ViewBag.Info = TempData["info"];
+            return View(new DirectorManager(options).Load());
+        }
 
-            var item = DirectorManager.LoadById(id);
-            ViewBag.Title = "Details for Director " + item.Id;
-
-            return View(item);
+        [AllowAnonymous]
+        public IActionResult Details(Guid id)
+        {
+            Director director = new DirectorManager(options).LoadById(id);
+            ViewBag.Title = "Director Details - " + director.FirstName + " " + director.LastName;
+            return View(director);
         }
 
         [Authorize]
         public IActionResult Create()
         {
-            ViewBag.Title = "Create a Director";
 
+            ViewBag.Title = "Create Director";
             return View();
+
         }
 
+        [Authorize]
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public IActionResult Create(Director director)
         {
             try
             {
-                int result = DirectorManager.Insert(director);
-                return RedirectToAction(nameof(Index));
-            }
-            catch (Exception)
-            {
-                throw;
-            }
-        }
-
-        public IActionResult Edit(int id)
-        {
-            var item = DirectorManager.LoadById(id);
-            ViewBag.Title = "Edit";
-
-            if (Authenticate.IsAuthenticated(HttpContext))
-                return View(item);
-            else
-                return RedirectToAction("Login", "User", new { returnUrl = UriHelper.GetDisplayUrl(HttpContext.Request) }); // Still need to add "Login" 
-
-        }
-
-        [HttpPost]
-        public IActionResult Edit(int id, Director director, bool rollback = false)
-        {
-            try
-            {
-                int result = DirectorManager.Update(director, rollback);
+                int result = new DirectorManager(options).Insert(director);
+                ViewBag.Title = "Create Director";
+                TempData["info"] = result + " director added.";
                 return RedirectToAction(nameof(Index));
             }
             catch (Exception ex)
             {
+                ViewBag.Title = "Create Director";
                 ViewBag.Error = ex.Message;
                 return View(director);
             }
         }
 
-        public IActionResult Delete(int id)
+        public IActionResult Edit(Guid id)
         {
-            return View(DirectorManager.LoadById(id));
+
+            Director director = new DirectorManager(options).LoadById(id);
+            ViewBag.Title = "Edit Director - " + director.FirstName + " " + director.LastName;
+            return View(director);
+
         }
 
         [HttpPost]
-        public IActionResult Delete(int id, Director director, bool rollback = false)
+        [ValidateAntiForgeryToken]
+        public IActionResult Edit(int id, Director director)
         {
             try
             {
-                int result = DirectorManager.Delete(id, rollback);
+                int result = new DirectorManager(options).Update(director);
+                ViewBag.Title = "Edit Director - " + director.FirstName + " " + director.LastName;
+                TempData["info"] = result + " director updated.";
                 return RedirectToAction(nameof(Index));
             }
             catch (Exception ex)
             {
+                ViewBag.Title = "Edit Director - " + director.FirstName + " " + director.LastName;
+                ViewBag.Error = ex.Message;
+                return View(director);
+            }
+        }
+
+        public IActionResult Delete(Guid id)
+        {
+            Director director = new DirectorManager(options).LoadById(id);
+            ViewBag.Title = "Delete Director - " + director.FirstName + " " + director.LastName;
+            return View(director);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Delete(Guid id, Director director)
+        {
+            try
+            {
+                int result = new DirectorManager(options).Delete(id);
+                ViewBag.Title = "Delete Director - " + director.FirstName + " " + director.LastName;
+                TempData["info"] = "Director \"" + director.FullName + "\" was deleted.";
+                return RedirectToAction(nameof(Index));
+            }
+            catch (Exception ex)
+            {
+                ViewBag.Title = "Delete Director - " + director.FirstName + " " + director.LastName;
                 ViewBag.Error = ex.Message;
                 return View(director);
             }
