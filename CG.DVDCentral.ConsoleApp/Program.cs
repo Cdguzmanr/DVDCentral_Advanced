@@ -61,7 +61,7 @@ internal class Program
         // Add new url
         //string hubAddress = "https://fvtcdp.azurewebsites.net/GameHub";
         //string hubAddress = "https://dvdcentralapi-300083002.azurewebsites.net/BingoHub";
-        string hubAddress = "https://localhost:7112/BingoHub";
+        string hubAddress = "https://localhost:7051/BingoHub";
 
         string operation = DrawMenu();
 
