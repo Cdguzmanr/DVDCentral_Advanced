@@ -25,29 +25,29 @@ steps:
   displayName: Build Console App
   inputs:
     command: build
-    projects: 'CG.DVDCentral/CG.DVDCentral.ConsoleApp/CG.DVDCentral.ConsoleApp.csproj'
+    projects: 'CG.DVDCentral.ConsoleApp/CG.DVDCentral.ConsoleApp.csproj'
     arguments: '--configuration Debug' 
 
 - task: DotNetCoreCLI@2
   displayName: Build API Project
   inputs:
     command: build
-    projects: 'CG.DVDCentral/CG.DVDCentral.API/CG.DVDCentral.API.csproj'
+    projects: 'CG.DVDCentral.API/CG.DVDCentral.API.csproj'
     arguments: '--configuration Debug'
 
 - task: DotNetCoreCLI@2
   displayName: Test PL
   inputs:
     command: test
-    projects: 'CG.DVDCentral/CG.DVDCentral.PL.Test/CG.DVDCentral.PL.Test.csproj'
+    projects: 'CG.DVDCentral.PL.Test/CG.DVDCentral.PL.Test.csproj'
     arguments: '--configuration Debug' 
 
 - task: DotNetCoreCLI@2
   displayName: Test BL
   inputs:
     command: test
-    projects: 'CG.DVDCentral/CG.DVDCentral.BL.Test/CG.DVDCentral.BL.Test.csproj'
-    arguments: '--configuration $(BuildConfiguration) --collect "XPlat Code coverage" -- RunConfiguration.DisableAppDomain=true'
+    projects: 'CG.DVDCentral.BL.Test/CG.DVDCentral.BL.Test.csproj'
+    arguments: '--configuration $(BuildConfiguration) -- RunConfiguration.DisableAppDomain=true'
     
 - script: 'dotnet tool install --global dotnet-reportgenerator-globaltool --version 5.1.19'  
   displayName: 'Install ReportGenerator tool'  
