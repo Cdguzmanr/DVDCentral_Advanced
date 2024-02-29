@@ -6,7 +6,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 
-namespace BDF.Bingo.UI
+namespace CG.Bingo.UI
 {
     /// <summary>
     /// Interaction logic for Bingo.xaml

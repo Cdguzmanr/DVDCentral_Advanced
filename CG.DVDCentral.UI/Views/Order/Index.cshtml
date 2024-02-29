@@ -24,7 +24,7 @@
                 @Html.DisplayNameFor(model => model.ShipDate)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.OrderTotal)
+                @Html.DisplayNameFor(model => model.Total)
             </th>
             <th></th>
         </tr>
@@ -46,7 +46,7 @@
                 @Html.DisplayFor(modelItem => item.ShipDate)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.OrderTotal)
+                    @Html.DisplayFor(modelItem => item.Total)
             </td>
             <td>
                 @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |

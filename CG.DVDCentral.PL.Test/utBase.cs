@@ -22,7 +22,7 @@ namespace CG.DVDCentral.PL.Test
 
             _configuration = builder.Build();
             options = new DbContextOptionsBuilder<DVDCentralEntities>()
-                .UseSqlServer(_configuration.GetConnectionString("DatabaseConnection"))
+                .UseSqlServer(_configuration.GetConnectionString("DVDCentralConnection"))
                 .UseLazyLoadingProxies()
                 .Options;
 

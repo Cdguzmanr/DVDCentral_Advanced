@@ -1,10 +1,5 @@
 ﻿
 
-using Microsoft.VisualStudio.TestPlatform.TestHost;
-using Newtonsoft.Json.Linq;
-using Newtonsoft.Json;
-using System.Reflection;
-
 namespace CG.DVDCentral.API.Test
 {
     class APIProject : WebApplicationFactory<Program>

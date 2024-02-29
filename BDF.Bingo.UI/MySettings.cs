@@ -1,6 +1,6 @@
 ﻿using System.Drawing;
 
-namespace BDF.Bingo.UI
+namespace CG.Bingo.UI
 {
     public class MySettings
     {

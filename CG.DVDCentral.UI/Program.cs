@@ -12,6 +12,7 @@ builder.Services.AddSession(options =>
     options.Cookie.IsEssential = true;
 });
 
+builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri("https://localhost:7112/") }); // Add the HttpClient to the container
 
 var app = builder.Build();
 

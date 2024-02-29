@@ -11,12 +11,13 @@
 		  <PrivateAssets>all</PrivateAssets>
 		  <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
-		<PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="8.0.11" />
+		<PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="8.0.1" />
 	</ItemGroup>
 
 	<ItemGroup>
     <ProjectReference Include="..\CG.DVDCentral.BL.Models\CG.DVDCentral.BL.Models.csproj" />
     <ProjectReference Include="..\CG.DVDCentral.BL\CG.DVDCentral.BL.csproj" />
+    <ProjectReference Include="..\CG.Utility\CG.Utility.csproj" />
   </ItemGroup>
 
 </Project>

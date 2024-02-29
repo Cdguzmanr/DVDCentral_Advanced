@@ -1,6 +1,6 @@
 {
   "profiles": {
-    "BDF.Bingo.UI": {
+    "CG.Bingo.UI": {
       "commandName": "Project",
       "commandLineArgs": "Foote"
     }

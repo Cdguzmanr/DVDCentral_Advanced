@@ -1,6 +1,4 @@
 ﻿using CG.DVDCentral.BL.Models;
-using System.Runtime.InteropServices;
-
 namespace CG.DVDCentral.API.Test
 {
     [TestClass]

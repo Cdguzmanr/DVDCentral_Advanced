@@ -10,10 +10,6 @@
 
         public ShoppingCart Cart { get; set; } = new ShoppingCart();
 
-        public CustomerViewModel()
-        {
-            Customers = CustomerManager.Load();
-        }
 
 
     }

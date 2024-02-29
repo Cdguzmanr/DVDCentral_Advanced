@@ -17,7 +17,7 @@
                 @Html.DisplayNameFor(model => model.Cost)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.InStkQty)
+                @Html.DisplayNameFor(model => model.Quantity)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.RatingDescription)
@@ -26,7 +26,7 @@
                 @Html.DisplayNameFor(model => model.FormatDescription)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.DirectorName)
+                @Html.DisplayNameFor(model => model.DirectorFullName)
             </th>
             <th></th>
         </tr>
@@ -42,7 +42,7 @@
                     @Html.DisplayFor(modelItem => item.Cost)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.InStkQty)
+                    @Html.DisplayFor(modelItem => item.Quantity)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.RatingDescription)
@@ -51,7 +51,7 @@
                     @Html.DisplayFor(modelItem => item.FormatDescription)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.DirectorName)
+                    @Html.DisplayFor(modelItem => item.DirectorFullName)
                 </td>
                 <td>
                     @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |

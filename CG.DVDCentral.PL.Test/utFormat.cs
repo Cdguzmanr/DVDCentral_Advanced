@@ -11,7 +11,7 @@ namespace CG.DVDCentral.PL.Test
         {
             int expected = 4;
             var formats = base.LoadTest();
-            Assert.AreEqual(2, formats[1].tblMovies.Count);
+            Assert.AreEqual(3, formats[1].tblMovies.Count);
             Assert.AreEqual(expected, formats.Count());
         }
 

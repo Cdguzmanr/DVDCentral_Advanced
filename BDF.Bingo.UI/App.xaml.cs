@@ -2,7 +2,7 @@
 using Microsoft.Extensions.DependencyInjection;
 using System.Windows;
 
-namespace BDF.Bingo.UI
+namespace CG.Bingo.UI
 {
     /// <summary>
     /// Interaction logic for App.xaml

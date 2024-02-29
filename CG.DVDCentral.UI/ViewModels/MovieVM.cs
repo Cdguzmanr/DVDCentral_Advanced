@@ -12,28 +12,7 @@ namespace CG.DVDCentral.UI.ViewModels
         
         public IFormFile File { get; set; }
 
-        public IEnumerable<int> GenreIds { get; set; }  // Multiple Genres 
-
-
-        public MovieVM()
-        {
-            Genres = GenreManager.Load();
-            Directors = DirectorManager.Load();
-            Ratings = RatingManager.Load();
-            Formats = FormatManager.Load();
-        }
-
-        public MovieVM(int id)
-        {
-            Genres = GenreManager.Load();
-            Directors = DirectorManager.Load();
-            Ratings = RatingManager.Load();
-            Formats = FormatManager.Load();
-
-            Movie = MovieManager.LoadById(id);
-            GenreIds = Movie.Genres.Select(a => a.Id);
-        }
-        
+        public IEnumerable<int> GenreIds { get; set; }  // Multiple Genres        
 
     }
 }

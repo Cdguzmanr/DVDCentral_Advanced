@@ -38,7 +38,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CG.DVDCentral.API.Test", "C
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BDF.Bingo.UI", "BDF.Bingo.UI\BDF.Bingo.UI.csproj", "{775FA4FD-6680-423A-95E1-996724ED4071}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CG.WebApp.UI", "CG.WebApp.UI\CG.WebApp.UI.csproj", "{8D9958D6-58F0-4666-A879-940FD684105E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CG.WebApp.UI", "CG.WebApp.UI\CG.WebApp.UI.csproj", "{8D9958D6-58F0-4666-A879-940FD684105E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CG.Utility", "CG.Utility\CG.Utility.csproj", "{93191590-67CB-46D0-811C-981B87DA86B1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -110,6 +112,10 @@ Global
 		{8D9958D6-58F0-4666-A879-940FD684105E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8D9958D6-58F0-4666-A879-940FD684105E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8D9958D6-58F0-4666-A879-940FD684105E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{93191590-67CB-46D0-811C-981B87DA86B1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{93191590-67CB-46D0-811C-981B87DA86B1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{93191590-67CB-46D0-811C-981B87DA86B1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{93191590-67CB-46D0-811C-981B87DA86B1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
