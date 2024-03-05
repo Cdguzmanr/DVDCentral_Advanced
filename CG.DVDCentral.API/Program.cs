@@ -3,7 +3,7 @@ using CG.DVDCentral.PL2.Data;
 using Microsoft.EntityFrameworkCore;
 using System.Reflection;
 
-internal class Program
+public class Program
 {
     private static void Main(string[] args)
     {
@@ -28,7 +28,7 @@ internal class Program
         {
             c.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo  
             { 
-                Title = "CG.DVDCentral.API", 
+                Title = "DVDCentral API", 
                 Version = "v1",
                 Contact = new Microsoft.OpenApi.Models.OpenApiContact
                 {
