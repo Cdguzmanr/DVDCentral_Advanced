@@ -38,6 +38,41 @@ namespace CG.DVDCentral.BL
             }
         }
 
+        public List<T> Load(string storedproc)
+        {
+            try
+            {
+                return new DVDCentralEntities(options)
+                    .Set<T>()
+                    .FromSqlRaw($"exec {storedproc} {"ct"}")
+                    .ToList<T>();
+
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
+        public List<T> Load(string storedproc, string value)
+        {
+            try
+            {
+                return new DVDCentralEntities(options)
+                    .Set<T>()
+                    .FromSqlRaw($"exec {storedproc} {value}")
+                    .ToList<T>();
+
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
+
         public T LoadById(Guid id)
         {
             try

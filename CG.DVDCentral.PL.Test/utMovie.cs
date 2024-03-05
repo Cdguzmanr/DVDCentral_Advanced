@@ -7,6 +7,38 @@ namespace CG.DVDCentral.PL.Test
     [TestClass]
     public class utMovie : utBase<tblMovie>
     {
+          [TestMethod]
+        public void LoadSPTest()
+        {
+            var results = dc.Set<spGetMoviesResult>().FromSqlRaw("exec spGetMovies").ToList(); 
+            var expected = 7;
+            Assert.AreEqual(expected, results.Count);
+        }
+
+        [TestMethod]
+        public void LoadByGenreTest()
+        {
+            int expected = 2;
+            var parameter1 = new SqlParameter
+            {
+                ParameterName = "GenreName",
+                SqlDbType = System.Data.SqlDbType.VarChar,
+                Value = "Sc"
+            };
+
+            var results = dc.Set<spGetMoviesResult>().FromSqlRaw("exec spGetMoviesByGenre @GenreName", parameter1).ToList();
+
+            string title = results[1].Title;
+
+            /*foreach (var item in results)
+            {
+                title = item.Title;
+            }*/
+            
+            Assert.AreEqual(expected, results.Count);
+            Assert.AreEqual("Jaws", title);
+        }   
+
         [TestMethod]
         public void LoadTest()
         {
@@ -27,7 +59,7 @@ namespace CG.DVDCentral.PL.Test
             newRow.RatingId = base.LoadTest().FirstOrDefault().RatingId;
             newRow.FormatId = base.LoadTest().FirstOrDefault().FormatId;
             newRow.DirectorId = base.LoadTest().FirstOrDefault().DirectorId;
-            newRow.InStkQty = 0;
+            newRow.Quantity = 0;
             newRow.ImagePath = "none";
             int rowsAffected = InsertTest(newRow);
 

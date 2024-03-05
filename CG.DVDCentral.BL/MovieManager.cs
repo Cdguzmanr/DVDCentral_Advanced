@@ -8,6 +8,56 @@ namespace CG.DVDCentral.BL
     {
         public MovieManager(DbContextOptions<DVDCentralEntities> options) : base(options) { }
 
+        private static List<Genre> ConvertToGenres(ICollection<tblMovieGenre> moviegenres)
+        {
+            List<Genre> genres = new List<Genre>();
+            foreach (tblMovieGenre mg in moviegenres)
+            {
+                genres.Add(new Genre { Id = mg.GenreId, Description = mg.Genre.Description });
+            }
+            return genres;
+        }
+
+        /// <summary>
+        /// Gets all of the movies from the database and returns a list of the movies
+        /// </summary>
+        /// <returns>A list of all the movies in the database</returns>
+        public List<Movie> Load(Guid? genreId = null)
+        {
+            List<Movie> movies = new List<Movie>();
+            try
+            {
+
+                base.Load()
+                    .Where(mg => mg.tblMovieGenres.Any(_ => _.GenreId == genreId) || (genreId == null))
+                    .ToList()
+                    .ForEach(d => movies.Add(
+                        new Movie()
+                        {
+                            Id = d.Id,
+                            Description = d.Description,
+                            Title = d.Title,
+                            Cost = d.Cost,
+                            RatingId = d.RatingId,
+                            FormatId = d.FormatId,
+                            DirectorId = d.DirectorId,
+                            Quantity = d.Quantity,
+                            ImagePath = d.ImagePath,
+                            RatingDescription = d.Rating.Description,
+                            FormatDescription = d.Format.Description,
+                            DirectorFullName = d.Director.LastName + ", " + d.Director.FirstName,
+                            Genres = ConvertToGenres(d.tblMovieGenres.ToList())
+                        }));
+
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+            return movies;
+        }
+
+
         public List<Movie> Load()
         {
             try
@@ -29,7 +79,7 @@ namespace CG.DVDCentral.BL
                                   RatingId = m.RatingId,
                                   FormatId = m.FormatId,
                                   DirectorId = m.DirectorId,
-                                  Quantity = m.InStkQty,
+                                  Quantity = m.Quantity,
                                   ImagePath = m.ImagePath,
                                   RatingDescription = mr.Description,
                                   FormatDescription = mf.Description,
@@ -66,7 +116,7 @@ namespace CG.DVDCentral.BL
                             RatingId = row.RatingId,
                             FormatId = row.FormatId,
                             DirectorId = row.DirectorId,
-                            Quantity = row.InStkQty,
+                            Quantity = row.Quantity,
                             ImagePath = row.ImagePath,
                             //DirectorFullName = DirectorManager.LoadById(row.DirectorId).FullName,
                             //FormatDescription = FormatManager.LoadById(row.FormatId).Description,
@@ -110,7 +160,7 @@ namespace CG.DVDCentral.BL
                                   RatingId = m.RatingId,
                                   FormatId = m.FormatId,
                                   DirectorId = m.DirectorId,
-                                  Quantity = m.InStkQty,
+                                  Quantity = m.Quantity,
                                   ImagePath = m.ImagePath,
                                   RatingDescription = mr.Description,
                                   FormatDescription = mf.Description,
@@ -155,7 +205,7 @@ namespace CG.DVDCentral.BL
                     newRow.RatingId = movie.RatingId;
                     newRow.FormatId = movie.FormatId;
                     newRow.DirectorId = movie.DirectorId;
-                    newRow.InStkQty = movie.Quantity;
+                    newRow.Quantity = movie.Quantity;
                     newRow.ImagePath = movie.ImagePath;
 
                     // Backfill the id on the input parameter movie
@@ -205,7 +255,7 @@ namespace CG.DVDCentral.BL
                         upDateRow.RatingId = movie.RatingId;
                         upDateRow.FormatId = movie.FormatId;
                         upDateRow.DirectorId = movie.DirectorId;
-                        upDateRow.InStkQty = movie.Quantity;
+                        upDateRow.Quantity = movie.Quantity;
                         upDateRow.ImagePath = movie.ImagePath;
 
                         // Update the movie genres

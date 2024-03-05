@@ -353,6 +353,9 @@ namespace CG.DVDCentral.PL2.Data
                     .HasForeignKey(d => d.RatingId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("fk_tblMovie_RatingId");
+
+                // Include spGetMoviesResult (SP) entity
+                modelBuilder.Entity<spGetMoviesResult>().HasNoKey();
             });
 
 
@@ -366,7 +369,7 @@ namespace CG.DVDCentral.PL2.Data
                     RatingId = ratingId[0],
                     FormatId = formatId[0],
                     DirectorId = directorId[0],
-                    InStkQty = 2,
+                    Quantity = 2,
                     ImagePath = "Rocky.jpg"
                 },
                  new tblMovie {
@@ -377,7 +380,7 @@ namespace CG.DVDCentral.PL2.Data
                     RatingId = ratingId[0],
                     FormatId = formatId[0],
                     DirectorId = directorId[0],
-                    InStkQty = 2,
+                    Quantity = 2,
                     ImagePath = "Rocky.jpg"
                 },
 
@@ -389,7 +392,7 @@ namespace CG.DVDCentral.PL2.Data
                     RatingId = ratingId[1],
                     FormatId = formatId[1],
                     DirectorId = directorId[1],
-                    InStkQty = 1,
+                    Quantity = 1,
                     ImagePath = "Jaws1.jpg"
                 },
                 new tblMovie {
@@ -400,7 +403,7 @@ namespace CG.DVDCentral.PL2.Data
                     RatingId = ratingId[2],
                     FormatId = formatId[2],
                     DirectorId = directorId[2],
-                    InStkQty = 4,
+                    Quantity = 4,
                     ImagePath = "PrincessBride.jpg"
                 },
                 new tblMovie {
@@ -411,7 +414,7 @@ namespace CG.DVDCentral.PL2.Data
                     RatingId = ratingId[3],
                     FormatId = formatId[2],
                     DirectorId = directorId[3],
-                    InStkQty = 2,
+                    Quantity = 2,
                     ImagePath = "IndianaJonesLastCrusade.jpg"
                 },
                 new tblMovie {
@@ -422,7 +425,7 @@ namespace CG.DVDCentral.PL2.Data
                     RatingId = ratingId[1],
                     FormatId = formatId[1],
                     DirectorId = directorId[1],
-                    InStkQty = 1,
+                    Quantity = 1,
                     ImagePath = "StarWarsNewHope.jpg"
                 },
                 new tblMovie {
@@ -433,7 +436,7 @@ namespace CG.DVDCentral.PL2.Data
                     RatingId = ratingId[1],
                     FormatId = formatId[1],
                     DirectorId = directorId[1],
-                    InStkQty = 1,
+                    Quantity = 1,
                     ImagePath = "PaleRider.jpg"
                 }
             };
