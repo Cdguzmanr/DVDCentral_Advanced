@@ -1,5 +1,4 @@
-﻿using CG.DVDCentral.PL2.Data;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
+﻿using CG.DVDCentral.BL;
 using System;
 using System.Collections.Generic;
 using System.Linq;

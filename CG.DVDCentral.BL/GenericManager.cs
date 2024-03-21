@@ -1,15 +1,4 @@
-﻿using CG.DVDCentral.BL.Models;
-using CG.DVDCentral.PL2.Data;
-using CG.DVDCentral.PL2.Entities;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Storage;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace CG.DVDCentral.BL
+﻿namespace CG.DVDCentral.BL
 {
     public abstract class GenericManager<T> where T : class, IEntity
     {
@@ -44,7 +33,7 @@ namespace CG.DVDCentral.BL
             {
                 return new DVDCentralEntities(options)
                     .Set<T>()
-                    .FromSqlRaw($"exec {storedproc} {"ct"}")
+                    .FromSqlRaw($"exec {storedproc}")
                     .ToList<T>();
 
             }
@@ -71,7 +60,6 @@ namespace CG.DVDCentral.BL
                 throw;
             }
         }
-
 
         public T LoadById(Guid id)
         {

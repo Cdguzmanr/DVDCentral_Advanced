@@ -1,8 +1,29 @@
+using CG.Reporting;
+
 namespace CG.DVDCentral.BL.Test
 {
     [TestClass]
     public class utMovie : utBase
     {
+        [TestMethod] public void utReportTest()
+        {
+            var movies = new MovieManager(options).Load();
+            Excel.Export("Movies.xlsx", MovieManager.ConvertData(movies));
+        }
+
+        [TestMethod]
+        public void LoadSPTest()
+        {
+            //var movies = new MovieSPManager(options).Load();
+            // OR
+            var movies = new MovieSPManager(options).Load("spGetMovies");
+            int expected = 7;
+
+            Assert.AreEqual(expected, movies.Count);
+        }
+
+
+
         [TestMethod]
         public void LoadTest()
         {
