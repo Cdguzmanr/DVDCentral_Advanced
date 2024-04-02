@@ -6,7 +6,7 @@ namespace CG.DVDCentral.BL
     {
         public FormatManager(DbContextOptions<DVDCentralEntities> options) : base(options) { }
 
-        public int Insert(Format format, bool rollback = false)
+        public Guid Insert(Format format, bool rollback = false)
         {
             try
             {

@@ -21,8 +21,8 @@ namespace CG.DVDCentral.BL.Test
                 LastName = "Vicchiollo"
             };
 
-            int result = new DirectorManager(options).Insert(director, true);
-            Assert.IsTrue(result > 0);
+            Guid result = new DirectorManager(options).Insert(director, true);
+            Assert.IsTrue(result > Guid.Empty);
         }
 
         [TestMethod]

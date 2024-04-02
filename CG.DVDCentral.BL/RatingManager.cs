@@ -6,7 +6,7 @@ namespace CG.DVDCentral.BL
     {
         public RatingManager(DbContextOptions<DVDCentralEntities> options) : base(options) { }
 
-        public int Insert(Rating rating, bool rollback = false)
+        public Guid Insert(Rating rating, bool rollback = false)
         {
             try
             {

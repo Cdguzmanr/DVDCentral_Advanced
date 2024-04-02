@@ -1,8 +1,19 @@
+using CG.Reporting;
+
 namespace CG.DVDCentral.BL.Test
 {
     [TestClass]
     public class utFormat : utBase
     {
+        [TestMethod]
+        public void utReportTest()
+        {
+            var entities = new FormatManager(options).Load();
+            string[] columns = { "Description" };
+            var data = FormatManager.ConvertData<Format>(entities, columns);
+            Excel.Export("formats.xlsx", data);
+        }
+
         [TestMethod]
         public void LoadTest()
         {
@@ -19,8 +30,8 @@ namespace CG.DVDCentral.BL.Test
                 Description = "XXXXX"
             };
 
-            int result = new FormatManager(options).Insert(format, true);
-            Assert.IsTrue(result > 0);
+            Guid result = new FormatManager(options).Insert(format, true);
+            Assert.IsTrue(result > Guid.Empty);
         }
 
         [TestMethod]

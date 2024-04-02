@@ -52,7 +52,7 @@ namespace CG.WebApp.UI.Controllers
         {
             try
             {
-                int result = new DirectorManager(options).Insert(director);
+                Guid result = new DirectorManager(options).Insert(director);
                 ViewBag.Title = "Create Director";
                 TempData["info"] = result + " director added.";
                 return RedirectToAction(nameof(Index));

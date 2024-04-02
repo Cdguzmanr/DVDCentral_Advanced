@@ -1,7 +1,6 @@
 ﻿using CG.DVDCentral.BL;
 using CG.DVDCentral.BL.Models;
 using CG.DVDCentral.PL2.Data;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -14,6 +13,8 @@ namespace CG.DVDCentral.API.Controllers
         private readonly ILogger<MovieController> logger;
         private readonly DbContextOptions<DVDCentralEntities> options;
 
+
+
         public MovieController(ILogger<MovieController> logger,
                                 DbContextOptions<DVDCentralEntities> options)
         {
@@ -21,20 +22,36 @@ namespace CG.DVDCentral.API.Controllers
             this.logger = logger;
         }
 
+
+        /// <summary>
+        /// Returns a list of movies.
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
         public IEnumerable<Movie> Get()
         {
             return new MovieManager(options).Load();
         }
 
+        /// <summary>
+        /// Get a particular movie by Id
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpGet("{id}")]
         public Movie Get(Guid id)
         {
             return new MovieManager(options).LoadById(id);
         }
 
+        /// <summary>
+        /// Insert a movie
+        /// </summary>
+        /// <param name="movie"></param>
+        /// <param name="rollback"></param>
+        /// <returns>New Guid</returns>
         [HttpPost("{rollback?}")]
-        public int Post([FromBody] Movie movie, bool rollback = false)
+        public Guid Post([FromBody] Movie movie, bool rollback = false)
         {
             try
             {
@@ -46,6 +63,13 @@ namespace CG.DVDCentral.API.Controllers
             }
         }
 
+        /// <summary>
+        /// Update a movie
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="movie"></param>
+        /// <param name="rollback"></param>
+        /// <returns></returns>
         [HttpPut("{id}/{rollback?}")]
         public int Put(Guid id, [FromBody] Movie movie, bool rollback = false)
         {
@@ -59,6 +83,12 @@ namespace CG.DVDCentral.API.Controllers
             }
         }
 
+        /// <summary>
+        /// Delete a movie
+        /// </summary>
+        /// <param name="id">Movie Id</param>
+        /// <param name="rollback">Should be rollback the transaction</param>
+        /// <returns></returns>
         [HttpDelete("{id}/{rollback?}")]
         public int Delete(Guid id, bool rollback = false)
         {

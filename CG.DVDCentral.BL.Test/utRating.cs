@@ -20,8 +20,8 @@ namespace CG.DVDCentral.BL.Test
                 Description = "XXXXX"
             };
 
-            int result = new RatingManager(options).Insert(rating, true);
-            Assert.IsTrue(result > 0);
+            Guid result = new RatingManager(options).Insert(rating, true);
+            Assert.IsTrue(result > Guid.Empty);
         }
 
         [TestMethod]

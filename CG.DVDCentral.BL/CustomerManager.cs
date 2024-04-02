@@ -7,7 +7,7 @@
 
         }
 
-        public int Insert(Customer Customer, bool rollback = false)
+        public Guid Insert(Customer Customer, bool rollback = false)
         {
             try
             {

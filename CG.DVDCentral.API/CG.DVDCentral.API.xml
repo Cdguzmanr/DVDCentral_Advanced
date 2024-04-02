@@ -4,5 +4,62 @@
         <name>CG.DVDCentral.API</name>
     </assembly>
     <members>
+        <member name="T:CG.DVDCentral.API.Controllers.DirectorController">
+            <summary>
+            DirectorController
+            </summary>
+        </member>
+        <member name="M:CG.DVDCentral.API.Controllers.DirectorController.#ctor(Microsoft.Extensions.Logging.ILogger{CG.DVDCentral.API.Controllers.DirectorController},Microsoft.EntityFrameworkCore.DbContextOptions{CG.DVDCentral.PL2.Data.DVDCentralEntities})">
+            <summary>
+            DirectorController Constructor
+            </summary>
+            <param name="logger"></param>
+            <param name="options"></param>
+        </member>
+        <member name="M:CG.DVDCentral.API.Controllers.DirectorController.Get(System.Guid)">
+            <summary>
+            DirectorController Get
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:CG.DVDCentral.API.Controllers.MovieController.Get">
+            <summary>
+            Returns a list of movies.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:CG.DVDCentral.API.Controllers.MovieController.Get(System.Guid)">
+            <summary>
+            Get a particular movie by Id
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:CG.DVDCentral.API.Controllers.MovieController.Post(CG.DVDCentral.BL.Models.Movie,System.Boolean)">
+            <summary>
+            Insert a movie
+            </summary>
+            <param name="movie"></param>
+            <param name="rollback"></param>
+            <returns>New Guid</returns>
+        </member>
+        <member name="M:CG.DVDCentral.API.Controllers.MovieController.Put(System.Guid,CG.DVDCentral.BL.Models.Movie,System.Boolean)">
+            <summary>
+            Update a movie
+            </summary>
+            <param name="id"></param>
+            <param name="movie"></param>
+            <param name="rollback"></param>
+            <returns></returns>
+        </member>
+        <member name="M:CG.DVDCentral.API.Controllers.MovieController.Delete(System.Guid,System.Boolean)">
+            <summary>
+            Delete a movie
+            </summary>
+            <param name="id">Movie Id</param>
+            <param name="rollback">Should be rollback the transaction</param>
+            <returns></returns>
+        </member>
     </members>
 </doc>

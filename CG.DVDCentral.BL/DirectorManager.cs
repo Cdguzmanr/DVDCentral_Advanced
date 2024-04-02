@@ -1,17 +1,15 @@
 ﻿using CG.DVDCentral.BL;
+using Microsoft.Extensions.Logging;
 
 namespace CG.DVDCentral.BL
 {
     public class DirectorManager : GenericManager<tblDirector>
     {
 
-        public DirectorManager(DbContextOptions<DVDCentralEntities> options) : base(options)
-        {
+        public DirectorManager(DbContextOptions<DVDCentralEntities> options) : base(options) { }
+        public DirectorManager(ILogger logger, DbContextOptions<DVDCentralEntities> options) : base(logger, options) { }
 
-        }
-
-
-        public int Insert(Director director, bool rollback = false)
+        public Guid Insert(Director director, bool rollback = false)
         {
             try
             {

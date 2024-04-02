@@ -1,8 +1,21 @@
+using CG.Reporting;
+using DocumentFormat.OpenXml.Spreadsheet;
+
 namespace CG.DVDCentral.BL.Test
 {
     [TestClass]
     public class utCustomer : utBase
     {
+        [TestMethod]
+        public void utReportTest()
+        {
+            var entities = new CustomerManager(options).Load();
+            string[] columns = { "FirstName", "LastName", "Address", "City", "State", "Zip" };
+            var data = CustomerManager.ConvertData<Customer>(entities, columns);
+            Excel.Export("customers.xlsx", data);
+        }
+
+
         [TestMethod]
         public void LoadTest()
         {
@@ -27,8 +40,8 @@ namespace CG.DVDCentral.BL.Test
                 UserId = new UserManager(options).Load().FirstOrDefault().Id
             };
 
-            int result = new CustomerManager(options).Insert(customer, true);
-            Assert.IsTrue(result > 0);
+            Guid result = new CustomerManager(options).Insert(customer, true);
+            Assert.IsTrue(result != Guid.Empty);
         }
 
         [TestMethod]

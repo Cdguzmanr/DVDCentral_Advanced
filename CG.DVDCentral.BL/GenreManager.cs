@@ -1,4 +1,5 @@
 ﻿using CG.DVDCentral.BL;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
 namespace CG.DVDCentral.BL
@@ -6,6 +7,20 @@ namespace CG.DVDCentral.BL
     public class GenreManager : GenericManager<tblGenre>
     {
         public GenreManager(DbContextOptions<DVDCentralEntities> options) : base(options) { }
+
+        public GenreManager(ILogger logger, DbContextOptions<DVDCentralEntities> options) : base(logger, options) { }
+
+        public List<Genre> Load()
+        {
+            try
+            {
+                return Load(null);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
 
         public List<Genre> Load(Guid? movieId = null)
         {
@@ -86,7 +101,7 @@ namespace CG.DVDCentral.BL
             }
         }
 
-        public int Insert(Genre genre, bool rollback = false)
+        public Guid Insert(Genre genre, bool rollback = false)
         {
             try
             {

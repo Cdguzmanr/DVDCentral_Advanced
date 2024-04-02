@@ -1,9 +1,4 @@
-﻿using CG.DVDCentral.PL2.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿#nullable disable
 
 namespace CG.DVDCentral.PL2.Entities
 {
@@ -15,7 +10,10 @@ namespace CG.DVDCentral.PL2.Entities
         public int Qty { get; set; }
 
         public virtual tblCart Cart { get; set; }
-        public virtual tblMovie Movie { get; set; } 
+        public virtual tblMovie Movie { get; set; }
+
+
+        public string SortField { get { return Movie.Title; } }
 
     }
 }

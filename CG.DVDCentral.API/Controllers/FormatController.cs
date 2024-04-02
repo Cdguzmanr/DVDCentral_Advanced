@@ -1,7 +1,6 @@
 ﻿using CG.DVDCentral.BL;
 using CG.DVDCentral.BL.Models;
 using CG.DVDCentral.PL2.Data;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -35,7 +34,7 @@ namespace CG.DVDCentral.API.Controllers
         }
 
         [HttpPost("{rollback?}")]
-        public int Post([FromBody] Format format, bool rollback = false)
+        public Guid Post([FromBody] Format format, bool rollback = false)
         {
             try
             {
@@ -74,4 +73,3 @@ namespace CG.DVDCentral.API.Controllers
         }
     }
 }
-

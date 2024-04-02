@@ -1,6 +1,4 @@
-﻿using CG.DVDCentral.PL2.Entities;
-using System;
-using System.Collections.Generic;
+﻿#nullable disable
 
 namespace CG.DVDCentral.PL2.Entities;
 
@@ -12,5 +10,7 @@ public class tblMovieGenre : IEntity
 
     public Guid GenreId { get; set; }
     public virtual tblGenre Genre { get; set; } 
-    public virtual tblMovie Movie { get; set; } 
+    public virtual tblMovie Movie { get; set; }
+
+    public string SortField { get { return Movie.Title; } }
 }

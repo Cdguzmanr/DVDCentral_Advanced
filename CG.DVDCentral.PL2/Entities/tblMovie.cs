@@ -1,8 +1,4 @@
-﻿using CG.DVDCentral.PL2.Entities;
-using System;
-using System.Collections.Generic;
-
-#nullable disable
+﻿#nullable disable
 
 namespace CG.DVDCentral.PL2.Entities
 {
@@ -18,10 +14,12 @@ namespace CG.DVDCentral.PL2.Entities
         public Guid FormatId { get; set; }
         public Guid DirectorId { get; set; }
         public virtual ICollection<tblMovieGenre> tblMovieGenres { get; set; }
+        public virtual ICollection<tblOrderItem> OrderItems { get; set; } // Todo: Add this to the Manager Methods
 
         public virtual tblDirector Director { get; set; }
         public virtual tblRating Rating { get; set; }
         public virtual tblFormat Format { get; set; }
+        public string SortField { get { return Title; } }
 
     }
 }

@@ -5,10 +5,13 @@ namespace CG.DVDCentral.BL.Test
     [TestClass]
     public class utMovie : utBase
     {
-        [TestMethod] public void utReportTest()
+        [TestMethod]
+        public void utReportTest()
         {
             var movies = new MovieManager(options).Load();
-            Excel.Export("Movies.xlsx", MovieManager.ConvertData(movies));
+            string[] columns = { "Title", "DirectorFullName", "FormatDescription", "RatingDescription", "Quantity" };
+            var data = MovieManager.ConvertData<Movie>(movies, columns);
+            Excel.Export("movies.xlsx", data);
         }
 
         [TestMethod]
@@ -22,13 +25,20 @@ namespace CG.DVDCentral.BL.Test
             Assert.AreEqual(expected, movies.Count);
         }
 
-
-
         [TestMethod]
         public void LoadTest()
         {
-            List<Movie> movies = new MovieManager(options).Load();
+            var movies = new MovieManager(options).Load();
             int expected = 7;
+
+            Assert.AreEqual(expected, movies.Count);
+        }
+
+        [TestMethod]
+        public void LoadMoviesByGenresTest()
+        {
+            var movies = new MovieSPManager(options).Load("spGetMoviesByGenre", "ct");
+            int expected = 1;
 
             Assert.AreEqual(expected, movies.Count);
         }
@@ -49,8 +59,35 @@ namespace CG.DVDCentral.BL.Test
                 ImagePath = "XXXXXXX"
             };
 
-            int result = new MovieManager(options).Insert(movie, true);
-            Assert.IsTrue(result > 0);
+
+
+            Guid result = new MovieManager(options).Insert(movie, true);
+            Assert.IsTrue(result > Guid.Empty);
+        }
+
+        [TestMethod]
+        public void InsertWithGenresTest()
+        {
+            Movie movie = new Movie
+            {
+                Id = Guid.NewGuid(),
+                Title = "XXXXX",
+                Description = "XXXXX",
+                Cost = 9.99,
+                RatingId = new RatingManager(options).Load().FirstOrDefault().Id,
+                FormatId = new FormatManager(options).Load().FirstOrDefault().Id,
+                DirectorId = new DirectorManager(options).Load().FirstOrDefault().Id,
+                Quantity = 0,
+                ImagePath = "XXXXXXX"
+            };
+
+            List<Genre> genres = new GenreManager(options).Load();
+            movie.Genres = new List<Genre>();
+            movie.Genres.Add(genres.FirstOrDefault());
+            movie.Genres.Add(genres.OrderByDescending(g => g.Description).FirstOrDefault());
+
+            Guid result = new MovieManager(options).Insert(movie, true);
+            Assert.IsTrue(result != Guid.Empty);
         }
 
         [TestMethod]
