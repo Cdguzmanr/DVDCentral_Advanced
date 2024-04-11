@@ -22,9 +22,18 @@ namespace CG.DVDCentral.API.Controllers
         }
 
         [HttpGet]
-        public IEnumerable<Format> Get()
+        public async Task<ActionResult<IEnumerable<Format>>> Get()
         {
-            return new FormatManager(options).Load();
+
+            try
+            {
+                return Ok(await new FormatManager(logger, options).LoadAsync());
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+
         }
 
         [HttpGet("{id}")]
@@ -34,15 +43,16 @@ namespace CG.DVDCentral.API.Controllers
         }
 
         [HttpPost("{rollback?}")]
-        public Guid Post([FromBody] Format format, bool rollback = false)
+        public async Task<ActionResult> Post([FromBody] Format format, bool rollback = false)
         {
             try
             {
-                return new FormatManager(options).Insert(format, rollback);
+                await new FormatManager(options).InsertAsync(format, rollback);
+                return Ok(format.Id);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                throw;
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
             }
         }
 

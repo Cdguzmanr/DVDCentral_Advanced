@@ -1,10 +1,13 @@
-﻿using CG.DVDCentral.PL2.Entities;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
-using Microsoft.Extensions.Logging;
-using System.Linq.Expressions;
+﻿using System.Linq.Expressions;
 
 namespace CG.DVDCentral.BL
 {
+    public class AlreadyExistsException : Exception
+    {
+        public AlreadyExistsException(string message) : base(message) { }
+        public AlreadyExistsException() : base("Row already exists.") { }
+    }
+
     public abstract class GenericManager<T> where T : class, IEntity
     {
         protected DbContextOptions<DVDCentralEntities> options;
@@ -45,6 +48,25 @@ namespace CG.DVDCentral.BL
                 counter++;
             }
             return data;
+        }
+
+        public async Task<List<T>> LoadAsync()
+        {
+            try
+            {
+                if (logger != null) logger.LogWarning($"Get {typeof(T).Name}s");
+                var rows = new DVDCentralEntities(options)
+                    .Set<T>()
+                    .ToListAsync<T>()
+                    .ConfigureAwait(false);
+
+                return await rows;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
         }
 
         public List<T> Load()
@@ -103,7 +125,6 @@ namespace CG.DVDCentral.BL
                 throw;
             }
         }
-
         public T LoadById(Guid id)
         {
             try
@@ -117,10 +138,9 @@ namespace CG.DVDCentral.BL
                 throw;
             }
         }
-
-        public Guid Insert(T entity,
-                       Expression<Func<T, bool>> predicate = null,
-                       bool rollback = false)
+        public int Insert(T entity,
+                          Expression<Func<T, bool>> predicate = null,
+                          bool rollback = false)
         {
             try
             {
@@ -131,31 +151,78 @@ namespace CG.DVDCentral.BL
                     {
                         IDbContextTransaction dbTransaction = null;
                         if (rollback) dbTransaction = dc.Database.BeginTransaction();
+
                         entity.Id = Guid.NewGuid();
+
                         dc.Set<T>().Add(entity);
                         results = dc.SaveChanges();
+
                         if (rollback) dbTransaction.Rollback();
                     }
                     else
                     {
+                        if (logger != null) logger.LogWarning("Row already exists. {UserId}", "bfoote");
                         throw new Exception("Row already exists.");
                     }
+
                 }
-                return entity.Id;
+
+                return results;
             }
-            catch
+            catch (Exception)
             {
+
                 throw;
             }
         }
 
-        public Guid Insert(T entity, bool rollback = false)
+        public async Task<int> InsertAsync(T entity,
+                                            Expression<Func<T, bool>> predicate = null,
+                                            bool rollback = false)
         {
             try
             {
                 int results = 0;
                 using (DVDCentralEntities dc = new DVDCentralEntities(options))
                 {
+                    if ((predicate == null) || ((predicate != null) && (!dc.Set<T>().Any(predicate))))
+                    {
+                        IDbContextTransaction dbTransaction = null;
+                        if (rollback) dbTransaction = dc.Database.BeginTransaction();
+
+                        entity.Id = Guid.NewGuid();
+
+                        dc.Set<T>().Add(entity);
+                        results = dc.SaveChanges();
+
+                        if (rollback) dbTransaction.Rollback();
+                    }
+                    else
+                    {
+                        if (logger != null) logger.LogWarning("Row already exists. {UserId}", "bfoote");
+                        throw new AlreadyExistsException("That row already exists.");
+                    }
+
+                }
+
+                return results;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
+        public int Insert(T entity,
+                         bool rollback = false)
+        {
+            try
+            {
+                int results = 0;
+                using (DVDCentralEntities dc = new DVDCentralEntities(options))
+                {
+
                     IDbContextTransaction dbTransaction = null;
                     if (rollback) dbTransaction = dc.Database.BeginTransaction();
 
@@ -166,9 +233,10 @@ namespace CG.DVDCentral.BL
 
                     if (rollback) dbTransaction.Rollback();
 
+
                 }
 
-                return entity.Id;
+                return results;
             }
             catch (Exception)
             {
@@ -176,7 +244,6 @@ namespace CG.DVDCentral.BL
                 throw;
             }
         }
-
         public int Update(T entity, bool rollback = false)
         {
             try

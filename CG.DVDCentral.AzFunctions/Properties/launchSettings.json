@@ -1,0 +1,9 @@
+{
+  "profiles": {
+    "CG.DVDCentral.AzFunctions": {
+      "commandName": "Project",
+      "commandLineArgs": "--port 7190",
+      "launchBrowser": false
+    }
+  }
+}
